@@ -10,6 +10,9 @@ import kz.dragau.larek.di.components.DaggerAppComponent
 import kz.dragau.larek.di.modules.AppModule
 import kz.dragau.larek.di.modules.ContextModule
 import org.greenrobot.eventbus.EventBus
+import com.crashlytics.android.core.CrashlyticsCore
+
+
 
 class ApplicationController : MultiDexApplication() {
     override fun attachBaseContext(context: Context) {
@@ -26,7 +29,13 @@ class ApplicationController : MultiDexApplication() {
             .contextModule(ContextModule(this))
             //.loginModule(LoginModule(null))
             .build()
-        Fabric.with(this, Crashlytics())
+
+        val crashlyticsKit = Crashlytics.Builder()
+            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+            .build()
+        // Initialize Fabric with the debug-disabled crashlytics.
+        Fabric.with(this, crashlyticsKit)
+
         //TypefaceUtil.overrideFont(this, "SERIF", "fonts/trebuchet.ttf")
         //EventBus.getDefault().register(SoundPlayer)
     }
@@ -34,6 +43,5 @@ class ApplicationController : MultiDexApplication() {
     companion object
     {
         lateinit var appComponent: AppComponent
-
     }
 }
