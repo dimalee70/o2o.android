@@ -26,18 +26,18 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
     }
 
     private var disposable: Disposable? = null
-    lateinit var source: ExtractorMediaSource
 
     fun showLogin()
     {
-        disposable = client.getValues()
+        router.newRootScreen(Screens.LoginScreen())
+        /*disposable = client.getValues()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {    result ->
                     run {
                         viewState?.hideProgress()
-                        //router.newRootScreen(Screens.LoginScreen())
+                        //
                     }
                 },
                 { error ->
@@ -59,7 +59,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                         viewState?.showError(error)
                     }
                 }
-            )
+            )*/
     }
 
     val user = LoginRequestModel("",_password = "")
@@ -101,7 +101,8 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                 }
             )*/
     }
+
     fun showTutorial(){
-        viewState.showTutorial()
+
     }
 }
