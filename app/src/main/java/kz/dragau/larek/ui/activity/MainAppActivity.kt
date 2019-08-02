@@ -63,17 +63,6 @@ class MainAppActivity : BaseActivity(), MainAppView {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
-    /*override fun showLogin() {
-        if (!isFinishing) {
-            val intent = Intent(this, LoginInActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK
-            this.startActivity(intent)
-            finish()
-        }
-    }*/
-
-
     override fun showError(exception: Throwable) {
         if (errorDialog == null || (errorDialog != null && !errorDialog!!.isShowing))
         {
@@ -121,23 +110,6 @@ class MainAppActivity : BaseActivity(), MainAppView {
         }
     }
 
-    override fun goToHome() {
-        /*if (!isFinishing) {
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK
-            this.startActivity(intent)
-            finish()
-        }*/
-    }
-
-    override fun showTutorial() {
-        /*val intent = TutorialActivity.getIntent(this)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)*/
-    }
-
-
     private inner class Launcher : Runnable {
         override fun run() {
             launch()
@@ -145,14 +117,14 @@ class MainAppActivity : BaseActivity(), MainAppView {
     }
 
     private fun unbindDrawables(view: View) {
-        if (view.getBackground() != null) {
-            view.getBackground().setCallback(null)
+        if (view.background != null) {
+            view.background.callback = null
         }
         if (view is ViewGroup) {
-            for (i in 0 until (view as ViewGroup).childCount) {
-                unbindDrawables((view as ViewGroup).getChildAt(i))
+            for (i in 0 until view.childCount) {
+                unbindDrawables(view.getChildAt(i))
             }
-            (view as ViewGroup).removeAllViews()
+            view.removeAllViews()
         }
     }
 
