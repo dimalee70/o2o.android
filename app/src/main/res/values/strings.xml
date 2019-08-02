@@ -1,3 +1,42 @@
 <resources>
-    <string name="app_name">Larek</string>
+    <string name="app_name">O2O</string>
+
+    <string name="timed_out">Время запроса истекло.</string>
+    <string name="network_connection_lost">Прервано соединение с интернетом.</string>
+    <string name="bad_server_response">Неверный ответ с сервера.</string>
+    <string name="server_error">Непредвиденная ошибка на сервере.</string>
+    <string name="try_again">Пожалуйста, попробуйте еще раз.</string>
+    <string name="bad_connection">Не получилось загрузить изображение. Проверьте интернет соеденение</string>
+    <string name="empty_fields">Обязательные поля не зполнены</string>
+    <string name="unknown_error">Произошла неизвестная ошибка.</string>
+    <string name="unknown_error_from_backend">Произошла ошибка на сервере. Пожалуйста, обновите приложение</string>
+
+    <string name="january">Январь</string>
+    <string name="february">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="jule">Июль</string>
+    <string name="august">Август</string>
+    <string name="september">Сентябрь</string>
+    <string name="october">Октябрь</string>
+    <string name="november">Ноябрь</string>
+    <string name="december">Декабрь</string>
+
+    <string name="birth_date">Дата рождения</string>
+    <string name="sex">Пол</string>
+    <string name="not_confirmed">(не подтверждена)</string>
+    <string name="send">Отправить</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="not_given">Не задан</string>
+    <string name="day">День</string>
+    <string name="month">Месяц</string>
+    <string name="year">Год</string>
+
+    <string name="time_remain">%1$s д. %2$s:%3$s:%4$s</string>
+    <string name="short_time_remain">%1$s:%2$s</string>
+    <string name="short_date_remain">%1$s д. %2$s ч.</string>
+    <string name="time_hms_remain">%1$s:%2$s:%3$s</string>
 </resources>

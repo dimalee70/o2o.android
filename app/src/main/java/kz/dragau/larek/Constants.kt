@@ -9,9 +9,10 @@ object Constants
     const val lightTheme = "light"
     const val darkTheme = "dark"
     const val themePrefsKey = "current_theme"
-    const val sessionPrefsKey = "current_session"
+    const val jwtPrefsKey = "current_token"
     const val userIdPrefsKey = "user_id"
     const val connectTimeout: Long = 25
     const val writeTimeout: Long = 25
     const val readTimeout: Long = 25
+    const val progressDelay: Long = 10
 }

@@ -2,16 +2,38 @@ package kz.dragau.larek.di.components
 
 import android.content.Context
 import dagger.Component
-import kz.dragau.larek.ApplicationController
-import kz.dragau.larek.di.modules.AppModule
-import kz.dragau.larek.di.modules.ContextModule
+import kz.dragau.larek.App
+import kz.dragau.larek.api.ApiManager
 import javax.inject.Singleton
+import kz.dragau.larek.di.ApplicationContext
+import kz.dragau.larek.di.CustomApplicationScope
+import kz.dragau.larek.di.modules.*
+import kz.dragau.larek.presentation.presenter.MainAppPresenter
+import kz.dragau.larek.ui.activity.MainAppActivity
 
 @Singleton
-@Component(modules = arrayOf(AppModule::class, ContextModule::class))
+@CustomApplicationScope
+@Component(modules = [ApplicationModule::class, NavigationModule::class, ServiceUtilModule::class])
 interface AppComponent {
-    fun getContext(): Context
-    fun inject(app: ApplicationController)
+    @ApplicationContext
+    fun context(): Context
+
+    @ApplicationContext
+    fun instance(): App
+
+    fun getServiceUtil(): ApiManager
+
+    fun glideComponentBuilder(): GlideComponent.Builder
+
     //fun inject(loginModule: LoginModule)
     //fun inject(loginProcessPresenter: LoginProcessPresenter)
+
+    fun inject(activity: MainAppActivity)
+
+    fun inject(presenter: MainAppPresenter)
+
+    //fun getApi(): ApiManager
+    //fun getGlide(): GlideApp
+
+    //fun inject (glide: AppGlideModule)
 }

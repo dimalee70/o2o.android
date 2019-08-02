@@ -7,14 +7,21 @@ import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import kz.dragau.larek.di.components.AppComponent
 import kz.dragau.larek.di.components.DaggerAppComponent
-import kz.dragau.larek.di.modules.AppModule
-import kz.dragau.larek.di.modules.ContextModule
 import org.greenrobot.eventbus.EventBus
 import com.crashlytics.android.core.CrashlyticsCore
+import kz.dragau.larek.di.modules.ApplicationModule
+import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.NavigatorHolder
+import timber.log.Timber.DebugTree
+import timber.log.Timber
 
 
 
-class ApplicationController : MultiDexApplication() {
+class App : MultiDexApplication() {
+
+    private var cicerone: Cicerone<Router>? = null
+
     override fun attachBaseContext(context: Context) {
         super.attachBaseContext(context)
         MultiDex.install(this)
@@ -23,11 +30,10 @@ class ApplicationController : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent
-            .builder()
-            .appModule(AppModule(this))
-            .contextModule(ContextModule(this))
-            //.loginModule(LoginModule(null))
+        instance = this
+
+        appComponent = DaggerAppComponent.builder()
+            .applicationModule(ApplicationModule(this))
             .build()
 
         val crashlyticsKit = Crashlytics.Builder()
@@ -36,6 +42,9 @@ class ApplicationController : MultiDexApplication() {
         // Initialize Fabric with the debug-disabled crashlytics.
         Fabric.with(this, crashlyticsKit)
 
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
         //TypefaceUtil.overrideFont(this, "SERIF", "fonts/trebuchet.ttf")
         //EventBus.getDefault().register(SoundPlayer)
     }
@@ -43,5 +52,6 @@ class ApplicationController : MultiDexApplication() {
     companion object
     {
         lateinit var appComponent: AppComponent
+        lateinit var instance: App
     }
 }
