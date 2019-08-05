@@ -1,8 +1,9 @@
 package kz.dragau.larek.models.shared
 
-import android.preference.PreferenceManager
+
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.preference.PreferenceManager
 import kz.dragau.larek.App
 import kz.dragau.larek.Constants
 import kz.dragau.larek.models.objects.User

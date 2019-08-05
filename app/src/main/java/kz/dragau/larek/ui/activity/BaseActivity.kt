@@ -3,10 +3,10 @@ package kz.dragau.larek.ui.activity
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.load.engine.GlideException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException

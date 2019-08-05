@@ -25,11 +25,11 @@ class DelayedProgressDialog(val context: Context)
             }
         }
 
-        DialogHandler.dialogHandler.postDelayed(this.runner, afterDelayMilliSec)
+        DialogHandler.dialogHandler.postDelayed(this.runner!!, afterDelayMilliSec)
     }
 
     fun cancel() {
-        DialogHandler.dialogHandler.removeCallbacks(runner)
+        DialogHandler.dialogHandler.removeCallbacks(runner!!)
         dialog?.cancel()
         dialog = null
     }
