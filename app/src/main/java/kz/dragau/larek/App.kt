@@ -10,6 +10,7 @@ import kz.dragau.larek.di.components.DaggerAppComponent
 import org.greenrobot.eventbus.EventBus
 import com.crashlytics.android.core.CrashlyticsCore
 import kz.dragau.larek.di.modules.ApplicationModule
+import kz.dragau.larek.di.modules.RoomModule
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
@@ -34,6 +35,7 @@ class App : MultiDexApplication() {
 
         appComponent = DaggerAppComponent.builder()
             .applicationModule(ApplicationModule(this))
+            .roomModule(RoomModule(this))
             .build()
 
         val crashlyticsKit = Crashlytics.Builder()

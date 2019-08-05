@@ -5,11 +5,11 @@ import androidx.databinding.Bindable
 import androidx.room.*
 import com.google.gson.Gson
 
-@Entity(tableName = "user")
+@Entity(tableName = "user", indices = [Index(value = ["phone"], unique = true) ])
 data class User(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "u_id")
-    var id: Int,
+    var id: Long,
     @ColumnInfo
     var username: String
 ) : BaseObservable()
@@ -21,7 +21,6 @@ data class User(
             field = value
             //notifyPropertyChanged(BR.birthday)
         }
-
     @ColumnInfo
     var phone: String? = null
         @Bindable get
@@ -29,4 +28,5 @@ data class User(
             field = value
             //notifyPropertyChanged(BR.phone)
         }
+
 }

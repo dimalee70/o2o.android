@@ -12,11 +12,13 @@ import kz.dragau.larek.models.objects.User
     version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class Db : RoomDatabase() {
-    companion object {
+    /*companion object {
         var instance: Db = synchronized(Db::class) {
             Room.databaseBuilder(App.appComponent.context(), Db::class.java, "o2o.db")
                 .fallbackToDestructiveMigration()
                 .build()
         }
-    }
+    }*/
+
+    abstract fun getUserDao(): UserDao
 }

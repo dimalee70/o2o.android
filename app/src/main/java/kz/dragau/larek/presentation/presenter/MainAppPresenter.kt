@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -11,6 +12,8 @@ import kz.dragau.larek.App
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
+import kz.dragau.larek.models.db.UserDao
+import kz.dragau.larek.models.objects.User
 import kz.dragau.larek.models.shared.DataHolder
 import kz.dragau.larek.presentation.view.MainAppView
 import ru.terrakok.cicerone.Router
@@ -21,6 +24,9 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
     @Inject
     lateinit var client: ApiManager
 
+    @Inject
+    lateinit var userDao: UserDao
+
     init {
         App.appComponent.inject(this)
     }
@@ -29,8 +35,39 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
 
     fun showLogin()
     {
-        //router.newRootScreen(Screens.LoginScreen())
-        disposable = client.getValues()
+        var id = 0L
+        val u = User(username = "test", id = id)
+        u.phone = "7055717177"
+
+
+        disposable = Observable.fromCallable { userDao.insert(u) }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(Schedulers.computation())
+            .subscribe {
+                id = it
+
+                disposable = userDao.get(id)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        { result: User ->
+                            router.newRootScreen(Screens.LoginScreen())
+                        },
+                        {
+
+                            viewState?.showError(it)
+                        },
+                        {
+                            viewState?.showError("Пользователь не найден!", -1)
+                        }
+                    )
+            }
+
+
+
+
+            //router.newRootScreen(Screens.LoginScreen())
+        /*disposable = client.getValues()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -59,7 +96,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                         viewState?.showError(error)
                     }
                 }
-            )
+            )*/
     }
 
     val user = LoginRequestModel("",_password = "")
