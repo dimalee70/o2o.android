@@ -33,9 +33,36 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
 
     private var disposable: Disposable? = null
 
+    fun checkUserToken()
+    {
+        if (DataHolder.userId != -1L) {
+            disposable = userDao.get(DataHolder.userId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { user: User ->
+                        //router.newRootScreen(Screens.LoginScreen())
+                        //TODO: перейти на Main Screen
+                    },
+                    {
+
+                        viewState?.showError(it)
+                    },
+                    {
+                        viewState?.showError("Пользователь не найден!", -1)
+                    }
+                )
+        }
+        else
+        {
+            router.newRootScreen(Screens.LoginScreen())
+        }
+    }
+
     fun showLogin()
     {
-        var id = 0L
+
+        /*var id = 0L
         val u = User(username = "test", id = id)
         u.phone = "7055717177"
 
@@ -61,45 +88,8 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                             viewState?.showError("Пользователь не найден!", -1)
                         }
                     )
-            }
-
-
-
-
-            //router.newRootScreen(Screens.LoginScreen())
-        /*disposable = client.getValues()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {    result ->
-                    run {
-                        viewState?.hideProgress()
-                        //
-                    }
-                },
-                { error ->
-                    run {
-                        viewState?.hideProgress()
-                    }
-
-                    if (error is HttpException)
-                    {
-                        if (error.code() == 403)
-                        {
-                            DataHolder.sharedPref.edit().clear().apply()
-                            //viewState?.showLogin()
-                            return@subscribe
-                        }
-                    }
-
-                    run {
-                        viewState?.showError(error)
-                    }
-                }
-            )*/
+            }*/
     }
-
-    val user = LoginRequestModel("",_password = "")
 
     fun auth() {
         viewState?.showProgress()

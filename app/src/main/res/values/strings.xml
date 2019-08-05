@@ -39,4 +39,8 @@
     <string name="short_time_remain">%1$s:%2$s</string>
     <string name="short_date_remain">%1$s д. %2$s ч.</string>
     <string name="time_hms_remain">%1$s:%2$s:%3$s</string>
+
+    <string name="phone">телефон</string>
+    <string name="login">вход</string>
+
 </resources>
