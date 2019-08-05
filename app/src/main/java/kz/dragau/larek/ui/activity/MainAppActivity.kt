@@ -106,7 +106,7 @@ class MainAppActivity : BaseActivity(), MainAppView {
     {
         if (!isFinishing)
         {
-            mMainAppPresenter.showLogin()
+            mMainAppPresenter.checkUserToken()
         }
     }
 
