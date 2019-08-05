@@ -1,6 +1,7 @@
 package kz.dragau.larek.di.modules
 
-import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import kz.dragau.larek.App
@@ -19,4 +20,11 @@ class ApplicationModule(private val app: App) {
     @Singleton
     @ApplicationContext
     fun instance() = app
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(app)
+    }
+
 }

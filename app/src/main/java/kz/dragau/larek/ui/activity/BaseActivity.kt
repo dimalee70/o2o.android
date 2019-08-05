@@ -10,6 +10,7 @@ import androidx.preference.PreferenceManager
 import com.bumptech.glide.load.engine.GlideException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import kz.dragau.larek.App
 import kz.dragau.larek.Constants
 import kz.dragau.larek.R
 import kz.dragau.larek.extensions.showErrorAlertDialog
@@ -18,12 +19,15 @@ import kz.dragau.larek.presentation.BaseView
 import kz.dragau.larek.presentation.presenter.dialogs.DelayedProgressDialog
 import java.io.IOException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
 open class BaseActivity : MvpActivity(), BaseView {
     val BASE_TAG: String = "BaseActivity"
 
     private lateinit var currentTheme: String
-    private lateinit var sharedPref: SharedPreferences
+
+    @Inject
+    lateinit var sharedPref: SharedPreferences
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -34,6 +38,8 @@ open class BaseActivity : MvpActivity(), BaseView {
     var errorDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -42,7 +48,7 @@ open class BaseActivity : MvpActivity(), BaseView {
             return
         }
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        //sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         currentTheme = if (isDynamicThemingOn)
         {
             sharedPref.getString(Constants.themePrefsKey, Constants.darkTheme)!!
