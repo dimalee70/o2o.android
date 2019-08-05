@@ -29,8 +29,8 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
 
     fun showLogin()
     {
-        router.newRootScreen(Screens.LoginScreen())
-        /*disposable = client.getValues()
+        //router.newRootScreen(Screens.LoginScreen())
+        disposable = client.getValues()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -59,7 +59,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                         viewState?.showError(error)
                     }
                 }
-            )*/
+            )
     }
 
     val user = LoginRequestModel("",_password = "")
