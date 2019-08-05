@@ -13,8 +13,5 @@ import javax.inject.Inject
 @InjectViewState
 class LoginInPresenter : MvpPresenter<LoginInView>()
 {
-    fun showLogin()
-    {
-        viewState.showLogin()
-    }
+
 }

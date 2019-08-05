@@ -38,9 +38,6 @@ class MainAppActivity : BaseActivity(), MainAppView {
     @Inject
     lateinit var router: Router
 
-    @Inject
-    lateinit var navigatorHolder: NavigatorHolder
-
     @InjectPresenter
     lateinit var mMainAppPresenter: MainAppPresenter
 
