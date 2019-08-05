@@ -173,6 +173,8 @@ dependencies {
     // OkHttp3 dependencies
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
+    implementation 'com.github.bopbi.rxwsocket:RxWSocket:1.0.20'
+
     implementation "android.arch.persistence.room:runtime:$persistence_room"
     implementation "android.arch.persistence.room:rxjava2:$persistence_room"
     implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
