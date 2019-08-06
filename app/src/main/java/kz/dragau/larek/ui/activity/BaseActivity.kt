@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.load.engine.GlideException
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -17,6 +19,10 @@ import kz.dragau.larek.extensions.showErrorAlertDialog
 import kz.dragau.larek.moxy.MvpActivity
 import kz.dragau.larek.presentation.BaseView
 import kz.dragau.larek.presentation.presenter.dialogs.DelayedProgressDialog
+import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import ru.terrakok.cicerone.commands.Command
+import ru.terrakok.cicerone.commands.Forward
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -27,7 +33,12 @@ open class BaseActivity : MvpActivity(), BaseView {
     private lateinit var currentTheme: String
 
     @Inject
+    internal lateinit var navigatorHolder: NavigatorHolder
+
+    @Inject
     lateinit var sharedPref: SharedPreferences
+
+    //internal var navigator: SupportAppNavigator? = null
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
