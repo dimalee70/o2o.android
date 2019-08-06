@@ -51,8 +51,8 @@ class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater ,R.layout.fragment_phone_number, container , false)
-        var frView : View  = binding.flMain
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_phone_number, container , false)
+        val frView : View  = binding.flMain
 
         binding.loginViewModel = mPhoneNumberPresenter.userRequstModel
         binding.presenter = mPhoneNumberPresenter

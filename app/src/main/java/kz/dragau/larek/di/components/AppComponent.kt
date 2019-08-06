@@ -13,9 +13,11 @@ import kz.dragau.larek.models.db.Db
 import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
+import kz.dragau.larek.presentation.presenter.login.SmsCodePresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
+import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 
 @Singleton
 @CustomApplicationScope
@@ -41,10 +43,12 @@ interface AppComponent {
     fun inject(activity: BaseActivity)
     fun inject(activity: MainAppActivity)
     fun inject(fragment: PhoneNumberFragment)
+    fun inject(fragment: SmsCodeFragment)
 
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
+    fun inject(presenter: SmsCodePresenter)
 
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp

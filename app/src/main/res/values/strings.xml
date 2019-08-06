@@ -42,5 +42,6 @@
 
     <string name="phone">телефон</string>
     <string name="login">вход</string>
+    <string name="next">далее</string>
 
 </resources>

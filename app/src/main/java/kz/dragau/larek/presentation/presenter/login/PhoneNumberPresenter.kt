@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
+import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
@@ -22,7 +23,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    val userRequstModel = LoginRequestModel()
+    val userRequstModel = LoginRequestModel().apply{ mobilePhone = "+77055717177" }
 
     private var disposable: Disposable? = null
 
@@ -44,6 +45,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                     if (result.result == true)
                     {
                         userRequstModel.smsCode = result.resultObject!!
+                        router.navigateTo(Screens.SmsCodeScreen())
                     }
                 },
                 { error ->
