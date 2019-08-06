@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
+import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class Screens {
@@ -21,7 +22,7 @@ class Screens {
         }
     }
 
-    class PhoneNumberScreen() : SupportAppScreen() {
+    class PhoneNumberScreen : SupportAppScreen() {
 
         init {
             this.screenKey = javaClass.simpleName
@@ -29,6 +30,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return PhoneNumberFragment.newInstance()
+        }
+    }
+
+    class SmsCodeScreen : SupportAppScreen() {
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return SmsCodeFragment.newInstance()
         }
     }
 }
