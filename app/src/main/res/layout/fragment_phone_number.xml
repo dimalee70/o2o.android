@@ -46,16 +46,44 @@
                 android:layout_marginBottom="10dp"
                 android:padding="9dp"
                 android:id="@+id/phoneLayout">
-            <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:inputType="phone"
-                    android:id="@+id/phone"
-                    android:layout_weight="1"
-                    android:hint="@string/phone"
-                    android:text="@={loginViewModel.mobilePhone}"
-                    android:textSize="12sp"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+
+                <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/border_edittext"
+                        android:paddingLeft="5dp"
+
+                        android:text="@={loginViewModel.mobilePhone}" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="?android:colorBackground"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/phone" />
+
+                <!--android:hint="@string/phone"-->
+            </RelativeLayout>
+
+            <!--<EditText-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:ems="10"-->
+                    <!--android:inputType="phone"-->
+                    <!--android:id="@+id/phone"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:hint="@string/phone"-->
+                    <!--android:text="@={loginViewModel.mobilePhone}"-->
+                    <!--android:textSize="12sp"/>-->
         </LinearLayout>
 
         <Button

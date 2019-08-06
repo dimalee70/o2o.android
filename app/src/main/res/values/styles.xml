@@ -36,11 +36,7 @@
         <item name="android:textViewStyle">@style/Widget.TextView.Primary</item>
 
         <item name="editTextStyle">@style/Widget.EditText.Primary</item>
-        <item name="editTextStyle">@style/Widget.EditText.Primary</item>
-
         <item name="buttonStyle">@style/Widget.Button.Primary</item>
-        <item name="buttonStyle">@style/Widget.Button.Primary</item>
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -48,9 +44,7 @@
         <item name="buttonNormalColor">@color/buttonNormal</item>
         <item name="buttonHighlightColor">@color/buttonHighlight</item>
         <item name="buttonTextColor">@color/buttonText</item>
-
         <item name="panelColor">@color/colorPanel</item>
-
         <item name="borderColor">@color/borderColor</item>
         <item name="subviewsColor">@color/subviewsColor</item>
         <item name="clearSubviewsColor">@color/clearSubviewsColor</item>
@@ -72,13 +66,8 @@
 
     <style name="Theme.App.Light" parent="Base.Theme.App">
         <item name="android:textViewStyle">@style/Widget.TextView.Primary</item>
-
         <item name="editTextStyle">@style/Widget.EditText.Primary</item>
-        <item name="editTextStyle">@style/Widget.EditText.Primary</item>
-
         <item name="buttonStyle">@style/Widget.Button.Primary</item>
-        <item name="buttonStyle">@style/Widget.Button.Primary</item>
-
         <item name="panelColor">@color/lightColorPanel</item>
         <item name="colorPrimary">@color/lightColorPrimary</item>
         <item name="colorPrimaryDark">@color/lightColorPrimaryDark</item>
@@ -88,7 +77,6 @@
         <item name="buttonHighlightColor">@color/lightButtonHighlight</item>
         <item name="buttonTextColor">@color/lightButtonText</item>
         <item name="loaderColor">@color/lightColorSelected</item>
-
         <item name="borderColor">@color/lightBorderColor</item>
         <item name="subviewsColor">@color/lightSubviewsColor</item>
         <item name="clearSubviewsColor">@color/lightClearSubviewsColor</item>
