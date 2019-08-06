@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
+import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
@@ -33,7 +34,8 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
     fun getSmsCode()
     {
-
+//        router.navigateTo()
+        viewState?.hideKeyboard()
         viewState?.showProgress()
         disposable = userRequstModel.mobilePhone?.let {
             client.getSmsCode(it)
@@ -42,18 +44,18 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                 .subscribe(
                     { result ->
                         run {
-                            viewState?.hideKeyboard()
+
                             viewState?.hideProgress()
                         }
 
                         if (result.result == true) {
                             userRequstModel.smsCode = result.resultObject!!
+                            router.navigateTo(Screens.ConfirmCodeScreen(userRequstModel.smsCode))
 
                         }
                     },
                     { error ->
                         run {
-                            viewState?.hideKeyboard()
                             viewState?.hideProgress()
                         }
 
@@ -66,7 +68,6 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                         }
 
                         run {
-                            viewState?.hideKeyboard()
                             viewState?.showError(error)
                         }
                     }
