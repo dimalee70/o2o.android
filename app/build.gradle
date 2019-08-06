@@ -223,6 +223,12 @@ dependencies {
     implementation 'com.caverock:androidsvg-aar:1.4'
 
     implementation "androidx.preference:preference-ktx:1.1.0-rc01"
+
+//    implementation "com.github.pinball83:masked-edittext:1.0.4"
+
+//    implementation "ru.tinkoff.decoro:decoro:1.1.1"
+
+    implementation "com.github.santalu:mask-edittext:1.1.1"
 }
 
 apply plugin: 'com.google.gms.google-services'

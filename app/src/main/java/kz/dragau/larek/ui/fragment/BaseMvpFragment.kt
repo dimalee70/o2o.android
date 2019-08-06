@@ -1,8 +1,11 @@
 package photograd.kz.photograd.ui.fragment
 
+import android.content.Context
 import android.util.Log
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import com.bumptech.glide.load.engine.GlideException
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.R
@@ -162,6 +165,14 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
         {
             errorDialog?.setOnDismissListener(null)
             errorDialog?.dismiss()
+        }
+    }
+
+    override fun hideKeyboard() {
+
+        val inputManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (activity?.getCurrentFocus() != null && activity?.getCurrentFocus()?.getWindowToken() != null) {
+            inputManager.hideSoftInputFromWindow(activity?.getCurrentFocus()?.getWindowToken(), 0)
         }
     }
 }

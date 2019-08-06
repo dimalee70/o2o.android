@@ -16,4 +16,6 @@ interface BaseView : MvpView {
 
     fun showRequestSuccessfully(message: String)
 
+    fun hideKeyboard()
+
 }

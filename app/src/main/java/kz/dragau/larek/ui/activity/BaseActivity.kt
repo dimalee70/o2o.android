@@ -26,8 +26,15 @@ import ru.terrakok.cicerone.commands.Forward
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
+import android.content.Context.INPUT_METHOD_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+
 
 open class BaseActivity : MvpActivity(), BaseView {
+
+
     val BASE_TAG: String = "BaseActivity"
 
     private lateinit var currentTheme: String
@@ -245,6 +252,14 @@ open class BaseActivity : MvpActivity(), BaseView {
         {
             errorDialog?.setOnDismissListener(null)
             errorDialog?.dismiss()
+        }
+    }
+
+    override fun hideKeyboard() {
+
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (getCurrentFocus() != null && getCurrentFocus()?.getWindowToken() != null) {
+            inputManager.hideSoftInputFromWindow(getCurrentFocus()?.getWindowToken(), 0)
         }
     }
 }

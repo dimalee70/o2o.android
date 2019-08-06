@@ -84,9 +84,9 @@ class LoginInActivity : BaseActivity(), LoginInView {
         phoneFragment.sharedElementEnterTransition = changeBounds
         phoneFragment.sharedElementReturnTransition = changeBounds
 
-        val view = phoneFragment.binding.phone
+        /*val view = phoneFragment.binding.
         view.transitionName = LOGIN_TRANSITION
-        fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)
+        fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)*/
     }
 
     override fun onBackPressed() {
