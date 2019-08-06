@@ -33,46 +33,44 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
     fun getSmsCode()
     {
+
         viewState?.showProgress()
-        userRequstModel.mobilePhone = userRequstModel.mobilePhone
-            .replace(" ", "")
-            .replace("(", "")
-            .replace(")","")
-        disposable = client.getSmsCode(userRequstModel.mobilePhone)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { result ->
-                    run {
-                        viewState?.hideKeyboard()
-                        viewState?.hideProgress()
-                    }
+        disposable = userRequstModel.mobilePhone?.let {
+            client.getSmsCode(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result ->
+                        run {
+                            viewState?.hideKeyboard()
+                            viewState?.hideProgress()
+                        }
 
-                    if (result.result == true)
-                    {
-                        userRequstModel.smsCode = result.resultObject!!
+                        if (result.result == true) {
+                            userRequstModel.smsCode = result.resultObject!!
 
-                    }
-                },
-                { error ->
-                    run {
-                        viewState?.hideProgress()
-                    }
+                        }
+                    },
+                    { error ->
+                        run {
+                            viewState?.hideKeyboard()
+                            viewState?.hideProgress()
+                        }
 
-                    if (error is HttpException)
-                    {
-                        if (error.code() == 403)
-                        {
-                            sharedPreferences.edit().clear().apply()
-                            //viewState?.showLogin()
-                            return@subscribe
+                        if (error is HttpException) {
+                            if (error.code() == 403) {
+                                sharedPreferences.edit().clear().apply()
+                                //viewState?.showLogin()
+                                return@subscribe
+                            }
+                        }
+
+                        run {
+                            viewState?.hideKeyboard()
+                            viewState?.showError(error)
                         }
                     }
-
-                    run {
-                        viewState?.showError(error)
-                    }
-                }
-            )
+                )
+        }
     }
 }
