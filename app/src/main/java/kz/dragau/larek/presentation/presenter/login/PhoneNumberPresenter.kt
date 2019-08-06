@@ -8,12 +8,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
-import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
+
 
 @InjectViewState
 class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumberView>() {
@@ -23,7 +23,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    val userRequstModel = LoginRequestModel().apply{ mobilePhone = "+77055717177" }
+    val userRequstModel = LoginRequestModel()
 
     private var disposable: Disposable? = null
 
@@ -33,19 +33,25 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
     fun getSmsCode()
     {
+        viewState?.showProgress()
+        userRequstModel.mobilePhone = userRequstModel.mobilePhone
+            .replace(" ", "")
+            .replace("(", "")
+            .replace(")","")
         disposable = client.getSmsCode(userRequstModel.mobilePhone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { result ->
                     run {
+                        viewState?.hideKeyboard()
                         viewState?.hideProgress()
                     }
 
                     if (result.result == true)
                     {
                         userRequstModel.smsCode = result.resultObject!!
-                        router.navigateTo(Screens.SmsCodeScreen())
+
                     }
                 },
                 { error ->
