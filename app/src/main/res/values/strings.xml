@@ -41,6 +41,7 @@
     <string name="time_hms_remain">%1$s:%2$s:%3$s</string>
 
     <string name="phone">телефон</string>
+    <string name="phoneMask">+7()</string>
     <string name="login">вход</string>
 
 </resources>

@@ -15,7 +15,13 @@ import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentPhoneNumberBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
+//import ru.tinkoff.decoro.MaskImpl
+//import ru.tinkoff.decoro.slots.PredefinedSlots
+//import ru.tinkoff.decoro.watchers.FormatWatcher
+//import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_phone_number.*
+
 
 class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
     companion object {
@@ -56,6 +62,16 @@ class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
 
         binding.loginViewModel = mPhoneNumberPresenter.userRequstModel
         binding.presenter = mPhoneNumberPresenter
+
+//        val mask = MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
+//        mask.isForbidInputWhenFilled = false // default value
+//        mask.isHideHardcodedHead = false// default value
+//        val formatWatcher = MaskFormatWatcher(mask)
+////        mask.placeholder = '*'
+////            //.setPlaceholder('*');
+////        mask.isShowingEmptySlots = true
+////        mask.setShowingEmptySlots(true);
+//        formatWatcher.installOn(binding.phoneEt)
         return frView
     }
 }
