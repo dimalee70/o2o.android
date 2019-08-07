@@ -43,6 +43,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { result ->
+
                         run {
 
                             viewState?.hideProgress()
