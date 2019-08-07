@@ -101,15 +101,15 @@ class LoginInActivity : BaseActivity(), LoginInView {
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.activity_login_frame_layout)
         if (fragment != null
-//            && fragment is BackButtonListener
-//            && (fragment as BackButtonListener).onBackPressed()
-            && (fragment is ConfirmCodeFragment ||
-            (fragment is BackButtonListener
-                && (fragment as BackButtonListener).onBackPressed()))
+            && fragment is BackButtonListener
+            && (fragment as BackButtonListener).onBackPressed()
+//            && (fragment is ConfirmCodeFragment ||
+//            (fragment is BackButtonListener
+//                && (fragment as BackButtonListener).onBackPressed()))
         ) {
             return
         }
-        else if (fragment is RegistrationFragment)
+        else if (fragment is RegistrationFragment || fragment is ConfirmCodeFragment)
         {
             if(doubleBackToExitPressedOnce){
                 super.onBackPressed()
