@@ -7,12 +7,13 @@ import io.reactivex.disposables.Disposable
 import kz.dragau.larek.App
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.ConfirmRequestModel
+import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.confirm.ConfirmCodeView
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
-class ConfirmCodePresenter(private val router: Router, private val code: String?) : MvpPresenter<ConfirmCodeView>() {
+class ConfirmCodePresenter(private val router: Router, private val userRequestModel: LoginRequestModel? ) : MvpPresenter<ConfirmCodeView>() {
     @Inject
     lateinit var client: ApiManager
 
@@ -30,9 +31,9 @@ class ConfirmCodePresenter(private val router: Router, private val code: String?
     fun checkConfirmCode(){
         viewState?.hideKeyboard()
         viewState?.showProgress()
-        println(code)
+        println(userRequestModel!!.smsCode)
         println(confirmRequestModel.confirmCode)
-        if (code.equals(confirmRequestModel.confirmCode)){
+        if (userRequestModel.smsCode.equals(confirmRequestModel.confirmCode)){
             println("Success")
         }
     }

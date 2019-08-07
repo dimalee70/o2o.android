@@ -4,9 +4,9 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import kz.dragau.larek.BR
 import kz.dragau.larek.models.shared.DataHolder
+import java.io.Serializable
 
-class LoginRequestModel: BaseObservable()
-{
+class LoginRequestModel: BaseObservable(), Serializable {
     var mobilePhone: String = ""
         @Bindable get
         set(value) {

@@ -50,7 +50,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
                         if (result.result == true) {
                             userRequstModel.smsCode = result.resultObject!!
-                            router.navigateTo(Screens.ConfirmCodeScreen(userRequstModel.smsCode))
+                            router.navigateTo(Screens.ConfirmCodeScreen(userRequstModel))
 
                         }
                     },

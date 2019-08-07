@@ -11,6 +11,7 @@ import kz.dragau.larek.presentation.presenter.confirm.ConfirmCodePresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kz.dragau.larek.App
+import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.databinding.FragmentConfirmCodeBinding
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
@@ -18,16 +19,16 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class ConfirmCodeFragment : BaseMvpFragment(), ConfirmCodeView {
-    var code: String? = null
+    var userRequestModel: LoginRequestModel? = null
 
     companion object {
-        const val EXTRA_CODE = "EXTRA_CODE"
+        const val EXTRA_CODE_PHONE = "EXTRA_CODE_PHONE"
         const val TAG = "ConfirmCodeFragment"
 
-        fun newInstance(code: String?): ConfirmCodeFragment {
+        fun newInstance(userRequestModel: LoginRequestModel?): ConfirmCodeFragment {
             val fragment: ConfirmCodeFragment = ConfirmCodeFragment()
             val args: Bundle = Bundle()
-            args.putString(EXTRA_CODE, code)
+            args.putSerializable(EXTRA_CODE_PHONE, userRequestModel)
             fragment.arguments = args
             return fragment
         }
@@ -36,26 +37,23 @@ class ConfirmCodeFragment : BaseMvpFragment(), ConfirmCodeView {
     @Inject
     lateinit var router: Router
 
-//    lateinit var binding: Fra
-//            FragmentPhoneNumberBinding
-
     @InjectPresenter
     lateinit var mConfirmCodePresenter: ConfirmCodePresenter
 
     @ProvidePresenter
     fun providePresenter(): ConfirmCodePresenter
     {
-        return ConfirmCodePresenter(router, code)
+        return ConfirmCodePresenter(router, userRequestModel)
     }
 
     lateinit var binding: FragmentConfirmCodeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        this.code = arguments?.getString(EXTRA_CODE, null)
+        this.userRequestModel = arguments?.getSerializable(EXTRA_CODE_PHONE) as LoginRequestModel?
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-
-        println(code)
+        println(userRequestModel!!.mobilePhone)
+        println(userRequestModel!!.smsCode)
     }
 
     override fun onCreateView(
