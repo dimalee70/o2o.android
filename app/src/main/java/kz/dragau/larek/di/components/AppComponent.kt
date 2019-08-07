@@ -2,6 +2,7 @@ package kz.dragau.larek.di.components
 
 import android.content.Context
 import com.google.android.gms.common.data.DataHolder
+import com.google.android.gms.maps.MapFragment
 import dagger.Component
 import kz.dragau.larek.App
 import kz.dragau.larek.api.ApiManager
@@ -14,10 +15,12 @@ import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import kz.dragau.larek.presentation.presenter.login.SmsCodePresenter
+import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
+import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 
 @Singleton
 @CustomApplicationScope
@@ -44,11 +47,13 @@ interface AppComponent {
     fun inject(activity: MainAppActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
+    fun inject(fragment: LocationMapFragment)
 
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
     fun inject(presenter: SmsCodePresenter)
+    fun inject(presenter: LocationMapPresenter)
 
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp
