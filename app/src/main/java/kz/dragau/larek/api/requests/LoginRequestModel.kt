@@ -7,9 +7,14 @@ import kz.dragau.larek.models.shared.DataHolder
 import java.io.Serializable
 
 class LoginRequestModel: BaseObservable(), Serializable {
-    var mobilePhone: String = ""
+    var mobilePhone: String? = null
         @Bindable get
         set(value) {
+            if (value == null)
+            {
+                field = value
+                return
+            }
             val re = Regex("[^+0-9]")
             val tel = re.replace(value, "")
             field = tel
