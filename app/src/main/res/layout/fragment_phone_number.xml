@@ -8,11 +8,11 @@
 </data>
 
 <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  tools:context=".ui.fragment.login.PhoneNumberFragment"
-                  android:id="@+id/flMain"
-                  android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragment.login.PhoneNumberFragment"
+            android:id="@+id/flMain"
+            android:orientation="vertical">
 
     <ImageView
             android:id="@+id/select_image"
@@ -22,10 +22,10 @@
             android:src="@drawable/splash_screen"
             android:scaleType="centerCrop"/>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
     <!--android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,71 +55,28 @@
                     android:layout_marginRight="20dp">
 
 
-                <!--<com.github.pinball83.maskededittext.MaskedEditText-->
-                        <!--android:background="@drawable/border_edittext"-->
-                        <!--android:textColorHint="@color/colorAccent"-->
-                        <!--android:id="@+id/phoneEt"-->
-                        <!--android:textSize="14sp"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:paddingTop="20dp"-->
-                        <!--android:layout_marginTop="15dp"-->
-                        <!--android:paddingBottom="10dp"-->
-                        <!--android:inputType="number"-->
-                        <!--android:te-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:hint="@string/phone"-->
-                        <!--app:notMaskedSymbol="*"-->
-                        <!--app:mask="+7 (***) *** ** **"-->
-                        <!--android:ems="10"/>-->
 
-
-
-
-
-
-                <!--android:text="@={loginViewModel.mobilePhone}"-->
-                <!---->
-
-                <!--<com.github.pinball83.maskededittext.MaskedEditText-->
-                        <!--android:textColorHint="@color/colorAccent"-->
-                        <!--android:id="@+id/phoneEt"-->
-                        <!--android:textSize="17sp"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:layout_marginTop="15dp"-->
-                        <!--android:background="@drawable/border_edittext"-->
-                        <!--android:paddingLeft="5dp"-->
-                        <!--android:inputType="phone"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:text="@={loginViewModel.mobilePhone}"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:hint="@string/phone"-->
-                        <!--app:notMaskedSymbol="*"-->
-                        <!--app:mask="+7 (***) *** ** **"-->
-                        <!--android:ems="10"/>-->
-
-                <!--<EditText-->
-                        <!--android:id="@+id/phoneEt"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_marginTop="15dp"-->
-                        <!--android:background="@drawable/border_edittext"-->
-                        <!--android:paddingLeft="5dp"-->
-                        <!--android:inputType="phone"-->
-                        <!--android:text="@={loginViewModel.mobilePhone}" />-->
-
-                <com.santalu.maskedittext.MaskEditText
+                <br.com.sapereaude.maskedEditText.MaskedEditText
                         android:id="@+id/phoneEt"
-                        android:layout_marginTop="15dp"
-                        android:paddingLeft="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/border_edittext"
-                        android:hint="@string/phoneMask"
-                        android:textSize="14sp"
+                        android:paddingTop="20dp"
                         android:inputType="phone"
+                        android:typeface="monospace"
+                        android:background="@drawable/border_edittext"
+                        app:allowed_chars="1234567890"
+                        app:mask="+7(###)###-##-##"
+                        android:layout_height="match_parent"
+                        android:hint="1234567890"
+                        android:paddingLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:textSize="14sp"
+                        android:paddingBottom="10dp"
+                        app:keep_hint="true"
+                        android:textColorHint="#000000"
                         android:text="@={loginViewModel.mobilePhone}"
-                        app:met_mask="+7(###) ### ## ##"/>
+                />
+
+
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -164,5 +121,4 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
-
 </layout>

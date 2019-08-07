@@ -13,11 +13,13 @@ import kz.dragau.larek.di.modules.*
 import kz.dragau.larek.models.db.Db
 import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
+import kz.dragau.larek.presentation.presenter.confirm.ConfirmCodePresenter
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import kz.dragau.larek.presentation.presenter.login.SmsCodePresenter
 import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
@@ -47,12 +49,14 @@ interface AppComponent {
     fun inject(activity: MainAppActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
+    fun inject(fragmnet: ConfirmCodeFragment)
     fun inject(fragment: LocationMapFragment)
 
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
     fun inject(presenter: SmsCodePresenter)
+    fun inject(presenter: ConfirmCodePresenter)
     fun inject(presenter: LocationMapPresenter)
 
     //fun getApi(): ApiManager

@@ -63,15 +63,6 @@ class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
         binding.loginViewModel = mPhoneNumberPresenter.userRequstModel
         binding.presenter = mPhoneNumberPresenter
 
-//        val mask = MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
-//        mask.isForbidInputWhenFilled = false // default value
-//        mask.isHideHardcodedHead = false// default value
-//        val formatWatcher = MaskFormatWatcher(mask)
-////        mask.placeholder = '*'
-////            //.setPlaceholder('*');
-////        mask.isShowingEmptySlots = true
-////        mask.setShowingEmptySlots(true);
-//        formatWatcher.installOn(binding.phoneEt)
         return frView
     }
 }

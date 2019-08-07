@@ -8,13 +8,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
-import kz.dragau.larek.BR.phone
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
+
 
 @InjectViewState
 class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumberView>() {
@@ -34,47 +34,44 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
     fun getSmsCode()
     {
+//        router.navigateTo()
+        viewState?.hideKeyboard()
         viewState?.showProgress()
+        disposable = userRequstModel.mobilePhone?.let {
+            client.getSmsCode(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result ->
+                        run {
 
-        disposable = client.getSmsCode(userRequstModel.mobilePhone
-                .replace(" ", "")
-                .replace("(", "")
-                .replace(")","")
-            )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { result ->
-                    run {
-                        viewState?.hideKeyboard()
-                        viewState?.hideProgress()
-                    }
+                            viewState?.hideProgress()
+                        }
 
-                    if (result.result == true)
-                    {
-                        userRequstModel.smsCode = result.resultObject!!
-                        router.navigateTo(Screens.SmsCodeScreen())
-                    }
-                },
-                { error ->
-                    run {
-                        viewState?.hideProgress()
-                    }
+                        if (result.result == true) {
+                            userRequstModel.smsCode = result.resultObject!!
+                            router.navigateTo(Screens.ConfirmCodeScreen(userRequstModel))
 
-                    if (error is HttpException)
-                    {
-                        if (error.code() == 403)
-                        {
-                            sharedPreferences.edit().clear().apply()
-                            //viewState?.showLogin()
-                            return@subscribe
+                        }
+                    },
+                    { error ->
+                        run {
+                            viewState?.hideProgress()
+                        }
+
+                        if (error is HttpException) {
+                            if (error.code() == 403) {
+                                sharedPreferences.edit().clear().apply()
+                                //viewState?.showLogin()
+                                return@subscribe
+                            }
+                        }
+
+                        run {
+                            viewState?.showError(error)
                         }
                     }
-
-                    run {
-                        viewState?.showError(error)
-                    }
-                }
-            )
+                )
+        }
     }
 }

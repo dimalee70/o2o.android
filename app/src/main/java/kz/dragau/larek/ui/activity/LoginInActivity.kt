@@ -2,6 +2,7 @@ package kz.dragau.larek.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.transition.ChangeBounds
 import android.widget.EditText
@@ -38,7 +39,7 @@ class LoginInActivity : BaseActivity(), LoginInView {
 
 
         if (savedInstanceState == null) {
-            navigator.applyCommands(arrayOf<Command>(Replace(Screens.LoginScreen())))
+            navigator.applyCommands(arrayOf<Command>(Replace(Screens.PhoneNumberScreen())))
         }
     }
 
@@ -84,9 +85,11 @@ class LoginInActivity : BaseActivity(), LoginInView {
         phoneFragment.sharedElementEnterTransition = changeBounds
         phoneFragment.sharedElementReturnTransition = changeBounds
 
-        /*val view = phoneFragment.binding.
-        view.transitionName = LOGIN_TRANSITION
-        fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)*/
+        val view = phoneFragment.binding.phoneEt
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.transitionName = LOGIN_TRANSITION
+        }
+        fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)
     }
 
     override fun onBackPressed() {
