@@ -10,6 +10,7 @@ import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
+import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -69,6 +70,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return RegistrationFragment.newInstance(userRequstModel)
+        }
+    }
+
+    class LocationMapScreen : SupportAppScreen() {
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return LocationMapFragment.newInstance()
         }
     }
 }

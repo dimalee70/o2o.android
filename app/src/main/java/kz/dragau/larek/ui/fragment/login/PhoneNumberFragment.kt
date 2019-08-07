@@ -1,5 +1,6 @@
 package kz.dragau.larek.ui.fragment.login
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.google.firebase.auth.PhoneAuthProvider
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentPhoneNumberBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
@@ -21,6 +23,7 @@ import ru.terrakok.cicerone.Router
 //import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_phone_number.*
+import java.util.concurrent.TimeUnit
 
 
 class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
@@ -62,5 +65,15 @@ class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
         binding.loginViewModel = mPhoneNumberPresenter.userRequstModel
         binding.presenter = mPhoneNumberPresenter
         return frView
+    }
+
+    override fun verifyPhoneNumber(phoneNumber: String) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+            phoneNumber, // Phone number to verify
+            60, // Timeout duration
+            TimeUnit.SECONDS, // Unit of timeout
+            this.activity as Activity, // Activity (for callback binding)
+            mPhoneNumberPresenter.mCallbacks
+        ) // OnVerificationStateChangedCallbacks
     }
 }

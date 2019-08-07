@@ -6,11 +6,30 @@
     <variable name="loginViewModel" type="kz.dragau.larek.api.requests.LoginRequestModel"/>
     <variable name="presenter" type="kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter"/>
 </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragment.login.PhoneNumberFragment"
-        android:id="@+id/flMain">
+
+<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragment.login.PhoneNumberFragment"
+            android:id="@+id/flMain"
+            android:orientation="vertical">
+
+    <ImageView
+            android:id="@+id/select_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/splash_screen"
+            android:scaleType="centerCrop"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
+    <!--android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    -->
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -67,8 +86,20 @@
                         android:layout_marginTop="4dp"
                         android:textSize="14sp"
                         android:text="@string/phone" />
+
+                <!--android:hint="@string/phone"-->
             </RelativeLayout>
 
+            <!--<EditText-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:ems="10"-->
+                    <!--android:inputType="phone"-->
+                    <!--android:id="@+id/phone"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:hint="@string/phone"-->
+                    <!--android:text="@={loginViewModel.mobilePhone}"-->
+                    <!--android:textSize="12sp"/>-->
         </LinearLayout>
 
         <Button
@@ -89,4 +120,5 @@
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 </layout>
