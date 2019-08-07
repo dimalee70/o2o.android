@@ -42,7 +42,7 @@
                     android:id="@+id/phoneEt"
                     android:layout_width="match_parent"
                     android:paddingTop="20dp"
-                    android:inputType="numberPassword"
+                    android:inputType="phone"
                     android:typeface="monospace"
                     android:background="@drawable/border_edittext"
                     app:allowed_chars="1234567890"

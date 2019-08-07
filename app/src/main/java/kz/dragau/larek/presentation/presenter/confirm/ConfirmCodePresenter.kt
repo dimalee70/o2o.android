@@ -5,6 +5,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.disposables.Disposable
 import kz.dragau.larek.App
+import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.ConfirmRequestModel
 import kz.dragau.larek.api.requests.LoginRequestModel
@@ -35,6 +36,11 @@ class ConfirmCodePresenter(private val router: Router, private val userRequestMo
         println(confirmRequestModel.confirmCode)
         if (userRequestModel.smsCode.equals(confirmRequestModel.confirmCode)){
             println("Success")
+            viewState?.hideProgress()
+            router.newRootScreen(Screens.RegistrationScreen(userRequestModel))
+        }
+        else {
+            viewState?.hideProgress()
         }
     }
 

@@ -106,19 +106,20 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                         viewState?.hideProgress()
                     }
 
-                    if (error is HttpException) {
-                        if (error.code() == 403) {
-                            sharedPreferences.edit().clear().apply()
-                            //viewState?.showLogin()
-                            return@subscribe
+                        if (error is HttpException) {
+                            if (error.code() == 403) {
+                                sharedPreferences.edit().clear().apply()
+                                //viewState?.showLogin()
+                                return@subscribe
+                            }
+                        }
+
+                        run {
+                            viewState?.showError(error)
                         }
                     }
-
-                    run {
-                        viewState?.showError(error)
-                    }
-                }
-            )
-    }*/
+                )
+        }
+        */
     }
 }

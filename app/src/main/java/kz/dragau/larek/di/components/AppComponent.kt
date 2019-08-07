@@ -16,12 +16,14 @@ import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.confirm.ConfirmCodePresenter
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import kz.dragau.larek.presentation.presenter.login.SmsCodePresenter
+import kz.dragau.larek.presentation.presenter.registration.RegistrationPresenter
 import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
+import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 
 @Singleton
@@ -50,6 +52,7 @@ interface AppComponent {
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
     fun inject(fragmnet: ConfirmCodeFragment)
+    fun inject(fragment: RegistrationFragment)
     fun inject(fragment: LocationMapFragment)
 
 
@@ -57,6 +60,7 @@ interface AppComponent {
     fun inject(presenter: PhoneNumberPresenter)
     fun inject(presenter: SmsCodePresenter)
     fun inject(presenter: ConfirmCodePresenter)
+    fun inject(presenter: RegistrationPresenter)
     fun inject(presenter: LocationMapPresenter)
 
     //fun getApi(): ApiManager

@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.transition.ChangeBounds
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
@@ -15,14 +17,18 @@ import kz.dragau.larek.Screens
 import kz.dragau.larek.presentation.view.LoginInView
 import kz.dragau.larek.presentation.presenter.LoginInPresenter
 import kz.dragau.larek.ui.common.BackButtonListener
+import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
+import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
 
 class LoginInActivity : BaseActivity(), LoginInView {
+
+    private var doubleBackToExitPressedOnce = false
 
     companion object {
         const val TAG = "LoginInActivity"
@@ -95,11 +101,27 @@ class LoginInActivity : BaseActivity(), LoginInView {
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.activity_login_frame_layout)
         if (fragment != null
-            && fragment is BackButtonListener
-            && (fragment as BackButtonListener).onBackPressed()
+//            && fragment is BackButtonListener
+//            && (fragment as BackButtonListener).onBackPressed()
+            && (fragment is ConfirmCodeFragment ||
+            (fragment is BackButtonListener
+                && (fragment as BackButtonListener).onBackPressed()))
         ) {
             return
-        } else {
+        }
+        else if (fragment is RegistrationFragment)
+        {
+            if(doubleBackToExitPressedOnce){
+                super.onBackPressed()
+                return
+            }
+            else {
+                doubleBackToExitPressedOnce = true
+                Toast.makeText(applicationContext, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+                Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+            }
+        }
+        else {
             super.onBackPressed()
         }
     }
