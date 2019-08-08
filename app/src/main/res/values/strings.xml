@@ -52,5 +52,8 @@
     <string name="invalid_phone_number">Неверный номер телефона!</string>
     <string name="quota_exceeded">Превышена квота.</string>
 
+    <string name="cancel">Отмена</string>
+    <string name="choose">Выбрать</string>
+    <string name="load_photo">Загрузить фото</string>
 
 </resources>

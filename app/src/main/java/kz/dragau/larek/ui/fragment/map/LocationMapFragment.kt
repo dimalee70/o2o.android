@@ -3,6 +3,7 @@ package kz.dragau.larek.ui.fragment.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.map.LocationMapView
@@ -21,18 +23,22 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
-import com.google.android.gms.location.places.AutocompleteFilter
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.android.synthetic.main.fragment_location_map.*
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentLocationMapBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
+import timber.log.Timber
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -62,10 +68,9 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
     }
 
     private val LOCATION_REQUEST = 665
-    private val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1
-    private val mapTypes = intArrayOf(GoogleMap.MAP_TYPE_HYBRID, GoogleMap.MAP_TYPE_NORMAL)
     private var mMap: GoogleMap? = null
     private var selectedPoint: LatLng? = null
+    private var gps: GPS? = null
 
 
     lateinit var binding: FragmentLocationMapBinding
@@ -83,24 +88,25 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         val frView : View  = binding.flMain
         binding.presenter = mLocationMapPresenter
 
-        binding.placeSearch.setOnClickListener({ v ->
-            try {
-                val typeFilter = AutocompleteFilter.Builder()
-                    .setCountry("KZ")
-                    //.setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                    .build()
 
-                val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                    .setFilter(typeFilter)
-                    .build(activity)
+         Places.initialize(App.appComponent.context(), "AIzaSyDdatI2oDODoOBHU_Hxa8hdTPAm012cNUY")
+         Places.createClient(App.appComponent.context())
 
-                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
-            } catch (e: GooglePlayServicesRepairableException) {
-                // TODO: Handle the error.
-            } catch (e: GooglePlayServicesNotAvailableException) {
-                // TODO: Handle the error.
+         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.ADDRESS))
+
+        autocompleteFragment.setOnPlaceSelectedListener(object: PlaceSelectionListener{
+            override fun onPlaceSelected(place: Place) {
+                //txtView.setText(place.name +","+place.id)
+                Timber.i(TAG, "Place: " + place.name + ", " + place.id)
+            }
+
+            override fun onError(status: Status)
+            {
+                showError("An error occurred: $status")
             }
         })
+
         return frView
     }
 
@@ -110,46 +116,45 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
             val f = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
             f.getMapAsync { googleMap ->
                 mMap = googleMap
-                setUpMap()
+                mLocationMapPresenter.setUpMap()
             }
         }
     }
 
+    override fun changeMapType(mapType: Int) {
+        mMap?.mapType = mapType
+    }
 
-    private fun setUpMap() {
-        mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
+    override fun setUpMap(mapType: Int) {
+        gps = GPS(App.appComponent.context())
+
+        mMap?.mapType = mapType
         val settings = mMap?.uiSettings
         settings?.setAllGesturesEnabled(true)
         settings?.isMyLocationButtonEnabled = true
         settings?.isMapToolbarEnabled = true
+
         //just shortcuts
         val fine = Manifest.permission.ACCESS_FINE_LOCATION
         val coarse = Manifest.permission.ACCESS_COARSE_LOCATION
         val granted = PackageManager.PERMISSION_GRANTED
+
+        //TODO: add previous start location
         applyCameraUpdate(CameraUpdateFactory.newLatLngZoom(LatLng(43.238949, 76.889709), 14f))
 
-        if (ActivityCompat.checkSelfPermission(App.appComponent.context(), fine) !== granted && ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(App.appComponent.context(), fine) != granted && ActivityCompat.checkSelfPermission(
                 App.appComponent.context(),
                 coarse
-            ) !== granted
+            ) != granted
         ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(arrayOf(fine, coarse), LOCATION_REQUEST)
             }
         } else {
-            mMap?.isMyLocationEnabled = true
-            val myLocation = mMap?.myLocation
-
-            if (myLocation != null) {
-                applyCameraUpdate(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(myLocation.latitude, myLocation.longitude), 14f
-                    )
-                )
-            }
+            goToMyLocation()
         }
 
-        mMap?.setOnCameraMoveStartedListener { i ->
+        mMap?.setOnCameraMoveStartedListener {
             selectedPoint = null
             showLoading()
         }
@@ -160,6 +165,22 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
                 binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
             } catch (e: Exception) {
                 txtAddress.text = null
+            }
+        }
+    }
+
+    private fun goToMyLocation()
+    {
+        if(gps?.canGetLocation() == true) {
+            mMap?.isMyLocationEnabled = true
+            val myLocation = mMap?.myLocation ?: gps!!.location
+
+            if (myLocation != null) {
+                applyCameraUpdate(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(myLocation.latitude, myLocation.longitude), 14f
+                    )
+                )
             }
         }
     }
@@ -196,18 +217,11 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         clLoading.visibility = View.GONE
     }
 
-    private fun showGranted(message: String) {
-        hideLoading()
-        txtMessage.text = message
-        txtMessage.setTextColor(resources.getColor(R.color.colorPrimaryDark))
-        btnProceed.isEnabled = true
-    }
-
     private fun showError(message: String) {
         try {
             hideLoading()
             txtMessage.text = message
-            txtMessage.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+            txtMessage.setTextColor(ContextCompat.getColor(context!!, android.R.color.holo_red_dark))
             btnProceed.isEnabled = false
         } catch (e: Exception) {
         }
@@ -222,7 +236,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
                 if (granted) break
             }
             if (granted && mMap != null) {
-                mMap?.isMyLocationEnabled = true
+                goToMyLocation()
             }
         }
     }

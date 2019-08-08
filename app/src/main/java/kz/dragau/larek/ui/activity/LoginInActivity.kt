@@ -45,7 +45,7 @@ class LoginInActivity : BaseActivity(), LoginInView {
 
 
         if (savedInstanceState == null) {
-            navigator.applyCommands(arrayOf<Command>(Replace(Screens.PhoneNumberScreen())))
+            navigator.applyCommands(arrayOf<Command>(Replace(Screens.LocationMapScreen())))
         }
     }
 

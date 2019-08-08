@@ -7,6 +7,7 @@ import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.api.requests.RegistrationRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.activity.product.AddProductActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
@@ -35,6 +36,12 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return PhoneNumberFragment.newInstance()
+        }
+    }
+
+    class AddProductScreen : SupportAppScreen() {
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, AddProductActivity::class.java)
         }
     }
 

@@ -18,6 +18,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kz.dragau.larek.App
 import com.bumptech.glide.request.target.Target
+import com.theartofdev.edmodo.cropper.CropImageView
 import kz.dragau.larek.R
 import kz.dragau.larek.di.modules.GlideApp
 import kz.dragau.larek.extensions.shortDateDiff
@@ -35,6 +36,18 @@ object Utils {
         screenWidth = size.x
         screenHeight = size.y
 
+    }
+
+    @JvmStatic
+    @BindingAdapter("uri")
+    fun setUri(view: CropImageView, uri: Uri?)
+    {
+        if (uri == null)
+        {
+            return
+        }
+
+        view.setImageUriAsync(uri)
     }
 
     @JvmStatic

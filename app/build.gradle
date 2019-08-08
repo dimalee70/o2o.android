@@ -234,16 +234,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation "com.google.android.gms:play-services-location:17.0.0"
     implementation 'com.google.android.gms:play-services-vision:18.0.0'
+    implementation 'com.google.android.libraries.places:places:2.0.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
 
     implementation 'com.google.firebase:firebase-auth:18.1.0'
     implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-auth-kotlin:-SNAPSHOT'
-    //implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-config-kotlin:-SNAPSHOT'
 
-    //implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-database-kotlin:-SNAPSHOT'
-    //implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-storage-kotlin:-SNAPSHOT'
-
-    api 'com.otaliastudios:cameraview:2.0.0'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
     implementation 'ru.egslava:MaskedEditText:1.0.5'
 }
