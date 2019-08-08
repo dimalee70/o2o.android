@@ -8,19 +8,20 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
-import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import com.google.firebase.auth.FirebaseAuth
+import kz.dragau.larek.R
+import kz.dragau.larek.Screens
+import rxfirebase2.auth.RxFirebaseAuth
 
 
 @InjectViewState
@@ -41,8 +42,29 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
     var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            // verification completed
-            Timber.i("Verification completed!")
+            disposable = RxFirebaseAuth
+                .signInWithCredential(FirebaseAuth.getInstance(), credential)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        it!!.getIdToken(true)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    getToken(task.result?.token)
+                                } else {
+                                    if (task.exception?.message != null) {
+                                        viewState?.hideProgress()
+                                        viewState?.showError(task.exception!!.message!!, -1)
+                                    }
+                                }
+                            }
+                    },
+                    {
+                        viewState?.hideProgress()
+                        viewState?.showError(it)
+                    }
+                )
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -52,10 +74,13 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
-                Timber.i("Invalid phone number.")
+                viewState?.hideProgress()
+                viewState?.showError(null, R.string.invalid_phone_number)
             } else if (e is FirebaseTooManyRequestsException) {
-                // The SMS quota for the project has been exceeded
-                Timber.i("Quota exceeded.")
+                // The SMS quota for the project has been
+                // exceeded
+                viewState?.hideProgress()
+                viewState?.showError(null, R.string.quota_exceeded)
             }
 
         }
@@ -71,18 +96,29 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
         }
     }
 
+    fun getToken(firebaseToken: String?)
+    {
+
+        if (firebaseToken == null)
+        {
+            viewState.hideProgress()
+            return
+        }
+
+        viewState.hideProgress()
+        router.navigateTo(Screens.LocationMapScreen())
+    }
 
 
     fun getSmsCode()
     {
-//        router.navigateTo()
         viewState?.hideKeyboard()
         viewState?.showProgress()
+
 
         userRequstModel.mobilePhone?.let {
             viewState?.verifyPhoneNumber(it)
         }
-
 
         /*disposable = userRequstModel.mobilePhone?.let {
         client.getSmsCode(it)

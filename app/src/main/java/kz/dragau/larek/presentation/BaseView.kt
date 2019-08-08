@@ -8,7 +8,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 interface BaseView : MvpView {
     fun showError(exception: Throwable)
 
-    fun showError(message: String, codeError: Int)
+    fun showError(message: String?, codeError: Int)
 
     fun hideProgress()
 

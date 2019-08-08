@@ -7,8 +7,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import com.bumptech.glide.load.engine.GlideException
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.R
+import kz.dragau.larek.api.response.ErrorResponse
 import kz.dragau.larek.extensions.showErrorAlertDialog
 import kz.dragau.larek.moxy.MvpAppCompatFragment
 import kz.dragau.larek.presentation.BaseView
@@ -16,6 +19,7 @@ import kz.dragau.larek.presentation.presenter.dialogs.DelayedProgressDialog
 import java.io.IOException
 import java.net.SocketTimeoutException
 import org.json.JSONObject
+import timber.log.Timber
 
 
 open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
@@ -49,15 +53,21 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
         return null
     }
 
-    override fun showError(message: String, codeError: Int) {
+    override fun showError(message: String?, codeError: Int) {
         if (errorDialog == null)
         {
+            var msg = message
+            if (msg == null)
+            {
+                msg = getString(codeError)
+            }
+
             errorDialog = showErrorAlertDialog({
                 cancelable = true
                 closeIconClickListener {
-                    Log.d(BASE_TAG, "Error dialog close button clicked")
+                    Timber.d(BASE_TAG, "Error dialog close button clicked")
                 }
-            }, "Ошибка", message)
+            }, "Ошибка", msg)
             errorDialog?.show()
         }
     }
@@ -91,8 +101,8 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
                 when (error.code())
                 {
                     404 -> return getString(R.string.bad_server_response)
-                    //500 -> return getString(R.string.default_unexpected_error_message)
-                    //502 -> return getString(R.string.default_error_message)
+                    500 -> return getString(R.string.default_unexpected_error_message)
+                    502 -> return getString(R.string.default_error_message)
                 }
 
                 return getErrorTitle(responseBody)
@@ -100,56 +110,49 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
             is SocketTimeoutException -> return getString(R.string.timed_out)
             is IOException -> return getString(R.string.network_connection_lost)
             is GlideException -> return getString(R.string.bad_connection)
-            //getString(R.string.default_error_message)
+
             else -> return if (error.localizedMessage != null) getString(R.string.unknown_error) else ""
         }
 
     }
 
     private fun getErrorTitle(responseBody: String?): String {
-        /*try {
-            val jsonObject = JSONObject(responseBody)
-
-            if (jsonObject.has("data"))
-            {
-                val messageId = jsonObject.getString("data")
-                return getString(
-                    try {
-
-                        ErrorResourceTypeDescription.valueOf(messageId).titleId
-                    } catch (ex: IllegalArgumentException) {
-
-                        R.string.unknown_error_from_backend
-                    }
-                )
+        try {
+            if (responseBody ==  null) {
+                return getString(R.string.unknown_error_from_backend)
             }
 
-            return jsonObject.getString("message")
-        } catch (e: Exception) {
-            return e.localizedMessage
-        }*/
+            val gson = Gson()
+            val errorRespType = object : TypeToken<ErrorResponse>() {}.type
+            val resp = gson.fromJson<ErrorResponse>(responseBody, errorRespType)
 
-        return "error"
+            if (resp.messageList?.isNotEmpty() == true) {
+                return resp.messageList!!.joinToString(separator = "\n") {"\'${it.message}\'" }
+            }
+
+            return getString(R.string.unknown_error_from_backend)
+        } catch (e: Exception) {
+            return e.localizedMessage!!
+        }
     }
 
     private fun getErrorMessage(exception: Throwable, responseBody: String?): String? {
-        /*if (exception !is HttpException) {
-
-            return null
-        }
-        try {
-            val jsonObject = JSONObject(responseBody)
-
-            if (jsonObject.has("data")) {
-                val messageId = jsonObject.getString("data")
-                return getString(ErrorResourceTypeDescription.valueOf(messageId).messageId)
+        if (exception !is HttpException) {
+                return null
             }
 
+            try {
+                val gson = Gson()
+                val errorRespType = object : TypeToken<ErrorResponse>() {}.type
+                val resp = gson.fromJson<ErrorResponse>(responseBody!!, errorRespType)
+
+                if (resp.messageList?.isNotEmpty() == true) {
+                    return resp.messageList!!.joinToString(separator = "\n") {"\'${it.description}\'" }
+                }
             return null
         } catch (e: Exception) {
             return null
-        }*/
-        return "error"
+        }
     }
 
     override fun onDestroy() {

@@ -237,6 +237,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:17.0.0'
 
     implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-auth-kotlin:-SNAPSHOT'
+    //implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-config-kotlin:-SNAPSHOT'
+
+    //implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-database-kotlin:-SNAPSHOT'
+    //implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-storage-kotlin:-SNAPSHOT'
 
     api 'com.otaliastudios:cameraview:2.0.0'
 

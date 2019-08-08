@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.preference.PreferenceManager
 import com.bumptech.glide.load.engine.GlideException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
@@ -20,16 +17,15 @@ import kz.dragau.larek.moxy.MvpActivity
 import kz.dragau.larek.presentation.BaseView
 import kz.dragau.larek.presentation.presenter.dialogs.DelayedProgressDialog
 import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.android.support.SupportAppNavigator
-import ru.terrakok.cicerone.commands.Command
-import ru.terrakok.cicerone.commands.Forward
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
-import android.content.Context.INPUT_METHOD_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kz.dragau.larek.api.response.ErrorResponse
+import timber.log.Timber
 
 
 open class BaseActivity : MvpActivity(), BaseView {
@@ -122,7 +118,7 @@ open class BaseActivity : MvpActivity(), BaseView {
                 errorDialog = showErrorAlertDialog({
                     cancelable = true
                     closeIconClickListener {
-                        Log.d(BASE_TAG, "Error dialog close button clicked")
+                        Timber.d("Error dialog close button clicked")
                     }
                 }, getNetworkErrorTitle(exception, responseBody), getErrorMessage(exception, responseBody))
                 errorDialog?.show()
@@ -130,15 +126,20 @@ open class BaseActivity : MvpActivity(), BaseView {
         }
     }
 
-    override fun showError(message: String, codeError: Int) {
+    override fun showError(message: String?, codeError: Int) {
+        var msg = message
+        if (msg == null)
+        {
+            msg = getString(codeError)
+        }
         runOnUiThread {
             if (errorDialog == null) {
                 errorDialog = showErrorAlertDialog({
                     cancelable = true
                     closeIconClickListener {
-                        Log.d(BASE_TAG, "Error dialog close button clicked")
+                        Timber.d("Error dialog close button clicked")
                     }
-                }, "Ошибка", message)
+                }, "Ошибка", msg)
                 errorDialog?.show()
             }
         }
@@ -176,8 +177,8 @@ open class BaseActivity : MvpActivity(), BaseView {
             when (error.code())
             {
                 404 -> return getString(R.string.bad_server_response)
-                //500 -> return getString(R.string.default_unexpected_error_message)
-                //502 -> return getString(R.string.default_error_message)
+                500 -> return getString(R.string.default_unexpected_error_message)
+                502 -> return getString(R.string.default_error_message)
             }
             return getErrorTitle(responseBody)
         } else if (error is SocketTimeoutException)
@@ -196,47 +197,45 @@ open class BaseActivity : MvpActivity(), BaseView {
     }
 
     private fun getErrorTitle(responseBody: String?): String {
-        /*try {
-            val jsonObject = JSONObject(responseBody)
-
-            if (jsonObject.has("data")) {
-                val messageId = jsonObject.getString("data")
-                return getString(
-                    try {
-                        ErrorResourceTypeDescription.valueOf(messageId).messageId
-                    } catch (ex: IllegalArgumentException) {
-                        R.string.unknown_error_from_backend
-                    }
-                )
+        try {
+            if (responseBody ==  null) {
+                return getString(R.string.unknown_error_from_backend)
             }
 
-            return jsonObject.getString("message")
-        } catch (e: Exception) {
-            return e.localizedMessage
-        }*/
+            val gson = Gson()
+            val errorRespType = object : TypeToken<ErrorResponse>() {}.type
+            val resp = gson.fromJson<ErrorResponse>(responseBody, errorRespType)
+            if (resp.messageList?.isNotEmpty() == true) {
+                return resp.messageList!!.joinToString(separator = "\n") {"\'${it.message}\'" }
+            }
 
-        return "error"
+            return getString(R.string.unknown_error_from_backend)
+        } catch (e: Exception) {
+            return e.localizedMessage!!
+        }
     }
 
 
     private fun getErrorMessage(exception: Throwable, responseBody: String?): String? {
-        /*if (exception !is HttpException) {
+        if (exception !is HttpException) {
 
             return null
         }
         try {
-            val jsonObject = JSONObject(responseBody)
 
-            if (jsonObject.has("data")) {
-                val messageId = jsonObject.getString("data")
-                return getString(ErrorResourceTypeDescription.valueOf(messageId).messageId)
+            val gson = Gson()
+            val errorRespType = object : TypeToken<ErrorResponse>() {}.type
+            val resp = gson.fromJson<ErrorResponse>(responseBody!!, errorRespType)
+
+
+            if (resp.messageList?.isNotEmpty() == true) {
+                return resp.messageList!!.joinToString(separator = "\n") {"\'${it.description}\'" }
             }
 
             return null
         } catch (e: Exception) {
             return null
-        }*/
-        return "error"
+        }
     }
 
     override fun onDestroy() {
