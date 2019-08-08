@@ -44,4 +44,5 @@
     <string name="phoneMask">+7()</string>
     <string name="login">вход</string>
     <string name="next">далее</string>
+    <string name="makePhoto">Сделать фото</string>
 </resources>

@@ -32,9 +32,7 @@ class ConfirmCodePresenter(private val router: Router, private val userRequestMo
     fun checkConfirmCode(){
         viewState?.hideKeyboard()
         viewState?.showProgress()
-        println(userRequestModel!!.smsCode)
-        println(confirmRequestModel.confirmCode)
-        if (userRequestModel.smsCode.equals(confirmRequestModel.confirmCode)){
+        if (userRequestModel!!.smsCode.equals(confirmRequestModel.confirmCode)){
             println("Success")
             viewState?.hideProgress()
             router.newRootScreen(Screens.RegistrationScreen(userRequestModel))

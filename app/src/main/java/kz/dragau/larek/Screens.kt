@@ -7,10 +7,12 @@ import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.api.requests.RegistrationRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
+import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -24,6 +26,12 @@ class Screens {
     class LoginScreen : SupportAppScreen() {
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, LoginInActivity::class.java)
+        }
+    }
+
+    class ProductScreen: SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, ProductActivity::class.java)
         }
     }
 
@@ -80,6 +88,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return LocationMapFragment.newInstance()
+        }
+    }
+
+    class ProductRegisterScreen: SupportAppScreen(){
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return ProductRegisterFragment.newInstance()
         }
     }
 }
