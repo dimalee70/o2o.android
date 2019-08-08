@@ -15,6 +15,7 @@ import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentProductRegisterBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
@@ -62,5 +63,9 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

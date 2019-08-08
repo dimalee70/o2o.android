@@ -178,7 +178,7 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$persistence_room"
     implementation "android.arch.persistence.room:rxjava2:$persistence_room"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     implementation "com.google.dagger:dagger:$dagger2_version"
     kapt "com.google.dagger:dagger-compiler:$dagger2_version"
@@ -241,6 +241,8 @@ dependencies {
     api 'com.otaliastudios:cameraview:2.0.0'
 
     implementation 'ru.egslava:MaskedEditText:1.0.5'
+
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
 }
 
 apply plugin: 'com.google.gms.google-services'
