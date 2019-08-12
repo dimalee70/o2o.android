@@ -95,6 +95,7 @@
     <color name="colorDarkPink">#fe5f63</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="transparent_blue">#CCFF0000</color>
 
 
 </resources>

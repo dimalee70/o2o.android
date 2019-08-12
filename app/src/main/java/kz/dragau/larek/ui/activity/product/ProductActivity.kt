@@ -1,5 +1,6 @@
 package kz.dragau.larek.ui.activity.product
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.presentation.view.product.ProductView
@@ -23,6 +26,7 @@ import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
+import timber.log.Timber
 
 
 class ProductActivity : BaseActivity(), ProductView {
@@ -74,6 +78,32 @@ class ProductActivity : BaseActivity(), ProductView {
             }
         }
     }
+
+//    Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+//        Log.d("onActivityResult", "onActivityResult: .");
+//        if (resultCode == Activity.RESULT_OK) {
+//            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+//            String re = scanResult.getContents();
+//            String message = re;
+//            Log.d("onActivityResult", "onActivityResult: ." + re);
+//            Result handlerResult = new Result(Result.STATUS_SUCCESS, "qrcode", message);
+//            resultHandler.onHandleResult(handlerResult);
+//        }
+//        // else continue with any other code you need in the method
+//        this.finish();
+//
+//    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if(resultCode == Activity.RESULT_OK){
+//            var scanResult: IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+//            var re = scanResult.contents
+//            Timber.i("Message from result " + re)
+//
+//        }
+//        super.onActivityResult(requestCode, resultCode, data)
+//    }
 
     private fun setupSharedElement(
         productRegisterFragment: ProductRegisterFragment,

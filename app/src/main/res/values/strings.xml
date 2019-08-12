@@ -45,4 +45,7 @@
     <string name="login">вход</string>
     <string name="next">далее</string>
     <string name="makePhoto">Сделать фото</string>
+    <string name="message">Message is cool</string>
+    <string name="turn_off_flashlight">Turn_off_flashlight</string>
+    <string name="turn_on_flashlight">turn_on_flashlight</string>
 </resources>

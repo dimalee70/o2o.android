@@ -1,8 +1,11 @@
 package kz.dragau.larek
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import com.google.zxing.client.android.Intents
+import com.google.zxing.integration.android.IntentIntegrator
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.api.requests.RegistrationRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
@@ -38,7 +41,13 @@ class Screens {
 
     class ScanScreen: SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
+
+            var integrator: IntentIntegrator = IntentIntegrator(context as Activity)
+//            integrator.setCaptureActivity(ScanActivity::class.java)
+//            integrator.initiateScan()
+//            return integrator.createScanIntent()
             return Intent(context, ScanActivity::class.java)
+//            return Intent(IntentIntegrator(context as Activity).setCaptureActivity(Intents.Scan::class.java).initiateScan()
         }
     }
 

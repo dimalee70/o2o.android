@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.ContextCompat.startActivity
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.google.zxing.integration.android.IntentIntegrator
 import io.reactivex.disposables.Disposable
 import kz.dragau.larek.App
 import kz.dragau.larek.Screens
@@ -32,11 +33,14 @@ class ProductRegisterPresenter(private var router: Router): MvpPresenter<Product
 
     fun makePhoto() {
 
+//        var integration: IntentIntegrator = IntentIntegrator()
+
 
         router.navigateTo(Screens.ScanScreen())
-//        val intent = Intent(this@ProductRegisterFragment, ScanActivity::class.java)
-//        startActivity(intent)
-        Timber.i("Click Photo")
+//        Timber.i("Click Photo")
+
+
+
 //        viewState?.hideKeyboard()
 //        viewState?.showProgress()
 //        println(userRequestModel!!.smsCode)
