@@ -32,9 +32,18 @@ class ScanActivity : BaseActivity(), ScanView, DecoratedBarcodeView.TorchListene
 
     override fun barcodeResult(result: BarcodeResult?) {
 
-        Toast.makeText(applicationContext,result!!.text,Toast.LENGTH_SHORT).show()
-        Timber.i("Result from barcode " + result.text)
-        finish()
+        if(result!!.barcodeFormat == BarcodeFormat.CODE_128
+            || result.barcodeFormat == BarcodeFormat.CODE_39
+            || result.barcodeFormat == BarcodeFormat.EAN_8
+        ) {
+            Toast.makeText(applicationContext, result.text, Toast.LENGTH_SHORT).show()
+            Timber.i("Result from barcode " + result.text)
+            finish()
+        }
+        else
+        {
+            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+        }
 //        .setGravity(Gravity.LEFT,200,200).show()
     }
 
@@ -73,8 +82,8 @@ class ScanActivity : BaseActivity(), ScanView, DecoratedBarcodeView.TorchListene
 
         capture = CaptureManager(this, zxingBarcodeScanner)
         capture!!.initializeFromIntent(intent, savedInstanceState)
-//        zxingBarcodeScanner.decodeContinuous(this)
-        zxingBarcodeScanner.decodeSingle(this)
+        zxingBarcodeScanner.decodeContinuous(this)
+//        zxingBarcodeScanner.decodeSingle(this)
 //        capture!!.decode()
     }
 
