@@ -52,14 +52,12 @@ class ConfirmCodeFragment : BaseMvpFragment(), ConfirmCodeView {
         this.userRequestModel = arguments?.getSerializable(EXTRA_CODE_PHONE) as LoginRequestModel?
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        println(userRequestModel!!.mobilePhone)
-        println(userRequestModel!!.smsCode)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View?        {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_confirm_code, container , false)
         val frView : View  = binding.flMain
 

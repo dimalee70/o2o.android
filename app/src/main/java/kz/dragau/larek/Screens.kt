@@ -1,17 +1,23 @@
 package kz.dragau.larek
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import com.google.zxing.client.android.Intents
+import com.google.zxing.integration.android.IntentIntegrator
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.api.requests.RegistrationRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.activity.product.ProductActivity
+import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.product.AddProductActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
+import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -25,6 +31,24 @@ class Screens {
     class LoginScreen : SupportAppScreen() {
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, LoginInActivity::class.java)
+        }
+    }
+
+    class ProductScreen: SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, ProductActivity::class.java)
+        }
+    }
+
+    class ScanScreen: SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+
+            var integrator: IntentIntegrator = IntentIntegrator(context as Activity)
+//            integrator.setCaptureActivity(ScanActivity::class.java)
+//            integrator.initiateScan()
+//            return integrator.createScanIntent()
+            return Intent(context, ScanActivity::class.java)
+//            return Intent(IntentIntegrator(context as Activity).setCaptureActivity(Intents.Scan::class.java).initiateScan()
         }
     }
 
@@ -87,6 +111,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return LocationMapFragment.newInstance()
+        }
+    }
+
+    class ProductRegisterScreen: SupportAppScreen(){
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return ProductRegisterFragment.newInstance()
         }
     }
 }
