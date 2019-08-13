@@ -109,14 +109,28 @@
                 />
 
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="?attr/panelColor"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp"
-                        android:text="@string/phone"/>
+
+
+                <!--<View-->
+                        <!--android:id="@+id/UnderLine"-->
+                        <!--android:layout_width="250dp"-->
+                        <!--android:layout_height="2dp"-->
+                        <!--android:layout_below="@+id/phoneEt"-->
+                        <!--android:layout_centerHorizontal="true"-->
+                        <!--android:layout_marginTop="2dp"-->
+                        <!--android:background="@color/colorPrimaryDark"-->
+                <!--/>-->
+                        <!--android:background="@drawable/drawablebutton_green_bg" -->
+
+
+                <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:background="?attr/panelColor"-->
+                        <!--android:layout_marginTop="4dp"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:text="@string/phone"/>-->
 
                 <!--android:hint="@string/phone"-->
             </RelativeLayout>

@@ -75,7 +75,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
         else
         {
             router.newRootScreen(Screens.LoginScreen())
-            //router.newRootScreen(Screens.ProductScreen())
+//            router.newRootScreen(Screens.ProductScreen())
         }
     }
 
