@@ -92,21 +92,20 @@
                 <br.com.sapereaude.maskedEditText.MaskedEditText
                         android:id="@+id/phoneEt"
                         android:layout_width="match_parent"
-                        android:paddingTop="20dp"
                         android:inputType="phone"
                         android:typeface="monospace"
-                        android:background="@drawable/border_edittext"
                         app:allowed_chars="1234567890"
                         app:mask="+7(###)###-##-##"
                         android:layout_height="match_parent"
                         android:hint="1234567890"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="0dp"
                         android:layout_marginTop="15dp"
                         android:textSize="14sp"
                         android:paddingBottom="10dp"
                         app:keep_hint="true"
                         android:textColorHint="#000000"
                         android:text="@={loginViewModel.mobilePhone}"
+                        android:drawableStart="@drawable/phone"
                 />
 
 
