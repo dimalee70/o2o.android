@@ -3,7 +3,9 @@ package kz.dragau.larek.presentation.presenter.product
 import android.graphics.Bitmap
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import io.reactivex.BackpressureStrategy
 import io.reactivex.disposables.Disposable
+import kz.dragau.larek.App
 import kz.dragau.larek.presentation.view.product.AddProductView
 
 @InjectViewState

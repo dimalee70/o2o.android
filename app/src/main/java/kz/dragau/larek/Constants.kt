@@ -5,6 +5,7 @@ import kz.dragau.larek.BuildConfig
 object Constants
 {
     const val apiEndpoint = BuildConfig.apiEndpoint
+    const val wsEndpoint = BuildConfig.wsEndpoint
     const val version = "1.0.0"
     const val lightTheme = "light"
     const val darkTheme = "dark"

@@ -1,8 +1,7 @@
 package kz.dragau.larek.di.components
 
 import android.content.Context
-import com.google.android.gms.common.data.DataHolder
-import com.google.android.gms.maps.MapFragment
+import com.navin.flintstones.rxwebsocket.RxWebsocket
 import dagger.Component
 import kz.dragau.larek.App
 import kz.dragau.larek.api.ApiManager
@@ -28,7 +27,7 @@ import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 
 @Singleton
 @CustomApplicationScope
-@Component(modules = [ApplicationModule::class, NavigationModule::class, ServiceUtilModule::class, RoomModule::class])
+@Component(modules = [ApplicationModule::class, NavigationModule::class, ServiceUtilModule::class, RoomModule::class, WSocketModule::class])
 interface AppComponent {
     @ApplicationContext
     fun context(): Context
@@ -37,6 +36,8 @@ interface AppComponent {
     fun instance(): App
 
     fun getServiceUtil(): ApiManager
+
+    fun getWSocket(): RxWebsocket
 
     fun glideComponentBuilder(): GlideComponent.Builder
 
@@ -51,7 +52,7 @@ interface AppComponent {
     fun inject(activity: MainAppActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
-    fun inject(fragmnet: ConfirmCodeFragment)
+    fun inject(fragment: ConfirmCodeFragment)
     fun inject(fragment: RegistrationFragment)
     fun inject(fragment: LocationMapFragment)
 

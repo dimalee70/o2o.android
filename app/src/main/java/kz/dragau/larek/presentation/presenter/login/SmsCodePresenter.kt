@@ -5,6 +5,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.disposables.Disposable
 import kz.dragau.larek.App
+import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.presentation.view.login.SmsCodeView
 import ru.terrakok.cicerone.Router
@@ -26,5 +27,10 @@ class SmsCodePresenter(private val router: Router) : MvpPresenter<SmsCodeView>()
 
     fun onBackPressed() {
         router.exit()
+    }
+
+    fun validateCode()
+    {
+        router.navigateTo(Screens.LocationMapScreen())
     }
 }

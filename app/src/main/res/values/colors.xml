@@ -16,7 +16,7 @@
     <color name="buttonHighlight">#ff554f</color>
     <color name="buttonText">#FFFFFF</color>
 
-    <color name="btnDarkGreen">#00B35E</color>
+    <color name="btnDarkGreen">#117B23</color>
     <color name="btnLightGreen">#00CE00</color>
 
     <color name="btnDarkRed">#C12F23</color>
@@ -26,7 +26,7 @@
     <color name="subviewsColor">#1fffffff</color>
     <color name="clearSubviewsColor">#12ffffff</color>
     <color name="playButtonTextColor">#ffffff</color>
-    <color name="boldTextColor">#2EA5B0</color>
+    <color name="boldTextColor">#FFFFFF</color>
     <color name="thinTextColor">#ffffff</color>
     <color name="grayTextColor">#D9DFE7</color>
     <color name="redTextColor">#ff2817</color>
@@ -73,14 +73,14 @@
     <color name="lightSettingsFieldTextColor">#636363</color>
 
     <color name="yellowBgColor">#eae406</color>
-    <color name="greenBgColor">#2fbf07</color>
+    <color name="greenBgColor">#2CC245</color>
     <color name="orangeBgColor">#e93f1c</color>
 
     <color name="lightColorUnselected">#BBFFFFFF</color>
     <color name="lightColorSelected">#BB000000</color>
 
     <color name="indicatorRed">#C12F23</color>
-    <color name="indicatorGreen">#2F800D</color>
+    <color name="indicatorGreen">#2CC245</color>
 
     <color name="splashColor">#132E65</color>
     <color name="dialogTextColor">#35363C</color>

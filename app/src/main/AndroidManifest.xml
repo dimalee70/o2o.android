@@ -56,6 +56,20 @@
         <meta-data
                 android:name="io.fabric.ApiKey"
                 android:value="AIzaSyC3AiKyyULswa75JDQrxLlCEdKpyT2z9bY"/>
+
+        <service
+                android:name=".api.FcmService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/splash_screen" />
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent" />
+
     </application>
 
 </manifest>

@@ -3,12 +3,15 @@ package kz.dragau.larek.presentation.presenter
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
+import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
@@ -17,6 +20,7 @@ import kz.dragau.larek.models.objects.User
 import kz.dragau.larek.models.shared.DataHolder
 import kz.dragau.larek.presentation.view.MainAppView
 import ru.terrakok.cicerone.Router
+import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
@@ -33,8 +37,23 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
 
     private var disposable: Disposable? = null
 
+    fun updateFcmToken()
+    {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Timber.e(task.exception)
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                val token = task.result?.token
+            })
+    }
+
     fun checkUserToken()
     {
+        updateFcmToken()
+
         if (DataHolder.userId != -1L) {
             disposable = userDao.get(DataHolder.userId)
                 .subscribeOn(Schedulers.computation())
@@ -49,13 +68,13 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                         viewState?.showError(it)
                     },
                     {
-                        viewState?.showError("Пользователь не найден!", -1)
+                        viewState?.showError(App.appComponent.context().getString(R.string.user_not_found), -1)
                     }
                 )
         }
         else
         {
-            router.newRootScreen(Screens.AddProductScreen())
+            router.newRootScreen(Screens.LoginScreen())
         }
     }
 

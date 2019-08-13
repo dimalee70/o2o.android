@@ -70,7 +70,7 @@ class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
     override fun verifyPhoneNumber(phoneNumber: String) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber, // Phone number to verify
-            60, // Timeout duration
+            120, // Timeout duration
             TimeUnit.SECONDS, // Unit of timeout
             this.activity as Activity, // Activity (for callback binding)
             mPhoneNumberPresenter.mCallbacks

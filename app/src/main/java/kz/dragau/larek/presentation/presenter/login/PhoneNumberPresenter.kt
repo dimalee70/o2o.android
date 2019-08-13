@@ -52,6 +52,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     getToken(task.result?.token)
+                                    router.navigateTo(Screens.SmsCodeScreen())
                                 } else {
                                     if (task.exception?.message != null) {
                                         viewState?.hideProgress()
@@ -106,7 +107,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
         }
 
         viewState.hideProgress()
-        router.navigateTo(Screens.LocationMapScreen())
+        //router.navigateTo(Screens.LocationMapScreen())
     }
 
 
@@ -117,7 +118,9 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
 
 
         userRequstModel.mobilePhone?.let {
-            viewState?.verifyPhoneNumber(it)
+            //viewState?.verifyPhoneNumber(it)
+            viewState?.hideProgress()
+            router.navigateTo(Screens.SmsCodeScreen())
         }
 
         /*disposable = userRequstModel.mobilePhone?.let {

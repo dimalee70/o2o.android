@@ -6,10 +6,15 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.transition.ChangeBounds
+import android.transition.ChangeClipBounds
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.transition.Explode
+import androidx.transition.Fade
+import androidx.transition.SidePropagation
+import androidx.transition.Slide
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import kz.dragau.larek.R
@@ -45,7 +50,7 @@ class LoginInActivity : BaseActivity(), LoginInView {
 
 
         if (savedInstanceState == null) {
-            navigator.applyCommands(arrayOf<Command>(Replace(Screens.LocationMapScreen())))
+            navigator.applyCommands(arrayOf<Command>(Replace(Screens.PhoneNumberScreen())))
         }
     }
 
@@ -85,17 +90,21 @@ class LoginInActivity : BaseActivity(), LoginInView {
         smsFragment: SmsCodeFragment,
         fragmentTransaction: FragmentTransaction
     ) {
-        val changeBounds = ChangeBounds()//.apply { duration = 10000 }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return
+        }
+
+        val changeBounds = ChangeBounds()
+            .apply { duration = 1000 }
         smsFragment.sharedElementEnterTransition = changeBounds
-        smsFragment.sharedElementReturnTransition = changeBounds
-        phoneFragment.sharedElementEnterTransition = changeBounds
+        //smsFragment.sharedElementReturnTransition = changeBounds
+        //phoneFragment.sharedElementEnterTransition = changeBounds
         phoneFragment.sharedElementReturnTransition = changeBounds
 
-        val view = phoneFragment.binding.phoneEt
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.transitionName = LOGIN_TRANSITION
-        }
+        val view = phoneFragment.binding.logoImage
+        view.transitionName = LOGIN_TRANSITION
         fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)
+
     }
 
     override fun onBackPressed() {
