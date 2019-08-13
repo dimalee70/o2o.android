@@ -87,6 +87,8 @@
                     android:layout_height="60dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp">
+                <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                                   android:layout_height="wrap_content">
 
 
                 <br.com.sapereaude.maskedEditText.MaskedEditText
@@ -95,29 +97,71 @@
                         android:paddingTop="20dp"
                         android:inputType="phone"
                         android:typeface="monospace"
-                        android:background="@drawable/border_edittext"
                         app:allowed_chars="1234567890"
                         app:mask="+7(###)###-##-##"
                         android:layout_height="match_parent"
                         android:hint="1234567890"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="20dp"
                         android:layout_marginTop="15dp"
                         android:textSize="14sp"
                         android:paddingBottom="10dp"
                         app:keep_hint="true"
-                        android:textColorHint="#000000"
                         android:text="@={loginViewModel.mobilePhone}"
-                />
+                        android:drawableStart="@drawable/ic_phone"
+                >
+
+                        <!--android:drawableEnd="@drawable/ic_phone"-->
+                        <!--android:textColorHint="#000000"-->
+                        <!--app:backgroundTint="@color/greenBgColor"-->
+                        <!--android:drawableTint="@drawable/button_green_bg"-->
+                    <!--android:background="@drawable/border_edittext"-->
+                        <!--android:background="@drawable/button_green_bg"-->
+                        <!--app:backgroundTint="@drawable/button_green_bg"-->
+                </br.com.sapereaude.maskedEditText.MaskedEditText>
+
+                <!--com.caverock.androidsvg.SVGImageView
+                        android:id="@+id/phoneIv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_phone"
+                        app:svg="phone.svg"
+                        app:layout_constraintStart_toStartOf="@+id/phoneEt"
+                        app:layout_constraintBottom_toBottomOf="@+id/phoneEt"
+                        app:layout_constraintTop_toTopOf="@+id/phoneEt"
+                /-->
+                    <com.caverock.androidsvg.SVGImageView
+                            android:id="@+id/logo_image11"
+                            android:layout_width="30dp"
+                            android:layout_height="0dp"
+                            app:svg="logo.svg"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/phoneEt"
+                            app:layout_constraintBottom_toBottomOf="@+id/phoneEt"
+                    />
 
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="?attr/panelColor"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp"
-                        android:text="@string/phone"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--<View-->
+                        <!--android:id="@+id/UnderLine"-->
+                        <!--android:layout_width="250dp"-->
+                        <!--android:layout_height="2dp"-->
+                        <!--android:layout_below="@+id/phoneEt"-->
+                        <!--android:layout_centerHorizontal="true"-->
+                        <!--android:layout_marginTop="2dp"-->
+                        <!--android:background="@color/colorPrimaryDark"-->
+                <!--/>-->
+                        <!--android:background="@drawable/drawablebutton_green_bg" -->
+
+
+                <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:background="?attr/panelColor"-->
+                        <!--android:layout_marginTop="4dp"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:text="@string/phone"/>-->
 
                 <!--android:hint="@string/phone"-->
             </RelativeLayout>

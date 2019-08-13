@@ -14,7 +14,7 @@
     <View
             android:layout_width="340dp"
             android:layout_height="250dp"
-            android:background="@drawable/img_qr_frame"
+            android:background="@drawable/qr_frame"
             android:layout_gravity="center">
     </View>
     <kz.dragau.larek.custom.CustomViewfinderView

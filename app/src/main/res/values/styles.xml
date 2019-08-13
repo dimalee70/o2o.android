@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="primaryButtonTheme">@style/Widget.Button.Primary</item>
@@ -170,6 +170,7 @@
     <style name="Widget.EditText.Primary" parent="Widget.AppCompat.EditText">
         <item name="android:textColorHint">@color/boldTextColor</item>
         <item name="android:textColor">@color/boldTextColor</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/greenBgColor</item>
         <item name="android:textSize">9sp</item>
         <item name="background">@android:color/transparent</item>
     </style>
