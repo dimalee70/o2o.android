@@ -67,6 +67,7 @@ class ScanActivity : BaseActivity(), ScanView, DecoratedBarcodeView.TorchListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
 //        zxingBarcodeScanner.decodeContinuous(this)
+//        zxingBarcodeScanner.viewFinder.
         zxingBarcodeScanner.setTorchListener(this)
 
 
