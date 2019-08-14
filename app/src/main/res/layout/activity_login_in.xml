@@ -7,13 +7,15 @@
              android:background="?attr/panelColor"
              tools:context=".ui.activity.LoginInActivity">
 
+
     <FrameLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/activity_login_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+
     />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,4 +64,5 @@
     <string name="notifications_admin_channel_name">notifications_admin_channel_name</string>
     <string name="notifications_admin_channel_description">notifications_admin_channel_description</string>
     <string name="greetings">Добро\nпожаловать!</string>
+    <string name="passwordSent">Пароль отправлен на указанный номер телефона</string>
 </resources>

@@ -97,5 +97,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="transparent_blue">#CCFF0000</color>
 
+    <color name="iconPhoneColor">#919191</color>
+
 
 </resources>
