@@ -7,12 +7,13 @@ import io.reactivex.disposables.Disposable
 import kz.dragau.larek.App
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
+import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.SmsCodeView
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
-class SmsCodePresenter(private val router: Router) : MvpPresenter<SmsCodeView>() {
+class SmsCodePresenter(private val router: Router, private val userRequestModel: LoginRequestModel? ) : MvpPresenter<SmsCodeView>() {
     @Inject
     lateinit var client: ApiManager
 

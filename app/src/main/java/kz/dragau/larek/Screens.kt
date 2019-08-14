@@ -69,13 +69,15 @@ class Screens {
         }
     }
 
-    class SmsCodeScreen : SupportAppScreen() {
+    class SmsCodeScreen(userRequstModel: LoginRequestModel?): SupportAppScreen() {
+        var userRequstModel : LoginRequestModel? = null
         init {
             this.screenKey = javaClass.simpleName
+            this.userRequstModel = userRequstModel
         }
 
         override fun getFragment(): Fragment {
-            return SmsCodeFragment.newInstance()
+            return SmsCodeFragment.newInstance(userRequstModel)
         }
     }
 
