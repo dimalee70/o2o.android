@@ -12,6 +12,9 @@ import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentPhoneNumberBinding
@@ -23,6 +26,7 @@ import ru.terrakok.cicerone.Router
 //import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_phone_number.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -70,7 +74,7 @@ class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
     override fun verifyPhoneNumber(phoneNumber: String) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber, // Phone number to verify
-            120, // Timeout duration
+            5, // Timeout duration
             TimeUnit.SECONDS, // Unit of timeout
             this.activity as Activity, // Activity (for callback binding)
             mPhoneNumberPresenter.mCallbacks

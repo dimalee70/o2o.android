@@ -68,7 +68,7 @@ class App : MultiDexApplication() {
             Timber.plant(DebugTree())
         }
 
-        logEvents()
+       /*logEvents()
 
         disposable = App.appComponent.getWSocket()
             .connect()
@@ -88,7 +88,7 @@ class App : MultiDexApplication() {
                 {e ->
                     Timber.e(e)
                 }
-            )
+            )*/
     }
 
     private fun logEvents() {

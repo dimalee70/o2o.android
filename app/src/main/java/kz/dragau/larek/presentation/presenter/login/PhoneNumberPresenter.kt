@@ -19,9 +19,10 @@ import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import javax.inject.Inject
 import com.google.firebase.auth.FirebaseAuth
-import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import rxfirebase2.auth.RxFirebaseAuth
+import androidx.databinding.ObservableField
+import kz.dragau.larek.R
 
 
 @InjectViewState
@@ -40,32 +41,64 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
         App.appComponent.inject(this)
     }
 
-    var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            disposable = RxFirebaseAuth
-                .signInWithCredential(FirebaseAuth.getInstance(), credential)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        it!!.getIdToken(true)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    getToken(task.result?.token)
-                                    router.navigateTo(Screens.SmsCodeScreen())
-                                } else {
-                                    if (task.exception?.message != null) {
-                                        viewState?.hideProgress()
-                                        viewState?.showError(task.exception!!.message!!, -1)
-                                    }
+    var verifId: String? = null
+    var resendToken: PhoneAuthProvider.ForceResendingToken? = null
+    val code = ObservableField<String>()
+
+
+    private fun signInFirebase(credential: PhoneAuthCredential)
+    {
+        disposable = RxFirebaseAuth
+            .signInWithCredential(FirebaseAuth.getInstance(), credential)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    it!!.getIdToken(true)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                getToken(task.result?.token)
+                                router.navigateTo(Screens.SmsCodeScreen())
+                            } else {
+                                if (task.exception?.message != null) {
+                                    viewState?.hideProgress()
+                                    viewState?.showError(task.exception!!.message!!, -1)
                                 }
                             }
-                    },
-                    {
-                        viewState?.hideProgress()
-                        viewState?.showError(it)
-                    }
-                )
+                        }
+                },
+                {
+                    viewState?.hideProgress()
+                    viewState?.showError(it)
+                }
+            )
+    }
+
+    fun checkCode()
+    {
+        if (verifId == null)
+        {
+            viewState?.hideProgress()
+            viewState?.showError("Проверка номера телефона не была инициирована", -1)
+            return
+        }
+
+        if (code.get().isNullOrEmpty())
+        {
+            viewState?.hideProgress()
+            viewState?.showError("Не введен код из SMS", -1)
+            return
+        }
+
+        val credential = PhoneAuthProvider.getCredential(verifId!!, code.get()!!)
+        signInFirebase(credential)
+    }
+
+
+    var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            //signInFirebase(credential)
+            checkCode()
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -92,8 +125,8 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
             // by combining the code with a verification ID.
             Timber.i("onCodeSent: $verificationId")
             // Save verification ID and resending token so we can use them later
-            //mVerificationId = verificationId
-            //mResendToken = token
+            verifId = verificationId
+            resendToken = token
         }
     }
 
@@ -116,11 +149,10 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
         viewState?.hideKeyboard()
         viewState?.showProgress()
 
-
         userRequstModel.mobilePhone?.let {
-            //viewState?.verifyPhoneNumber(it)
-            viewState?.hideProgress()
-            router.navigateTo(Screens.SmsCodeScreen())
+            viewState?.verifyPhoneNumber(it)
+            //viewState?.hideProgress()
+            //router.navigateTo(Screens.SmsCodeScreen())
         }
 
         /*disposable = userRequstModel.mobilePhone?.let {
