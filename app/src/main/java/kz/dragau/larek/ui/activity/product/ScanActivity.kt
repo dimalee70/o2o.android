@@ -95,10 +95,9 @@ class ScanActivity : BaseActivity(), ScanView,
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan) as ActivityScanBinding
         binding.presenter = mScanPresenter
 
-
         back_button_iv.setOnClickListener(){
-            println("Click")
-//            super.onBackPressed()
+//            println("Click")
+            super.onBackPressed()
         }
 //        zxingBarcodeScanner.decodeContinuous(this)
 //        zxingBarcodeScanner.viewFinder.
