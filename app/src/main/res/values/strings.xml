@@ -42,7 +42,7 @@
 
     <string name="phone">телефон</string>
     <string name="phoneMask">+7()</string>
-    <string name="login">ВОЙТИ</string>
+    <string name="login">ПОЛУЧИТЬ КОД</string>
     <string name="next">далее</string>
     <string name="makePhoto">Сделать фото</string>
     <string name="message">Message is cool</string>
@@ -69,4 +69,5 @@
     <string name="password_sent">Код отправлен на указанный номер телефона</string>
     <string name="enter_sms_code">Введите код из СМС</string>
     <string name="repeat_send_sms">Отправить код повторно через: %1$s сек.</string>
+    <string name="scan_message">Наведите на штрих-код для сканирования</string>
 </resources>

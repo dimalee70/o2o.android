@@ -26,6 +26,8 @@
     <attr name="inverseTextColor" format="reference"/>
     <attr name="settingsFieldTextColor" format="reference"/>
     <attr name="hintTextColor" format="reference"/>
+    <attr name="whiteColor" format="reference"/>
+
     <!-- Declare custom theme attributes that allow changing which styles are
          used for button bars depending on the API level.
          ?android:attr/buttonBarStyle is new as of API 11 so this is

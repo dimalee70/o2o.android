@@ -26,6 +26,7 @@
     <color name="subviewsColor">#1fffffff</color>
     <color name="clearSubviewsColor">#12ffffff</color>
     <color name="playButtonTextColor">#ffffff</color>
+    <color name="whiteColor">#ffffff</color>
     <color name="boldTextColor">#FFFFFF</color>
     <color name="thinTextColor">#ffffff</color>
     <color name="grayTextColor">#D9DFE7</color>
