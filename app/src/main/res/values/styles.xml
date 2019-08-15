@@ -5,7 +5,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:typeface">serif</item>
-        <item name="fontFamily">@font/trebuchet</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="Theme.App.Dark.FullScreen" parent="Theme.App.Dark">
@@ -62,6 +62,7 @@
         <item name="opponentTurnTextColor">@color/opponentTurnTextColor</item>
         <item name="yourTurnTextColor">@color/yourTurnTextColor</item>
         <item name="settingsFieldTextColor">@color/settingsFieldTextColor</item>
+        <item name="hintTextColor">@color/hintTextColor</item>
     </style>
 
     <style name="Theme.App.Light" parent="Base.Theme.App">
@@ -94,6 +95,7 @@
         <item name="opponentTurnTextColor">@color/lightOpponentTurnTextColor</item>
         <item name="yourTurnTextColor">@color/lightYourTurnTextColor</item>
         <item name="settingsFieldTextColor">@color/lightSettingsFieldTextColor</item>
+        <item name="hintTextColor">@color/lightHintTextColor</item>
     </style>
 
     <style name="Widget.Button.Primary" parent="Widget.AppCompat.Button">
@@ -109,6 +111,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Widget.TextView.Hint" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/hintTextColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="TextView.AutoSize" parent="Widget.TextView.Primary">
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMinTextSize">@dimen/minTextSize</item>
@@ -116,12 +123,12 @@
         <item name="autoSizeStepGranularity">@dimen/stepGranularity</item>
     </style>
 
-    <style name="Dialog.Text" parent="TextView.Bold">
+    <style name="Dialog.Text" parent="Widget.TextView.Primary">
         <item name="android:textColor">@color/colorPanel</item>
     </style>
 
     <style name="TextView.BoldAutoSize" parent="Widget.TextView.Primary">
-        <item name="fontFamily">@font/trebucbd</item>
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMinTextSize">@dimen/minTextSize</item>
         <item name="autoSizeMaxTextSize">@dimen/maxTextSize</item>
@@ -130,11 +137,11 @@
     </style>
 
     <style name="TextView.Bold" parent="Widget.TextView.Primary">
-        <item name="fontFamily">@font/trebucbd</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextView.Number" parent="Widget.TextView.Primary">
-        <item name="fontFamily">@font/tahomabd</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextView.PartnerMission" parent="TextView.Bold">

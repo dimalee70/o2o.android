@@ -8,7 +8,7 @@
     <color name="colorAccentDark">#ffffff</color>
 
     <color name="colorPrimary">#000000</color>
-    <color name="colorPanel">#b2000000</color>
+    <color name="colorPanel">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffffff</color>
     <color name="primaryText">#000000</color>
@@ -43,10 +43,12 @@
     <color name="colorUnselected">#BB000000</color>
     <color name="colorSelected">#BBFFFFFF</color>
 
+    <color name="hintTextColor">#D6D6D6</color>
+
 
 
     <color name="lightColorPrimary">#ffffff</color>
-    <color name="lightColorPanel">#b2ffffff</color>
+    <color name="lightColorPanel">#000000</color>
     <color name="lightColorPrimaryDark">#424242</color>
     <color name="lightColorAccent">#000000</color>
     <color name="lightPrimaryText">#424242</color>
@@ -78,6 +80,8 @@
 
     <color name="lightColorUnselected">#BBFFFFFF</color>
     <color name="lightColorSelected">#BB000000</color>
+
+    <color name="lightHintTextColor">#D6D6D6</color>
 
     <color name="indicatorRed">#C12F23</color>
     <color name="indicatorGreen">#2CC245</color>

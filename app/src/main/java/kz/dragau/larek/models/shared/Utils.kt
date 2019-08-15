@@ -23,10 +23,18 @@ import kz.dragau.larek.R
 import kz.dragau.larek.di.modules.GlideApp
 import kz.dragau.larek.extensions.shortDateDiff
 import java.util.*
+import android.animation.AnimatorListenerAdapter
+import android.animation.Animator
+import android.view.View.VISIBLE
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
+import kz.dragau.larek.extensions.shortSecDiff
+
 
 object Utils {
     var screenWidth = 600
     var screenHeight = 600
+    var animationDuration = 500L
 
     init {
         val wm: WindowManager = App.appComponent.context().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -48,6 +56,15 @@ object Utils {
         }
 
         view.setImageUriAsync(uri)
+    }
+
+    @JvmStatic
+    @BindingAdapter("secDiff")
+    fun formatSecDiff(view: View, date: Date?) {
+        val textView: TextView = view as TextView
+        if (date != null) {
+            textView.text = date.shortSecDiff()
+        }
     }
 
     @JvmStatic
@@ -79,16 +96,83 @@ object Utils {
             .into(view)
     }
 
+
     @JvmStatic
-    @BindingAdapter("hidden")
-    fun bindHiddenVisibility(view: View, hidden: Boolean) {
-        view.visibility = if (hidden) View.GONE else View.VISIBLE
+    @BindingAdapter("visibilityFade")
+    fun bindFadeVisibility(view: View, visible: Boolean) {
+        if (view.visibility == VISIBLE && visible
+            || view.visibility != VISIBLE && !visible) {
+            return
+        }
+
+        if (visible) viewFadeVisibleAnimator(view) else viewFadeGoneAnimator(view)
+    }
+
+    private fun viewFadeGoneAnimator(view: View) {
+        view.alpha = 1f
+        view.animate()
+            .alpha(0f)
+            .setDuration(animationDuration)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    view.clearAnimation()
+                    view.visibility = View.GONE
+                }
+            })
+
+    }
+    private fun viewFadeVisibleAnimator(view: View) {
+        view.alpha = 0f
+        view.visibility = VISIBLE
+
+        view.animate()
+            .alpha(1f)
+            .setDuration(animationDuration)
+            .setListener(null)
+    }
+
+    @JvmStatic
+    @BindingAdapter("visibleTransition")
+    fun bindVisibleVisibility(view: View, visible: Boolean) {
+        if (view.visibility == VISIBLE && visible
+            || view.visibility != VISIBLE && !visible) {
+            return
+        }
+
+        if (visible) viewVisibleAnimator(view) else viewGoneAnimator(view)
     }
 
     @JvmStatic
     @BindingAdapter("invisible")
     fun bindInvisibleVisibility(view: View, invisible: Boolean) {
         view.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun viewGoneAnimator(view: View) {
+        view.alpha = 1f
+
+        view.animate()
+            .translationY(view.height.toFloat())
+            .alpha(0f)
+            .setDuration(animationDuration)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    view.clearAnimation()
+                    view.visibility = View.GONE
+                }
+            })
+
+    }
+    private fun viewVisibleAnimator(view: View) {
+        view.alpha = 0f
+        view.visibility = VISIBLE
+        view.translationY = view.height.toFloat()
+
+        view.animate()
+            .translationY(0f)
+            .alpha(1f)
+            .setDuration(animationDuration)
+            .setListener(null)
     }
 
 

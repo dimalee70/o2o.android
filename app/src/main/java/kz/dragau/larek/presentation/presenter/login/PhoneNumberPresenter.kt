@@ -1,6 +1,8 @@
 package kz.dragau.larek.presentation.presenter.login
 
 import android.content.SharedPreferences
+import android.graphics.Color
+import androidx.databinding.ObservableBoolean
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.google.firebase.FirebaseException
@@ -19,14 +21,16 @@ import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import javax.inject.Inject
 import com.google.firebase.auth.FirebaseAuth
-import kz.dragau.larek.Screens
+import kz.dragau.larek.BR
+import kz.dragau.larek.Constants
 import rxfirebase2.auth.RxFirebaseAuth
-import androidx.databinding.ObservableField
 import kz.dragau.larek.R
+import org.joda.time.DateTime
+import java.util.*
 
 
 @InjectViewState
-class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumberView>() {
+class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPresenter<PhoneNumberView>() {
     @Inject
     lateinit var client: ApiManager
 
@@ -36,15 +40,18 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
     val userRequstModel = LoginRequestModel()
 
     private var disposable: Disposable? = null
+    var isSmsSent = ObservableBoolean()
 
     init {
         App.appComponent.inject(this)
+        isSmsSent.set(smsSent)
     }
 
     var verifId: String? = null
     var resendToken: PhoneAuthProvider.ForceResendingToken? = null
-    val code = ObservableField<String>()
-
+    var timer: Timer? = null
+    val delay: Long = 0
+    val period: Long = 500
 
     private fun signInFirebase(credential: PhoneAuthCredential)
     {
@@ -58,6 +65,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 getToken(task.result?.token)
+                                stopTimedUpdate()
                                     //router.navigateTo(Screens.SmsCodeScreen())
                             } else {
                                 if (task.exception?.message != null) {
@@ -74,7 +82,7 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
             )
     }
 
-    fun checkCode()
+    private fun checkCode(code: String)
     {
         if (verifId == null)
         {
@@ -83,22 +91,22 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
             return
         }
 
-        if (code.get().isNullOrEmpty())
+        if (userRequstModel.smsCode.isEmpty())
         {
             viewState?.hideProgress()
             viewState?.showError("Не введен код из SMS", -1)
             return
         }
 
-        val credential = PhoneAuthProvider.getCredential(verifId!!, code.get()!!)
+        val credential = PhoneAuthProvider.getCredential(verifId!!, code)
         signInFirebase(credential)
     }
 
 
     var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            //signInFirebase(credential)
-            checkCode()
+            signInFirebase(credential)
+            stopTimedUpdate()
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -106,17 +114,18 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
             // for instance if the the phone number format is invalid.
             Timber.i("onVerificationFailed")
 
+            viewState?.hideProgress()
+            isSmsSent.set(false)
+            stopTimedUpdate()
+
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
-                viewState?.hideProgress()
                 viewState?.showError(null, R.string.invalid_phone_number)
             } else if (e is FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been
                 // exceeded
-                viewState?.hideProgress()
                 viewState?.showError(null, R.string.quota_exceeded)
             }
-
         }
         override fun onCodeSent(verificationId: String?,
                                 token: PhoneAuthProvider.ForceResendingToken?) {
@@ -127,6 +136,10 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
             // Save verification ID and resending token so we can use them later
             verifId = verificationId
             resendToken = token
+            userRequstModel.codeExpiryDate = DateTime.now().plusSeconds(Constants.smsVerificationDelay.toInt()).toDate()
+            isSmsSent.set(true)
+            startTimedUpdate()
+            viewState.hideProgress()
         }
     }
 
@@ -149,10 +162,16 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
         viewState?.hideKeyboard()
         viewState?.showProgress()
 
-        userRequstModel.mobilePhone?.let {
-            viewState?.verifyPhoneNumber(it)
-            //viewState?.hideProgress()
-            //router.navigateTo(Screens.SmsCodeScreen())
+        if (isSmsSent.get())
+        {
+            checkCode(userRequstModel.smsCode)
+        }
+        else {
+            userRequstModel.mobilePhone?.let {
+                viewState?.verifyPhoneNumber(it)
+                //viewState?.hideProgress()
+                //router.navigateTo(Screens.SmsCodeScreen())
+            }
         }
 
         /*disposable = userRequstModel.mobilePhone?.let {
@@ -193,4 +212,46 @@ class PhoneNumberPresenter(private val router: Router) : MvpPresenter<PhoneNumbe
         }
         */
     }
+
+    fun startTimedUpdate()
+    {
+        if (timer != null)
+        {
+            timer?.cancel()
+            timer = null
+        }
+
+        timer =  Timer()
+        timer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                if (userRequstModel.codeExpiryDate == null)
+                {
+                    return
+                }
+
+                if (DateTime.now().toDate() > userRequstModel.codeExpiryDate)
+                {
+                    userRequstModel.codeExpiryDate = null
+                    //сделать действие по повторной отправке
+                    stopTimedUpdate()
+                    return
+                }
+
+                userRequstModel.notifyPropertyChanged(BR.codeExpiryDate)
+            }
+        }, delay, period)
+    }
+
+    fun stopTimedUpdate()
+    {
+        timer?.cancel()
+        timer = null
+    }
+
+    fun startCheck(text: String?)
+    {
+        getSmsCode()
+    }
+
+    val startCheck: Function1<String, Unit> = this::startCheck
 }
