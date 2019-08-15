@@ -235,5 +235,19 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
     </style>
+    <style name="MyCustomTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+        <item name="android:actionBarTabBarStyle">@style/MyActionBarTabTheme</item>
+
+        <item name="actionBarStyle">@style/MyActionBarTheme</item>
+        <item name="actionBarTabBarStyle">@style/MyActionBarTabTheme</item>
+    </style>
+
+    <style name="MyActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
+
+        <item name="background">@color/yellowBgColor</item>
+    </style>
+    <style name="MyActionBarTabTheme" parent="@style/Widget.AppCompat.ActionBar.TabView">
+    </style>
 
 </resources>

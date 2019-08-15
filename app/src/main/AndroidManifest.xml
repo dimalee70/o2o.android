@@ -31,7 +31,9 @@
         <activity
                 android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
                 android:theme="@style/Base.Theme.AppCompat"/>
-        <activity android:name=".ui.activity.product.ScanActivity"/>
+        <activity android:name=".ui.activity.product.ScanActivity"
+                  android:theme="@style/MyActionBarTheme"
+        />
         <activity android:name=".ui.activity.product.ProductActivity"/>
         <activity android:name=".ui.activity.LoginInActivity"/>
         <activity

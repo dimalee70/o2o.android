@@ -40,6 +40,7 @@
     <color name="opponentTurnTextColor">#ffffff</color>
     <color name="inverseTextColor">#ffffff</color>
     <color name="settingsFieldTextColor">#D9DFE7</color>
+    <color name="lineColor">#BBBBBB</color>
 
     <color name="colorUnselected">#BB000000</color>
     <color name="colorSelected">#BBFFFFFF</color>

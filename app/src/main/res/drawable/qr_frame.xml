@@ -14,33 +14,3 @@
           android:pathData="M5,165C5,178.2 5,198.2 5,225L30.79,225L65,225"
           android:strokeColor="@color/quantum_black_100" android:strokeWidth="3"/>
 </vector>
-
-
-
-
-
-
-<!--&lt;!&ndash; drawable/rectangle.xml &ndash;&gt;-->
-<!--<vector-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:aapt="http://schemas.android.com/aapt"-->
-        <!--android:width="327dp"-->
-        <!--android:height="209dp"-->
-        <!--android:viewportWidth="327"-->
-        <!--android:viewportHeight="209"-->
-<!--&gt;-->
-
-    <!--<group>-->
-
-        <!--<clip-path-->
-                <!--android:pathData="M0 0H327V209H0V0Z"-->
-        <!--/>-->
-
-        <!--<path-->
-                <!--android:pathData="M0 0V209H327V0"-->
-                <!--android:fillColor="#C4C4C4"-->
-        <!--/>-->
-
-    <!--</group>-->
-
-<!--</vector>-->
