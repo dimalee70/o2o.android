@@ -65,6 +65,7 @@ class ScanActivity : BaseActivity(), ScanView,
         }
         else
         {
+            println("Error")
             Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
         }
 //        .setGravity(Gravity.LEFT,200,200).show()
