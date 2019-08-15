@@ -28,7 +28,7 @@
                     android:id="@+id/txtGreetings"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    style="@style/TextView.Header"
+                    style="@style/TextView.HeaderInverseColor"
                     android:layout_marginStart="30dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -41,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:theme="@style/Dialog.Text"
-                android:textColor="@color/colorPanel"
                 android:layout_marginStart="13dp"
                 android:layout_marginEnd="13dp"
         />

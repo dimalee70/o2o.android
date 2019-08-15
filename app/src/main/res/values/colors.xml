@@ -37,7 +37,7 @@
     <color name="timerTextColor">#da65e8</color>
     <color name="offerTitleColor">#C4D849</color>
     <color name="opponentTurnTextColor">#ffffff</color>
-    <color name="yourTurnTextColor">#399bdb</color>
+    <color name="inverseTextColor">#ffffff</color>
     <color name="settingsFieldTextColor">#D9DFE7</color>
 
     <color name="colorUnselected">#BB000000</color>
@@ -71,7 +71,7 @@
     <color name="lightTimerTextColor">#a049aa</color>
     <color name="lightOfferTitleColor">#205c82</color>
     <color name="lightOpponentTurnTextColor">#636363</color>
-    <color name="lightYourTurnTextColor">#205c82</color>
+    <color name="lightInverseTextColor">#000000</color>
     <color name="lightSettingsFieldTextColor">#636363</color>
 
     <color name="yellowBgColor">#eae406</color>

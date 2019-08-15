@@ -23,7 +23,7 @@
     <attr name="buttonBackdround" format="reference"/>
     <attr name="loaderColor" format="reference"/>
     <attr name="opponentTurnTextColor" format="reference"/>
-    <attr name="yourTurnTextColor" format="reference"/>
+    <attr name="inverseTextColor" format="reference"/>
     <attr name="settingsFieldTextColor" format="reference"/>
     <attr name="hintTextColor" format="reference"/>
     <!-- Declare custom theme attributes that allow changing which styles are

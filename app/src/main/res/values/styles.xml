@@ -60,7 +60,7 @@
         <item name="timerTextColor">@color/timerTextColor</item>
         <item name="loaderColor">@color/colorSelected</item>
         <item name="opponentTurnTextColor">@color/opponentTurnTextColor</item>
-        <item name="yourTurnTextColor">@color/yourTurnTextColor</item>
+        <item name="inverseTextColor">@color/inverseTextColor</item>
         <item name="settingsFieldTextColor">@color/settingsFieldTextColor</item>
         <item name="hintTextColor">@color/hintTextColor</item>
     </style>
@@ -93,7 +93,7 @@
         <item name="timerTextColor">@color/lightTimerTextColor</item>
         <item name="buttonBackdround">@drawable/button_bg</item>
         <item name="opponentTurnTextColor">@color/lightOpponentTurnTextColor</item>
-        <item name="yourTurnTextColor">@color/lightYourTurnTextColor</item>
+        <item name="inverseTextColor">@color/lightInverseTextColor</item>
         <item name="settingsFieldTextColor">@color/lightSettingsFieldTextColor</item>
         <item name="hintTextColor">@color/lightHintTextColor</item>
     </style>
@@ -107,7 +107,7 @@
     </style>
 
     <style name="Widget.TextView.Primary" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/boldTextColor</item>
+        <item name="android:textColor">@color/primaryText</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -161,7 +161,7 @@
     </style>
 
     <style name="TextView.YourTurn" parent="TextView.Bold">
-        <item name="android:textColor">@color/yourTurnTextColor</item>
+        <item name="android:textColor">@color/inverseTextColor</item>
     </style>
 
     <style name="TextView.HeaderAutoSize" parent="TextView.AutoSize">
@@ -172,6 +172,10 @@
     <style name="TextView.Header" parent="Widget.TextView.Primary">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.HeaderInverseColor" parent="TextView.Header">
+        <item name="android:textColor">@color/inverseTextColor</item>
     </style>
 
     <style name="Widget.EditText.Primary" parent="Widget.AppCompat.EditText">
