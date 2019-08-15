@@ -18,17 +18,40 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.CaptureManager
+import kotlinx.android.synthetic.main.activity_scan.*
+import kz.dragau.larek.App
 import kz.dragau.larek.R
+import kz.dragau.larek.databinding.ActivityScanBinding
+import kz.dragau.larek.presentation.presenter.MainAppPresenter
+import ru.terrakok.cicerone.Router
 import timber.log.Timber
+import javax.inject.Inject
 
 
-class ScanActivity : BaseActivity(), ScanView, DecoratedBarcodeView.TorchListener
-    , BarcodeCallback
+class ScanActivity : BaseActivity(), ScanView,
+    BarcodeCallback
 {
+
+    @Inject
+    lateinit var router: Router
+
+    @InjectPresenter
+    lateinit var mScanPresenter: ScanPresenter
+
+
+    @ProvidePresenter
+    fun providePresenter(): ScanPresenter
+    {
+        return ScanPresenter(router)
+    }
+
+    lateinit var binding: ActivityScanBinding
 
     override fun barcodeResult(result: BarcodeResult?) {
 
@@ -53,33 +76,44 @@ class ScanActivity : BaseActivity(), ScanView, DecoratedBarcodeView.TorchListene
     private var capture: CaptureManager? = null
     private var isFlashLightOn = false
 
-    override fun onTorchOn() {
-        switchFlashlight.setText(R.string.turn_off_flashlight);
-    }
-
-    override fun onTorchOff() {
-        switchFlashlight.setText(R.string.turn_on_flashlight);
-    }
+//    override fun onTorchOn() {
+//        switchFlashlight.setText(R.string.turn_off_flashlight);
+//    }
+//
+//    override fun onTorchOff() {
+//        switchFlashlight.setText(R.string.turn_on_flashlight);
+//    }
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scan)
+
+//        setContentView(R.layout.activity_scan)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_scan) as ActivityScanBinding
+        binding.presenter = mScanPresenter
+
+
+        back_button_iv.setOnClickListener(){
+            println("Click")
+//            super.onBackPressed()
+        }
 //        zxingBarcodeScanner.decodeContinuous(this)
 //        zxingBarcodeScanner.viewFinder.
-        zxingBarcodeScanner.setTorchListener(this)
+//        zxingBarcodeScanner.setTorchListener(this)
 
 
-        if (!hasFlash()) {
-            switchFlashlight.setVisibility(View.GONE)
-        } else {
-            switchFlashlight.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(view: View) {
-                    switchFlashlight()
-                }
-            })
-        }
+//        if (!hasFlash()) {
+//            switchFlashlight.setVisibility(View.GONE)
+//        } else {
+//            switchFlashlight.setOnClickListener(object : View.OnClickListener {
+//                override fun onClick(view: View) {
+//                    switchFlashlight()
+//                }
+//            })
+//        }
 
         capture = CaptureManager(this, zxingBarcodeScanner)
         capture!!.initializeFromIntent(intent, savedInstanceState)
@@ -88,20 +122,20 @@ class ScanActivity : BaseActivity(), ScanView, DecoratedBarcodeView.TorchListene
 //        capture!!.decode()
     }
 
-    fun switchFlashlight() {
-        if (isFlashLightOn) {
-            zxingBarcodeScanner.setTorchOff()
-            isFlashLightOn = false
-        } else {
-            zxingBarcodeScanner.setTorchOn()
-            isFlashLightOn = true
-        }
-    }
+//    fun switchFlashlight() {
+//        if (isFlashLightOn) {
+//            zxingBarcodeScanner.setTorchOff()
+//            isFlashLightOn = false
+//        } else {
+//            zxingBarcodeScanner.setTorchOn()
+//            isFlashLightOn = true
+//        }
+//    }
 
-    private fun hasFlash(): Boolean {
-        return applicationContext.packageManager
-            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
-    }
+//    private fun hasFlash(): Boolean {
+//        return applicationContext.packageManager
+//            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+//    }
 
     override fun onResume() {
         super.onResume()

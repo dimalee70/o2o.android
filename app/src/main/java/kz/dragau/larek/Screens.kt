@@ -42,13 +42,7 @@ class Screens {
 
     class ScanScreen: SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
-
-            var integrator: IntentIntegrator = IntentIntegrator(context as Activity)
-//            integrator.setCaptureActivity(ScanActivity::class.java)
-//            integrator.initiateScan()
-//            return integrator.createScanIntent()
             return Intent(context, ScanActivity::class.java)
-//            return Intent(IntentIntegrator(context as Activity).setCaptureActivity(Intents.Scan::class.java).initiateScan()
         }
     }
 
