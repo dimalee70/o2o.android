@@ -15,12 +15,12 @@
             app:zxing_framing_rect_width="327dp" />
 
 
-    <!--<View-->
-            <!--android:layout_width="340dp"-->
-            <!--android:layout_height="250dp"-->
-            <!--android:background="@drawable/qr_frame"-->
-            <!--android:layout_gravity="center">-->
-    <!--</View>-->
+    <View
+            android:layout_width="340dp"
+            android:layout_height="215dp"
+            android:background="@drawable/qr_frame"
+            android:layout_centerInParent="true">
+    </View>
     <kz.dragau.larek.custom.CustomViewfinderView
             android:id="@+id/zxing_viewfinder_view"
             android:layout_width="match_parent"
