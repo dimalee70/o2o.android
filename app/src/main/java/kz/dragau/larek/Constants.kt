@@ -16,4 +16,5 @@ object Constants
     const val writeTimeout: Long = 25
     const val readTimeout: Long = 25
     const val progressDelay: Long = 10
+    const val smsVerificationDelay: Long = 60
 }

@@ -65,7 +65,7 @@ class LoginInActivity : BaseActivity(), LoginInView {
         super.onPause()
     }
 
-    var navigator:SupportAppNavigator = object : SupportAppNavigator(this, R.id.activity_login_frame_layout) {
+    var navigator:SupportAppNavigator = object : SupportAppNavigator(this, R.id.login_frame_layout) {
         override fun setupFragmentTransaction(
             command: Command?,
             currentFragment: Fragment?,
@@ -90,7 +90,7 @@ class LoginInActivity : BaseActivity(), LoginInView {
         smsFragment: SmsCodeFragment,
         fragmentTransaction: FragmentTransaction
     ) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return
         }
 
@@ -103,12 +103,12 @@ class LoginInActivity : BaseActivity(), LoginInView {
 
         val view = phoneFragment.binding.logoImage
         view.transitionName = LOGIN_TRANSITION
-        fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)
+        fragmentTransaction.addSharedElement(view , LOGIN_TRANSITION)*/
 
     }
 
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.activity_login_frame_layout)
+        val fragment = supportFragmentManager.findFragmentById(R.id.login_frame_layout)
         if (fragment != null
             && fragment is BackButtonListener
             && (fragment as BackButtonListener).onBackPressed()

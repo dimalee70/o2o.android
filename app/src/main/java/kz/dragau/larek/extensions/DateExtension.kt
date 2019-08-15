@@ -112,3 +112,21 @@ inline fun Date.stringHMSTimeDiff(fromDate: Date? = null): String
         String.format("%02d", seconds)
     )
 }
+
+inline fun Date.shortSecDiff(fromDate: Date? = null): String
+{
+    var from = DateTime.now()
+    if (fromDate != null) { from = DateTime(fromDate) }
+    val to = DateTime(this)
+    val duration = Duration(from, to)
+    var seconds = duration.standardSeconds
+
+    if (seconds < 0)
+    {
+        seconds = 0
+    }
+
+    return App.appComponent.context().getString(R.string.repeat_send_sms,
+        String.format("%02d", seconds)
+    )
+}

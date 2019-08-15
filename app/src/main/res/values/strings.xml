@@ -66,8 +66,8 @@
     <string name="greetings">ДОБРО\nПОЖАЛОВАТЬ!</string>
     <string name="wait_for_sms">дождитесь смс подтверждения</string>
     <string name="phone_number_checking">идет проверка номера</string>
-    <string name="password_sent">Пароль отправлен на указанный номер телефона</string>
-    <string name="enter_sms_code">Введите пароль из СМС</string>
-    <string name="repeat_send_sms">Отправить пароль повторно: через 20 сек.</string>
+    <string name="password_sent">Код отправлен на указанный номер телефона</string>
+    <string name="enter_sms_code">Введите код из СМС</string>
+    <string name="repeat_send_sms">Отправить код повторно через: %1$s сек.</string>
     <string name="scan_message">Наведите на штрих-код для сканирования</string>
 </resources>

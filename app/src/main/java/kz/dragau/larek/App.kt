@@ -32,11 +32,6 @@ import android.R.id.message
 import android.R.id
 
 
-
-
-
-
-
 class App : MultiDexApplication() {
     private var cicerone: Cicerone<Router>? = null
 
