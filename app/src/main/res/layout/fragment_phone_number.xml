@@ -79,29 +79,30 @@
                 />
 
                 <LinearLayout
+                        android:id="@+id/ltSmsCode"
                         app:layout_constraintTop_toBottomOf="@id/passwordSentTv"
                         android:alpha="0"
                         app:visibleTransition="@{presenter.isSmsSent}"
-                        android:id="@+id/ltSmsCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                    <EditText android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:id="@+id/smsEt"
-                              android:hint="@string/enter_sms_code"
-                              android:inputType="numberPassword"
-                              android:ems="6"
-                              android:paddingStart="6dp"
-                              android:layout_marginTop="26dp"
-                              android:textSize="14sp"
-                              android:maxLength="6"
-                              android:drawableStart="@drawable/ic_sms"
-                              android:text="@={loginViewModel.smsCode}"
-                              app:onEditorEnterAction="@{presenter.startCheck}"
-                              android:imeOptions="actionDone"
-                              android:singleLine="true"
+                    <EditText
+                            android:id="@+id/smsEt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_sms_code"
+                            android:inputType="numberPassword"
+                            android:ems="6"
+                            android:paddingStart="6dp"
+                            android:layout_marginTop="26dp"
+                            android:textSize="14sp"
+                            android:maxLength="6"
+                            android:drawableStart="@drawable/ic_sms"
+                            android:text="@={loginViewModel.smsCode}"
+                            app:onEditorEnterAction="@{presenter.startCheck}"
+                            android:imeOptions="actionDone"
+                            android:singleLine="true"
                     />
 
                     <TextView

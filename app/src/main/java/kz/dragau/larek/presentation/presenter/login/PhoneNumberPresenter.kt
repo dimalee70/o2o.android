@@ -159,11 +159,13 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     fun getSmsCode()
     {
+
         viewState?.hideKeyboard()
         viewState?.showProgress()
 
         if (isSmsSent.get())
         {
+
             checkCode(userRequstModel.smsCode)
         }
         else {
@@ -250,6 +252,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     fun startCheck(text: String?)
     {
+        viewState?.clearFocus()
         getSmsCode()
     }
 

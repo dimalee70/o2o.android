@@ -7,4 +7,5 @@ import kz.dragau.larek.presentation.BaseView
 @StateStrategyType(OneExecutionStateStrategy::class)
 interface PhoneNumberView : BaseView {
     fun verifyPhoneNumber(phoneNumber: String)
+    fun clearFocus()
 }

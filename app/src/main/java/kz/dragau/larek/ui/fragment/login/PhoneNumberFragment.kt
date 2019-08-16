@@ -13,6 +13,7 @@ import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.firebase.auth.PhoneAuthProvider
+import kotlinx.android.synthetic.main.fragment_phone_number.*
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentPhoneNumberBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
@@ -27,6 +28,12 @@ import java.util.concurrent.TimeUnit
 
 
 class PhoneNumberFragment : BaseMvpFragment(), PhoneNumberView {
+    override fun clearFocus()
+    {
+        phoneEt.clearFocus()
+        smsEt.requestFocus()
+    }
+
     companion object {
         const val TAG = "PhoneNumberFragment"
 
