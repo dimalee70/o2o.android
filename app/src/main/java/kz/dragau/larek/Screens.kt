@@ -13,6 +13,7 @@ import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.product.AddProductActivity
+import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
@@ -43,6 +44,12 @@ class Screens {
     class ScanScreen: SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, ScanActivity::class.java)
+        }
+    }
+
+    class StoreScreen: SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, StoreActivity::class.java)
         }
     }
 
@@ -119,4 +126,5 @@ class Screens {
             return ProductRegisterFragment.newInstance()
         }
     }
+
 }
