@@ -10,12 +10,12 @@ import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 
-class RegisterStoreFragment : BaseMvpFragment(), RegisterStoreView {
+class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     companion object {
-        const val TAG = "RegisterStoreFragment"
+        const val TAG = "StoreRegisterFragment"
 
-        fun newInstance(): RegisterStoreFragment {
-            val fragment: RegisterStoreFragment = RegisterStoreFragment()
+        fun newInstance(): StoreRegisterFragment {
+            val fragment: StoreRegisterFragment = StoreRegisterFragment()
             val args: Bundle = Bundle()
             fragment.arguments = args
             return fragment
