@@ -71,4 +71,10 @@
     <string name="repeat_send_sms">Отправить код повторно через: %1$s сек.</string>
     <string name="scan_message">Наведите на штрих-код для сканирования</string>
     <string name="storeHeader">регистрация торговой точки</string>
+    <string name="storeTitleHint">Название магазина</string>
+    <string name="storeLegalTitleHint">Юр. название</string>
+    <string name="storeAddressHint">Адрес</string>
+    <string name="mappingText">Или указать на карте</string>
+    <string name="onlineBookingText">Принятие онлайн заказов</string>
+    <string name="doneText">Готово</string>
 </resources>

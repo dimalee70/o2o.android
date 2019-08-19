@@ -26,21 +26,21 @@
                 <!--android:orientation="horizontal"-->
         <!--&gt;-->
 
-            <TextView
-                    android:id="@+id/titleTv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/storeHeader"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="15dp"
-                    app:textAllCaps="true"
-                    style="@style/TextView.HeaderBlackColor"
-                    app:autoSizeTextType="uniform"
-                    android:layout_marginEnd="90dp"
-                    app:layout_constraintTop_toBottomOf="@+id/logoIv"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/storeIv"
-            />
+        <TextView
+                android:id="@+id/titleTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/storeHeader"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                app:textAllCaps="true"
+                style="@style/TextView.HeaderBlackColor"
+                app:autoSizeTextType="uniform"
+                android:layout_marginEnd="90dp"
+                app:layout_constraintTop_toBottomOf="@+id/logoIv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/storeIv"
+        />
 
 
         <!--</LinearLayout>-->
@@ -55,9 +55,161 @@
                 android:adjustViewBounds="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/titleTv"
 
         />
 
+        <View
+                android:id="@+id/dividerV"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/lineColor"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginTop="28dp"
+                app:layout_constraintTop_toBottomOf="@+id/storeIv"
+        />
+
+        <EditText
+                android:id="@+id/storeTitleEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_store_title"
+                android:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@+id/dividerV"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:hint="@string/storeTitleHint"
+        />
+
+        <EditText
+                android:id="@+id/storeLegalTitleEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_store_title"
+                android:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@+id/storeTitleEt"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:hint="@string/storeLegalTitleHint"
+        />
+
+        <EditText
+                android:id="@+id/storeAddressEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_store_address"
+                android:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@+id/storeLegalTitleEt"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:hint="@string/storeAddressHint"
+        />
+        <TextView
+                android:id="@+id/mappingTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/mappingText"
+                android:drawableEnd="@drawable/ic_location_pin"
+                android:gravity="start|center"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@+id/storeAddressEt"
+        />
+
+        <View
+                android:id="@+id/dividerSecondV"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/lineColor"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/mappingTv"
+        />
+
+        <LinearLayout
+                android:id="@+id/onlineBookingLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/dividerSecondV"
+                android:layout_marginTop="26dp"
+        >
+
+            <TextView
+                    android:id="@+id/onlineBookingTv"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:text="@string/onlineBookingText"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:layout_marginStart="15dp"
+            />
+
+            <com.suke.widget.SwitchButton
+                    android:id="@+id/onlineBookingS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="15dp"
+       />
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/storePhotoLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/onlineBookingLl"
+                android:layout_marginTop="26dp"
+        >
+            <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/splash_screen"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="14dp"
+            />
+
+            <ImageView
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="16dp"
+                    app:srcCompat="@drawable/ic_store_photo"
+                    android:background="#979797"
+                    android:scaleType="center"
+                    android:clickable="true"
+            />
+
+        </LinearLayout>
+
+        <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doneText"
+                android:background="@drawable/button_green_bg"
+                android:layout_marginBottom="52dp"
+                android:layout_marginStart="86dp"
+                android:layout_marginEnd="86dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+        />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
