@@ -1,7 +1,7 @@
 package kz.dragau.larek.presentation.presenter.login
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.databinding.ObservableBoolean
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -21,10 +21,18 @@ import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import javax.inject.Inject
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.JsonObject
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.BR
 import kz.dragau.larek.Constants
+import kz.dragau.larek.Constants.noVerifyId
 import rxfirebase2.auth.RxFirebaseAuth
 import kz.dragau.larek.R
+import kz.dragau.larek.api.response.TokenResponse
+import kz.dragau.larek.models.db.Converters.Companion.toOffsetDateTime
+import kz.dragau.larek.models.db.UserDao
+import kz.dragau.larek.models.objects.User
+import kz.dragau.larek.models.shared.DataHolder
 import org.joda.time.DateTime
 import java.util.*
 
@@ -33,6 +41,9 @@ import java.util.*
 class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPresenter<PhoneNumberView>() {
     @Inject
     lateinit var client: ApiManager
+
+    @Inject
+    lateinit var userDao: UserDao
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -49,6 +60,33 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
         App.appComponent.inject(this)
         isSmsSent.set(smsSent)
     }
+
+    private fun saveToDb(tokenResponse: TokenResponse)
+    {
+        var user: User = User(verifId?:noVerifyId, userRequstModel.mobilePhone, tokenResponse.resultObject?.token,toOffsetDateTime(tokenResponse.resultObject?.expireDate))
+
+
+        userDao.insert(
+            user
+        )
+
+        DataHolder.userId = verifId
+    }
+//    private fun testDb(){
+//
+//        println("Db")
+//        println(userDao.getAllActive())
+//
+//        val user: User = User(verifId?:"", userRequstModel.mobilePhone, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIrNzcwMDI2NzcwMTIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6Iis3NzAwMjY3NzAxMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6ImU0MzY5ZDRiLTJjYjgtNGY0My1hZDAzLTA4ZDcyNTI0Y2QwZSIsIm5iZiI6MTU2NjI3NTU1MCwiZXhwIjoxNTY4ODY3NTUwLCJpYXQiOjE1NjYyNzU1NTB9.e4ZhngmqffiUkp86LCZMK1RO-hjBQ2ILTquQbgNJKls",toOffsetDateTime("2019-09-19T04:32:30.0758124Z"))
+//
+//
+//        userDao.insert(
+//            user
+//        )
+//
+//        println("User")
+//        println(user)
+//    }
 
     var verifId: String? = null
     var resendToken: PhoneAuthProvider.ForceResendingToken? = null
@@ -160,10 +198,40 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             return
         }
 
-        viewState.hideProgress()
+        getTokenResultApi(firebaseToken)
         //router.navigateTo(Screens.LocationMapScreen())
     }
 
+    @SuppressLint("CheckResult")
+    fun getTokenResultApi(token: String){
+        val jsonObject: JsonObject = JsonObject()
+        jsonObject.addProperty(Constants.verificationCode,token )
+        client.getToken(jsonObject)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    result ->
+                        run{
+                            viewState?.hideProgress()
+                        }
+
+                        saveToDb(result)
+
+                },
+                {
+                    error ->
+                    run {
+                        viewState?.hideProgress()
+                    }
+                    if (error is HttpException) {
+                        if (error.code() == 500) {
+                        }
+                    }
+
+                }
+            )
+    }
 
     fun getSmsCode()
     {

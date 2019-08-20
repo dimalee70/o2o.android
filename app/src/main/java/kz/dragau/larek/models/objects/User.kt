@@ -3,17 +3,22 @@ package kz.dragau.larek.models.objects
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.room.*
-import com.google.gson.Gson
+import java.time.OffsetDateTime
 
 @Entity(tableName = "user", indices = [Index(value = ["phone"], unique = true) ])
 data class User(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "u_id")
-    var id: Long,
+    var id: String,
     @ColumnInfo
-    var username: String
+    var username: String?,
+    @ColumnInfo
+    var token: String?,
+    @ColumnInfo
+    val expireDate: OffsetDateTime? = null
 ) : BaseObservable()
 {
+
     @ColumnInfo
     var birthday: String? = null
         @Bindable get
@@ -29,4 +34,22 @@ data class User(
             //notifyPropertyChanged(BR.phone)
         }
 
+    override fun toString(): String {
+        return "User(username=$username, token=$token, expireDate=$expireDate, id=$id, )"
+    }
+
+
+//    @ColumnInfo
+//    var token: String? = null
+//        @Bindable get
+//        set(value){
+//            field = value
+//        }
+//
+//    @ColumnInfo
+//    var expireDate: String? = null
+//    @Bindable get
+//    set(value){
+//        field = value
+//    }
 }

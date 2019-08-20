@@ -8,6 +8,7 @@ import kz.dragau.larek.models.objects.User
 
 @Dao
 interface UserDao {
+
     @Query("SELECT * from user")
     fun getAllActive(): Flowable<List<User>>
 
@@ -27,7 +28,7 @@ interface UserDao {
     fun getFlowable(id: Int): Flowable<User>
 
     @Query("SELECT * from user where u_id = :id")
-    fun get(id: Long): Maybe<User>
+    fun get(id: String): Maybe<User>
 
     @Update
     fun update(model: User)

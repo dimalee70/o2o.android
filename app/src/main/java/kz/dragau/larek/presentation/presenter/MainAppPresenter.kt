@@ -54,13 +54,14 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
     {
         updateFcmToken()
 
-        if (DataHolder.userId != -1L) {
-            disposable = userDao.get(DataHolder.userId)
+        if (DataHolder.userId != null) {
+            disposable = userDao.get(DataHolder.userId!!)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { user: User ->
                         //router.newRootScreen(Screens.LoginScreen())
+                        router.newRootScreen(Screens.StoreScreen())
                         //TODO: перейти на Main Screen
                     },
                     {

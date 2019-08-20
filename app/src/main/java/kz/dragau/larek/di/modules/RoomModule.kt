@@ -13,6 +13,7 @@ import javax.inject.Singleton
 class RoomModule(private val mApplication: App){
     private val demoDatabase: Db = Room.databaseBuilder(mApplication, Db::class.java, "o2o")
         .fallbackToDestructiveMigration()
+        .allowMainThreadQueries()
         .build()
 
     @Singleton
