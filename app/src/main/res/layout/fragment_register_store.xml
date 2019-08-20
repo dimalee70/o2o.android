@@ -169,6 +169,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="15dp"
+                    app:sb_show_indicator="false"
+                    app:sb_checked="true"
        />
         </LinearLayout>
 

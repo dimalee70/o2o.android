@@ -40,6 +40,9 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
     val userRequstModel = LoginRequestModel()
 
     private var disposable: Disposable? = null
+
+    private var myCode: String? = null
+
     var isSmsSent = ObservableBoolean()
 
     init {
@@ -78,6 +81,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                 {
                     viewState?.hideProgress()
                     viewState?.showError(it)
+                    it.printStackTrace()
                 }
             )
     }
@@ -98,6 +102,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             return
         }
 
+
         val credential = PhoneAuthProvider.getCredential(verifId!!, code)
         signInFirebase(credential)
     }
@@ -105,8 +110,11 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            signInFirebase(credential)
-            stopTimedUpdate()
+            val code: String? = credential.smsCode
+            if(userRequstModel.smsCode.isNotEmpty()) {
+                checkCode(code!!)
+                stopTimedUpdate()
+            }
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
