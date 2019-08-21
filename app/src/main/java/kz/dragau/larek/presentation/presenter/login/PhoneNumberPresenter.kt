@@ -25,7 +25,6 @@ import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.BR
 import kz.dragau.larek.Constants
-import kz.dragau.larek.Constants.noVerifyId
 import rxfirebase2.auth.RxFirebaseAuth
 import kz.dragau.larek.R
 import kz.dragau.larek.api.response.TokenResponse
@@ -63,30 +62,15 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     private fun saveToDb(tokenResponse: TokenResponse)
     {
-        var user: User = User(verifId?:noVerifyId, userRequstModel.mobilePhone, tokenResponse.resultObject?.token,toOffsetDateTime(tokenResponse.resultObject?.expireDate))
+        var user: User = User(tokenResponse.resultObject?.systemUserId!!, userRequstModel.mobilePhone, tokenResponse.resultObject?.token,toOffsetDateTime(tokenResponse.resultObject?.expireDate))
 
 
         userDao.insert(
             user
         )
 
-        DataHolder.userId = verifId
+        DataHolder.userId = user.id
     }
-//    private fun testDb(){
-//
-//        println("Db")
-//        println(userDao.getAllActive())
-//
-//        val user: User = User(verifId?:"", userRequstModel.mobilePhone, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIrNzcwMDI2NzcwMTIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6Iis3NzAwMjY3NzAxMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6ImU0MzY5ZDRiLTJjYjgtNGY0My1hZDAzLTA4ZDcyNTI0Y2QwZSIsIm5iZiI6MTU2NjI3NTU1MCwiZXhwIjoxNTY4ODY3NTUwLCJpYXQiOjE1NjYyNzU1NTB9.e4ZhngmqffiUkp86LCZMK1RO-hjBQ2ILTquQbgNJKls",toOffsetDateTime("2019-09-19T04:32:30.0758124Z"))
-//
-//
-//        userDao.insert(
-//            user
-//        )
-//
-//        println("User")
-//        println(user)
-//    }
 
     var verifId: String? = null
     var resendToken: PhoneAuthProvider.ForceResendingToken? = null
@@ -197,7 +181,6 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             viewState.hideProgress()
             return
         }
-
         getTokenResultApi(firebaseToken)
         //router.navigateTo(Screens.LocationMapScreen())
     }

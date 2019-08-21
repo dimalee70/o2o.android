@@ -18,5 +18,4 @@ object Constants
     const val progressDelay: Long = 10
     const val smsVerificationDelay: Long = 60
     const val verificationCode = "verificationCode"
-    const val noVerifyId = "no_verify_id"
 }

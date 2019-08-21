@@ -61,6 +61,8 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                 .subscribe(
                     { user: User ->
                         //router.newRootScreen(Screens.LoginScreen())
+                        println("USER")
+                        println(user)
                         router.newRootScreen(Screens.StoreScreen())
                         //TODO: перейти на Main Screen
                     },

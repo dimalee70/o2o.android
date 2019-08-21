@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class TokenResult(
 
+    @field:SerializedName("systemUserId")
+    val systemUserId: String? = null,
+
     @field:SerializedName("token")
     val token: String? = null,
 

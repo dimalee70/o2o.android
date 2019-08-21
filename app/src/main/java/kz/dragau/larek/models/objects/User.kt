@@ -35,7 +35,7 @@ data class User(
         }
 
     override fun toString(): String {
-        return "User(username=$username, token=$token, expireDate=$expireDate, id=$id, )"
+        return "User(username=$username, token=$token, expireDate=$expireDate, id=$id)"
     }
 
 
