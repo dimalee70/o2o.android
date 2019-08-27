@@ -3,10 +3,14 @@ package kz.dragau.larek.ui.activity.store
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.ferfalk.simplesearchview.utils.DimensUtils
+import kotlinx.android.synthetic.main.activity_store.*
+import kz.dragau.larek.Constants
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.presentation.view.store.StoreView
@@ -18,8 +22,8 @@ import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
 
-
 class StoreActivity : BaseActivity(), StoreView {
+
     companion object {
         const val TAG = "StoreActivity"
         fun getIntent(context: Context): Intent = Intent(context, StoreActivity::class.java)
@@ -32,10 +36,25 @@ class StoreActivity : BaseActivity(), StoreView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
+        setSupportActionBar(toolbar)
+//        setSearchTollbar()
 
         if(savedInstanceState == null){
             navigator.applyCommands(arrayOf<Command>(Replace(Screens.StoreRegisterScreen())))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_home, menu)
+        setupSearchView(menu)
+        return true
+    }
+
+    private fun setupSearchView(menu: Menu?){
+        var item: MenuItem = menu!!.findItem(R.id.action_search)
+        searchView.setMenuItem(item)
+        val revealCenter = searchView.revealAnimationCenter
+        revealCenter.x -= DimensUtils.convertDpToPx(Constants.extraRevealCenterPadding, this)
     }
 
     override fun onResumeFragments() {
@@ -87,4 +106,5 @@ class StoreActivity : BaseActivity(), StoreView {
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
 }

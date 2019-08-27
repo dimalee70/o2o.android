@@ -4,11 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.store.RegisterStoreView
 import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import kz.dragau.larek.App
+import kz.dragau.larek.databinding.FragmentRegisterStoreBinding
+import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     companion object {
@@ -22,18 +29,31 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
         }
     }
 
+    @Inject
+    lateinit var router: Router
+
     @InjectPresenter
     lateinit var mRegisterStorePresenter: RegisterStorePresenter
+
+    @ProvidePresenter
+    fun providePresenter(): RegisterStorePresenter
+    {
+        return RegisterStorePresenter(router)
+    }
+
+    lateinit var binding: FragmentRegisterStoreBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_register_store, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register_store, container, false)
+        binding.presenter = mRegisterStorePresenter
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+        super.onCreate(savedInstanceState)
     }
 }

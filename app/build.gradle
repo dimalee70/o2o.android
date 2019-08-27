@@ -204,7 +204,7 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.2'
     //implementation "com.github.debop:koda-time:2.0.0"
 
-    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-core:17.1.0'
     implementation 'com.google.firebase:firebase-invites:17.0.0'
 
     implementation "android.arch.persistence.room:runtime:1.1.1"
@@ -239,9 +239,9 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.0.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
 
-    implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
     implementation 'com.github.yongjhih.rxfirebase:rxfirebase2-auth-kotlin:-SNAPSHOT'
-    implementation 'com.google.firebase:firebase-messaging:19.0.1'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
 
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
@@ -252,6 +252,8 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+
+    implementation 'com.github.Ferfalk:SimpleSearchView:0.1.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

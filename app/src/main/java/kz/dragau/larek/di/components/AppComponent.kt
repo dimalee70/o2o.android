@@ -19,6 +19,8 @@ import kz.dragau.larek.presentation.presenter.registration.RegistrationPresenter
 import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import kz.dragau.larek.presentation.presenter.product.ProductRegisterPresenter
 import kz.dragau.larek.presentation.presenter.product.ScanPresenter
+import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
+import kz.dragau.larek.presentation.presenter.store.StorePresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
@@ -29,6 +31,7 @@ import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
+import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 
 @Singleton
 @CustomApplicationScope
@@ -63,6 +66,7 @@ interface AppComponent {
     fun inject(fragment: RegistrationFragment)
     fun inject(fragment: LocationMapFragment)
     fun inject(fragment: ProductRegisterFragment)
+    fun inject(fragment: StoreRegisterFragment)
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
@@ -72,6 +76,7 @@ interface AppComponent {
     fun inject(presenter: LocationMapPresenter)
     fun inject(presenter: ProductRegisterPresenter)
     fun inject(presenter: ScanPresenter)
+    fun inject(presenter: RegisterStorePresenter)
 
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp

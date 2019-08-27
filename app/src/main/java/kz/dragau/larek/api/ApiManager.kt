@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import io.reactivex.Observable
 import kz.dragau.larek.Constants
 import kz.dragau.larek.api.requests.LoginRequestModel
+import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.api.response.SmsCodeResponse
 import kz.dragau.larek.api.response.TokenResponse
 import kz.dragau.larek.models.objects.User
@@ -22,4 +23,8 @@ interface ApiManager {
     @POST("v1/auth/gettoken")
     @Headers("Content-Type: application/json")
     fun getToken(@Body body: JsonObject): Observable<TokenResponse>
+
+    @GET("v1/salesoutlet/getbyname")
+    @Headers("Content-Type: application/json")
+    fun getSalesOuterByName(@Query("name") name: String): Observable<SalesOutletResponse>
 }

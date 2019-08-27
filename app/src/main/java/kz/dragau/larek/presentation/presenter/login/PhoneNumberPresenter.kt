@@ -13,7 +13,6 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kz.dragau.larek.App
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
@@ -23,10 +22,8 @@ import javax.inject.Inject
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
-import kz.dragau.larek.BR
-import kz.dragau.larek.Constants
+import kz.dragau.larek.*
 import rxfirebase2.auth.RxFirebaseAuth
-import kz.dragau.larek.R
 import kz.dragau.larek.api.response.TokenResponse
 import kz.dragau.larek.models.db.Converters.Companion.toOffsetDateTime
 import kz.dragau.larek.models.db.UserDao
@@ -62,7 +59,10 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     private fun saveToDb(tokenResponse: TokenResponse)
     {
-        var user: User = User(tokenResponse.resultObject?.systemUserId!!, userRequstModel.mobilePhone, tokenResponse.resultObject?.token,toOffsetDateTime(tokenResponse.resultObject?.expireDate))
+        var user: User = User(tokenResponse.resultObject?.systemUserId!!,
+            userRequstModel.mobilePhone,
+            tokenResponse.resultObject?.token,
+            toOffsetDateTime(tokenResponse.resultObject?.expireDate))
 
 
         userDao.insert(
@@ -133,7 +133,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
     var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             val code: String? = credential.smsCode
-            if(userRequstModel.smsCode.isNotEmpty()) {
+            if (userRequstModel.smsCode.isNotEmpty()) {
                 checkCode(code!!)
                 stopTimedUpdate()
             }
@@ -157,8 +157,11 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                 viewState?.showError(null, R.string.quota_exceeded)
             }
         }
-        override fun onCodeSent(verificationId: String?,
-                                token: PhoneAuthProvider.ForceResendingToken?) {
+
+        override fun onCodeSent(
+            verificationId: String,
+            token: PhoneAuthProvider.ForceResendingToken
+        ) {
             // The SMS verification code has been sent to the provided phone number, we
             // now need to ask the user to enter the code and then construct a credential
             // by combining the code with a verification ID.
@@ -166,7 +169,8 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             // Save verification ID and resending token so we can use them later
             verifId = verificationId
             resendToken = token
-            userRequstModel.codeExpiryDate = DateTime.now().plusSeconds(Constants.smsVerificationDelay.toInt()).toDate()
+            userRequstModel.codeExpiryDate =
+                DateTime.now().plusSeconds(Constants.smsVerificationDelay.toInt()).toDate()
             isSmsSent.set(true)
             startTimedUpdate()
             viewState.hideProgress()

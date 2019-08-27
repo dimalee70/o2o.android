@@ -59,6 +59,7 @@ class ProductActivity : BaseActivity(), ProductView {
         super.onPause()
     }
 
+
     var navigator: SupportAppNavigator = object : SupportAppNavigator(this, R.id.activity_product_frame_layout) {
         override fun setupFragmentTransaction(
             command: Command?,

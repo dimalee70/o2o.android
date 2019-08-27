@@ -4,6 +4,7 @@ import kz.dragau.larek.BuildConfig
 
 object Constants
 {
+    const val extraRevealCenterPadding = 40
     const val apiEndpoint = BuildConfig.apiEndpoint
     const val wsEndpoint = BuildConfig.wsEndpoint
     const val version = "1.0.0"

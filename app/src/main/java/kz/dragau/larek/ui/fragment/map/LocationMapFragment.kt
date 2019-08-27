@@ -1,26 +1,33 @@
 package kz.dragau.larek.ui.fragment.map
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.*
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.Observer
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.map.LocationMapView
 import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
-
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.ferfalk.simplesearchview.SimpleSearchView
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.Status
@@ -28,22 +35,36 @@ import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import kotlinx.android.synthetic.main.activity_store.*
 import kotlinx.android.synthetic.main.fragment_location_map.*
 import kz.dragau.larek.App
+import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.databinding.FragmentLocationMapBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import java.io.IOException
+import java.lang.reflect.Field
 import java.util.*
 import javax.inject.Inject
 
 class LocationMapFragment : BaseMvpFragment(), LocationMapView {
+
+    private val LOCATION_REQUEST = 665
+    private var mMap: GoogleMap? = null
+    private var selectedPoint: LatLng? = null
+    private var gps: GPS? = null
+    private var searchMenu: Menu? = null
+    private var item_search: MenuItem? = null
+    private val lifecycleRegistry = LifecycleRegistry(this)
+
     companion object {
         const val TAG = "LocationMapFragment"
 
@@ -67,10 +88,6 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         return LocationMapPresenter(router)
     }
 
-    private val LOCATION_REQUEST = 665
-    private var mMap: GoogleMap? = null
-    private var selectedPoint: LatLng? = null
-    private var gps: GPS? = null
 
 
     lateinit var binding: FragmentLocationMapBinding
@@ -78,6 +95,84 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+
+        mLocationMapPresenter.attachLifecycle(lifecycleRegistry)
+
+//        val observer = Observer<SalesOutletResponse> { responce -> showSalesOutlet(responce)}
+        mLocationMapPresenter.observeForSalesOutletResponse()
+            .observe(this, Observer      {
+                    responce -> responce.let { showSalesOutlet(responce) }
+            })
+
+        activity!!.toolbarCl.visibility = View.VISIBLE
+        activity!!.searchView.setOnQueryTextListener(object: SimpleSearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                mLocationMapPresenter.getSalesOutlenByName(query!!)
+//                Toast.makeText(context!!, "Submit:" + query, Toast.LENGTH_SHORT).show()
+
+
+//                mark()
+
+
+
+
+                Timber.i("SimpleSearchView", "Submit:" + query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+//                Toast.makeText(context!!,"Text changed:" + newText, Toast.LENGTH_SHORT).show()
+                Timber.i("SimpleSearchView", "Text changed:" + newText)
+                return false
+            }
+
+            override fun onQueryTextCleared(): Boolean {
+//                Toast.makeText(context, "Text cleared", Toast.LENGTH_SHORT).show()
+                Timber.i("SimpleSearchView", "Text cleared")
+                return false
+            }
+        })
+    }
+
+//    private fun mark() {
+//
+//        mMap?.addMarker(MarkerOptions()
+//            .position(LatLng(43.253874, 76.955835))
+//            .icon(BitmapDescriptorFactory.defaultMarker
+//                (BitmapDescriptorFactory.HUE_GREEN)))
+//    }
+
+    private fun showSalesOutlet(salesOutletResponse: SalesOutletResponse?) {
+
+
+
+
+//        salesOutletResponse!!.resultObject!!.forEach {
+//            println(it)
+//        }
+
+
+//        mMap?.addMarker(
+//            MarkerOptions()
+//                .position(LatLng(43.256587, 76.775448))
+//                .icon(
+//                    BitmapDescriptorFactory.defaultMarker
+//                        (BitmapDescriptorFactory.HUE_GREEN)))
+        mMap?.clear()
+
+        salesOutletResponse!!.resultObject!!.forEach {
+            if(it.latitude != null && it.longitude != null) {
+                mMap?.addMarker(
+                    MarkerOptions()
+//                .position(LatLng(it.latitude!!, it.longitude!!))
+                        .position(LatLng(it.latitude, it.longitude))
+                        .icon(
+                            BitmapDescriptorFactory.defaultMarker
+                                (BitmapDescriptorFactory.HUE_GREEN)
+                        )
+                )
+            }
+        }
     }
 
     override fun onCreateView(
@@ -91,21 +186,6 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
 
          Places.initialize(App.appComponent.context(), "AIzaSyDdatI2oDODoOBHU_Hxa8hdTPAm012cNUY")
          Places.createClient(App.appComponent.context())
-
-         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.ADDRESS))
-
-        autocompleteFragment.setOnPlaceSelectedListener(object: PlaceSelectionListener{
-            override fun onPlaceSelected(place: Place) {
-                //txtView.setText(place.name +","+place.id)
-                Timber.i(TAG, "Place: " + place.name + ", " + place.id)
-            }
-
-            override fun onError(status: Status)
-            {
-                showError("An error occurred: $status")
-            }
-        })
 
         return frView
     }
@@ -133,13 +213,26 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         settings?.setAllGesturesEnabled(true)
         settings?.isMyLocationButtonEnabled = true
         settings?.isMapToolbarEnabled = true
+//        mMap?.addMarker(MarkerOptions()
+//            .position(LatLng(43.253874, 76.955835))
+//            .icon(BitmapDescriptorFactory.defaultMarker
+//                (BitmapDescriptorFactory.HUE_GREEN)))
 
         //just shortcuts
+
+//        mark()
+
+//        mMap?.addMarker(
+//            MarkerOptions()
+//                .position(LatLng(43.256587, 76.775448))
+//                .icon(
+//                    BitmapDescriptorFactory.defaultMarker
+//                        (BitmapDescriptorFactory.HUE_GREEN)))
+
         val fine = Manifest.permission.ACCESS_FINE_LOCATION
         val coarse = Manifest.permission.ACCESS_COARSE_LOCATION
         val granted = PackageManager.PERMISSION_GRANTED
 
-        //TODO: add previous start location
         applyCameraUpdate(CameraUpdateFactory.newLatLngZoom(LatLng(43.238949, 76.889709), 14f))
 
         if (ActivityCompat.checkSelfPermission(App.appComponent.context(), fine) != granted && ActivityCompat.checkSelfPermission(
@@ -262,5 +355,11 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
                 }
             })
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.toolbarCl.visibility = View.GONE
+        mLocationMapPresenter.detachLifecycle(lifecycleRegistry )
     }
 }

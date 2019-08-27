@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
     <fragment
             android:id="@+id/mapView"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -49,24 +50,6 @@
             app:layout_constraintStart_toStartOf="parent"
             android:onClick="@{(v) -> presenter.toggleMap()}"
     />
-
-    <androidx.cardview.widget.CardView
-            android:id="@+id/idCardView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:cardCornerRadius="4dp"
-            app:layout_constraintTop_toTopOf="@+id/mapToggle"
-            app:layout_constraintBottom_toBottomOf="@+id/mapToggle"
-            app:layout_constraintStart_toEndOf="@+id/mapToggle"
-            android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp">
-        <fragment android:id="@+id/autocomplete_fragment"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
-    </androidx.cardview.widget.CardView>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
