@@ -85,7 +85,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
     {
 
         /*var id = 0L
-        val u = User(username = "test", id = id)
+        val u = User(username = "ic_arrow_back", id = id)
         u.phone = "7055717177"
 
 

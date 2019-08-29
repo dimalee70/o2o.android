@@ -26,7 +26,7 @@ android {
             res.srcDirs = ['res-orig', 'res']
             assets.srcDirs = ['assets']
         }
-        test.setRoot('test');
+        test.setRoot('ic_arrow_back');
     }
 
     // This is bad practice - we should fix the warnings instead.
@@ -42,7 +42,7 @@ android {
     }
 
     testOptions {
-        // We test with primitives such as Rect, and rely on their default behaviour working.
+        // We ic_arrow_back with primitives such as Rect, and rely on their default behaviour working.
         unitTests.returnDefaultValues = true
     }
     defaultConfig {

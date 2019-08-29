@@ -78,6 +78,7 @@ class JwtInterceptor : Interceptor{
                 val finalToken = "Bearer $token"
                 request = request.newBuilder()
                     .addHeader("Authorization",finalToken)
+                    .addHeader("Content-Type", "application/json")
                     .build()
             }
         }

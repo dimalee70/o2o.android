@@ -35,7 +35,9 @@ import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 
 @Singleton
 @CustomApplicationScope
-@Component(modules = [ApplicationModule::class, NavigationModule::class, ServiceUtilModule::class, RoomModule::class, WSocketModule::class])
+@Component(modules = [ApplicationModule::class, NavigationModule::class,
+    ServiceUtilModule::class, RoomModule::class, WSocketModule::class,
+    SaleSelectionModule::class])
 interface AppComponent {
     @ApplicationContext
     fun context(): Context

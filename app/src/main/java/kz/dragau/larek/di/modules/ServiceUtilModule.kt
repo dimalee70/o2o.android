@@ -12,6 +12,7 @@ import kz.dragau.larek.Constants
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.di.ApplicationContext
 import kz.dragau.larek.di.CustomApplicationScope
+import okhttp3.Interceptor
 
 
 @Module(includes = [NetworkModule::class])

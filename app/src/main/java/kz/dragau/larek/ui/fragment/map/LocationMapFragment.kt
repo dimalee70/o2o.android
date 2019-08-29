@@ -7,6 +7,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
@@ -35,18 +37,20 @@ import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.activity_store.*
 import kotlinx.android.synthetic.main.fragment_location_map.*
 import kz.dragau.larek.App
+import kz.dragau.larek.Constants
 import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.databinding.FragmentLocationMapBinding
+import kz.dragau.larek.models.objects.Points
+import kz.dragau.larek.presentation.presenter.map.SaleSelector
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
@@ -54,8 +58,10 @@ import java.io.IOException
 import java.lang.reflect.Field
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
-class LocationMapFragment : BaseMvpFragment(), LocationMapView {
+class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMarkerClickListener {
+
 
     private val LOCATION_REQUEST = 665
     private var mMap: GoogleMap? = null
@@ -64,6 +70,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
     private var searchMenu: Menu? = null
     private var item_search: MenuItem? = null
     private val lifecycleRegistry = LifecycleRegistry(this)
+    private val po: PolygonOptions = PolygonOptions()
 
     companion object {
         const val TAG = "LocationMapFragment"
@@ -82,10 +89,13 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
     @InjectPresenter
     lateinit var mLocationMapPresenter: LocationMapPresenter
 
+    @Inject
+    lateinit var saleSelector: SaleSelector
+
     @ProvidePresenter
     fun providePresenter(): LocationMapPresenter
     {
-        return LocationMapPresenter(router)
+        return LocationMapPresenter(router, saleSelector)
     }
 
 
@@ -101,33 +111,41 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
 //        val observer = Observer<SalesOutletResponse> { responce -> showSalesOutlet(responce)}
         mLocationMapPresenter.observeForSalesOutletResponse()
             .observe(this, Observer      {
-                    responce -> responce.let { showSalesOutlet(responce) }
+                    response -> response.let { showSalesOutlet(response) }
             })
 
+        mLocationMapPresenter.observeForSalesOutletResponseBoundary()
+            .observe(this, Observer{
+                response -> response.let{ showSalesOutlet(response)}
+            })
+
+        mLocationMapPresenter.observeForCancellSearchButton()
+            .observe(this, Observer {
+                response -> response.let { if (response) getSalesOutletBoundaries() else mMap!!.clear() }
+            })
+
+        mLocationMapPresenter.obseverForSubmitButton()
+            .observe(this, Observer {
+                response -> response.let { if (response) binding!!.btnProceed.visibility = View.VISIBLE
+                    else binding.btnProceed.visibility = View.GONE}
+            })
         activity!!.toolbarCl.visibility = View.VISIBLE
         activity!!.searchView.setOnQueryTextListener(object: SimpleSearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 mLocationMapPresenter.getSalesOutlenByName(query!!)
-//                Toast.makeText(context!!, "Submit:" + query, Toast.LENGTH_SHORT).show()
-
-
-//                mark()
-
-
-
-
+                mLocationMapPresenter.setObserveForCancellSearchButton(false)
+                mLocationMapPresenter.setObserveForSubmitButton(false)
                 Timber.i("SimpleSearchView", "Submit:" + query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-//                Toast.makeText(context!!,"Text changed:" + newText, Toast.LENGTH_SHORT).show()
                 Timber.i("SimpleSearchView", "Text changed:" + newText)
                 return false
             }
 
             override fun onQueryTextCleared(): Boolean {
-//                Toast.makeText(context, "Text cleared", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context!!, "Text cleared", Toast.LENGTH_SHORT).show()
                 Timber.i("SimpleSearchView", "Text cleared")
                 return false
             }
@@ -143,35 +161,24 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
 //    }
 
     private fun showSalesOutlet(salesOutletResponse: SalesOutletResponse?) {
-
-
-
-
-//        salesOutletResponse!!.resultObject!!.forEach {
-//            println(it)
-//        }
-
-
-//        mMap?.addMarker(
-//            MarkerOptions()
-//                .position(LatLng(43.256587, 76.775448))
-//                .icon(
-//                    BitmapDescriptorFactory.defaultMarker
-//                        (BitmapDescriptorFactory.HUE_GREEN)))
         mMap?.clear()
 
-        salesOutletResponse!!.resultObject!!.forEach {
-            if(it.latitude != null && it.longitude != null) {
-                mMap?.addMarker(
-                    MarkerOptions()
-//                .position(LatLng(it.latitude!!, it.longitude!!))
-                        .position(LatLng(it.latitude, it.longitude))
-                        .icon(
-                            BitmapDescriptorFactory.defaultMarker
-                                (BitmapDescriptorFactory.HUE_GREEN)
-                        )
-                )
+        if(salesOutletResponse!!.resultObject != null && salesOutletResponse.resultObject!!.size > 0) {
+            salesOutletResponse!!.resultObject!!.forEach {
+                if (it.latitude != null && it.longitude != null) {
+                    mMap?.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(it.latitude, it.longitude))
+                            .title(it.name).snippet(it.address).visible(true)
+                            .anchor(0f, 0.5f)
+                            .icon(
+                                bitmapDescriptorFromVector(context!!, R.drawable.ic_marker)
+                            )
+                    )!!.showInfoWindow()
+                }
             }
+        }else{
+            Toast.makeText(context!!, "Ничего не найдено", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -213,21 +220,6 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         settings?.setAllGesturesEnabled(true)
         settings?.isMyLocationButtonEnabled = true
         settings?.isMapToolbarEnabled = true
-//        mMap?.addMarker(MarkerOptions()
-//            .position(LatLng(43.253874, 76.955835))
-//            .icon(BitmapDescriptorFactory.defaultMarker
-//                (BitmapDescriptorFactory.HUE_GREEN)))
-
-        //just shortcuts
-
-//        mark()
-
-//        mMap?.addMarker(
-//            MarkerOptions()
-//                .position(LatLng(43.256587, 76.775448))
-//                .icon(
-//                    BitmapDescriptorFactory.defaultMarker
-//                        (BitmapDescriptorFactory.HUE_GREEN)))
 
         val fine = Manifest.permission.ACCESS_FINE_LOCATION
         val coarse = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -249,17 +241,90 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
 
         mMap?.setOnCameraMoveStartedListener {
             selectedPoint = null
-            showLoading()
+//            showLoading()
         }
+
+        mMap!!.setOnMarkerClickListener(this)
 
         mMap?.setOnCameraIdleListener {
             selectedPoint = mMap?.cameraPosition?.target
             try {
-                binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
+                if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {
+
+                    getSalesOutletBoundaries()
+                }
+                if(mLocationMapPresenter.isClickedMarker!!)
+                    mLocationMapPresenter.isClickedMarker = false
+                else {
+                    binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
+                    mLocationMapPresenter.setObserveForSubmitButton(false)
+                }
+
             } catch (e: Exception) {
                 txtAddress.text = null
             }
         }
+    }
+
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
+        binding.txtAddress.text = p0.title + "\n" + p0.snippet
+//        binding.txtAddress.text = "Test"
+
+        mLocationMapPresenter.isClickedMarker = true
+
+        mLocationMapPresenter.setObserveForSubmitButton(true)
+//        Toast.makeText(context!!, p0!!.title + " " + p0.snippet, Toast.LENGTH_SHORT).show()
+        return false
+    }
+
+    private fun getSalesOutletBoundaries(){
+
+        if(mMap!!.cameraPosition.zoom.toInt() <= 11){
+            Toast.makeText(context!!, Constants.zoomFarWarning, Toast.LENGTH_SHORT).show()
+        }else{
+
+
+
+            if(selectedPoint != null){
+                if(PolyUtil.containsLocation(selectedPoint, po.points, true)) {
+//                    Toast.makeText(context!!, selectedPoint!!.longitude.toString() + " " + selectedPoint!!.latitude.toString(), Toast.LENGTH_SHORT).show()
+                }
+                else{
+
+                    po.points.clear()
+                    addToPo()
+                    drawMarkers()
+                }
+
+            }
+            else{
+                drawMarkers()
+            }
+        }
+    }
+
+    private fun addToPo(){
+        val farLeft = mMap!!.projection.visibleRegion.farLeft
+        val nearLeft =   mMap!!.projection.visibleRegion.nearLeft
+        val nearRight = mMap!!.projection.visibleRegion.nearRight
+        val farRight = mMap!!.projection.visibleRegion.farRight
+
+        po.add(farLeft,
+            nearLeft,
+            nearRight,
+            farRight
+        )
+    }
+
+    private fun drawMarkers(){
+        mMap!!.clear()
+        mLocationMapPresenter.createBoundaries(
+            Points(mMap!!.projection.visibleRegion.farLeft.longitude, mMap!!.projection.visibleRegion.farLeft.latitude),
+            Points(mMap!!.projection.visibleRegion.nearLeft.longitude, mMap!!.projection.visibleRegion.nearLeft.latitude),
+            Points(mMap!!.projection.visibleRegion.nearRight.longitude, mMap!!.projection.visibleRegion.nearRight.latitude),
+            Points(mMap!!.projection.visibleRegion.farRight.longitude, mMap!!.projection.visibleRegion.farRight.latitude)
+        )
     }
 
     private fun goToMyLocation()
@@ -302,6 +367,8 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         txtMessage.text = null
         txtAddress.text = null
         clLoading.visibility = View.VISIBLE
+        clLoading.visibility = View.GONE
+
         btnProceed.isEnabled = false
     }
 
@@ -361,5 +428,23 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView {
         super.onDestroy()
         activity!!.toolbarCl.visibility = View.GONE
         mLocationMapPresenter.detachLifecycle(lifecycleRegistry )
+    }
+
+    fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
+        vectorDrawable!!.setBounds(
+            0,
+            0,
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight
+        )
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }

@@ -51,6 +51,16 @@
             android:onClick="@{(v) -> presenter.toggleMap()}"
     />
 
+    <ImageView
+            android:id="@+id/arrow_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:onClick="@{(v) -> presenter.cancelSearch()}"
+            app:layout_constraintTop_toBottomOf="@+id/mapToggle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,9 +121,23 @@
                     android:id="@+id/btnProceed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
+                    android:text="@string/doneText"
+                    android:background="@drawable/button_green_bg"
+                    android:layout_marginStart="86dp"
+                    android:layout_marginEnd="86dp"
+                    android:enabled="true"
+                    android:onClick="@{(v) -> presenter.getSaleOutlet()}"
                     app:layout_constraintTop_toBottomOf="@id/txtMessage"
-                    android:text="@string/next"/>
+                    />
+<!--                    android:layout_marginBottom="52dp"-->
+<!--                    android:layout_marginTop="23dp"-->
+<!--            <Button-->
+<!--                    android:id="@+id/btnProceed"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:enabled="true"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/txtMessage"-->
+<!--                    android:text="@string/next"/>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
