@@ -36,6 +36,7 @@ class StoreActivity : BaseActivity(), StoreView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
+        toolbar.title = ""
         setSupportActionBar(toolbar)
 //        setSearchTollbar()
 

@@ -1,15 +1,11 @@
 package kz.dragau.larek.ui.fragment.map
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -17,10 +13,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.annotation.NonNull
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
@@ -30,19 +24,15 @@ import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.ferfalk.simplesearchview.SimpleSearchView
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.maps.android.PolyUtil
+import com.google.maps.android.clustering.ClusterItem
+import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_store.*
 import kotlinx.android.synthetic.main.fragment_location_map.*
 import kz.dragau.larek.App
@@ -50,15 +40,19 @@ import kz.dragau.larek.Constants
 import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.databinding.FragmentLocationMapBinding
 import kz.dragau.larek.models.objects.Points
+import kz.dragau.larek.models.objects.SalesClusterItem
+import kz.dragau.larek.models.objects.SalesOutletResult
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
+import kz.dragau.larek.ui.adapters.MyItemReader
+import kz.dragau.larek.ui.adapters.SalesClusterRenderer
+import org.json.JSONException
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import java.io.IOException
-import java.lang.reflect.Field
+import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMarkerClickListener {
 
@@ -71,6 +65,8 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
     private var item_search: MenuItem? = null
     private val lifecycleRegistry = LifecycleRegistry(this)
     private val po: PolygonOptions = PolygonOptions()
+    private var clusterManager: MyClusterManager<SalesOutletResult>? = null
+    private var salesOutletResponse: SalesOutletResponse? = null
 
     companion object {
         const val TAG = "LocationMapFragment"
@@ -109,14 +105,19 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
         mLocationMapPresenter.attachLifecycle(lifecycleRegistry)
 
 //        val observer = Observer<SalesOutletResponse> { responce -> showSalesOutlet(responce)}
+
         mLocationMapPresenter.observeForSalesOutletResponse()
             .observe(this, Observer      {
-                    response -> response.let { showSalesOutlet(response) }
+                    response -> response.let {
+                showSalesOutlet(response)
+            }
             })
 
         mLocationMapPresenter.observeForSalesOutletResponseBoundary()
             .observe(this, Observer{
-                response -> response.let{ showSalesOutlet(response)}
+                response -> response.let{
+                showSalesOutlet(response)
+            }
             })
 
         mLocationMapPresenter.observeForCancellSearchButton()
@@ -164,19 +165,25 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
         mMap?.clear()
 
         if(salesOutletResponse!!.resultObject != null && salesOutletResponse.resultObject!!.size > 0) {
-            salesOutletResponse!!.resultObject!!.forEach {
-                if (it.latitude != null && it.longitude != null) {
-                    mMap?.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(it.latitude, it.longitude))
-                            .title(it.name).snippet(it.address).visible(true)
-                            .anchor(0f, 0.5f)
-                            .icon(
-                                bitmapDescriptorFromVector(context!!, R.drawable.ic_marker)
-                            )
-                    )!!.showInfoWindow()
-                }
-            }
+            this.salesOutletResponse = salesOutletResponse
+
+            readItems()
+
+            mMap!!.animateCamera(CameraUpdateFactory.zoomTo(mMap!!.cameraPosition.zoom + 0.0005f), 200, null)
+
+//            salesOutletResponse!!.resultObject!!.forEach {
+//                if (it.latitude != null && it.longitude != null) {
+//                    mMap?.addMarker(
+//                        MarkerOptions()
+//                            .position(LatLng(it.latitude, it.longitude))
+//                            .title(it.name).snippet(it.address).visible(true)
+//                            .anchor(0f, 0.5f)
+//                            .icon(
+//                                bitmapDescriptorFromVector(context!!, R.drawable.ic_marker)
+//                            )
+//                    )!!.showInfoWindow()
+//                }
+//            }
         }else{
             Toast.makeText(context!!, "Ничего не найдено", Toast.LENGTH_SHORT).show()
         }
@@ -205,6 +212,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
                 mMap = googleMap
                 mLocationMapPresenter.setUpMap()
             }
+
         }
     }
 
@@ -239,6 +247,8 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
             goToMyLocation()
         }
 
+        clusterManager = MyClusterManager(context!!, mMap!!)
+//        clusterManager!!.renderer = SalesClusterRenderer(context, mMap, clusterManager)
         mMap?.setOnCameraMoveStartedListener {
             selectedPoint = null
 //            showLoading()
@@ -246,24 +256,55 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
 
         mMap!!.setOnMarkerClickListener(this)
 
-        mMap?.setOnCameraIdleListener {
-            selectedPoint = mMap?.cameraPosition?.target
-            try {
-                if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {
 
-                    getSalesOutletBoundaries()
-                }
-                if(mLocationMapPresenter.isClickedMarker!!)
-                    mLocationMapPresenter.isClickedMarker = false
-                else {
-                    binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
-                    mLocationMapPresenter.setObserveForSubmitButton(false)
-                }
+        mMap?.setOnCameraIdleListener(clusterManager)
+//        try {
+//            readItems()
+//        }catch (e: JSONException){
+//            println("Error")
+//        }
 
-            } catch (e: Exception) {
-                txtAddress.text = null
+//        mMap?.setOnCameraIdleListener {
+//            selectedPoint = mMap?.cameraPosition?.target
+//            try {
+//                if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {
+//
+//                    getSalesOutletBoundaries()
+//                }
+//                if(mLocationMapPresenter.isClickedMarker!!)
+//                    mLocationMapPresenter.isClickedMarker = false
+//                else {
+//                    binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
+//                    mLocationMapPresenter.setObserveForSubmitButton(false)
+//                }
+//
+//            } catch (e: Exception) {
+//                txtAddress.text = null
+//            }
+//        }
+    }
+
+    private fun readItems(){
+        val thread: Thread = Thread(Runnable {
+            val items: List<SalesOutletResult> = salesOutletResponse!!.resultObject!!
+            for (i in 0..10){
+                var offset: Double = i/60.0
+                for (j in items){
+                    var position: LatLng = j.position
+                    var lat: Double = position.latitude + offset
+                    var lng: Double = position.longitude + offset
+                    var offsetItem = SalesOutletResult(j.salesOutletId, j.name,
+                        j.address,
+                        LatLng(lat,lng), j.stateCode, j.statusCode,
+                        j.importSequenceNumber, j.createdOn,
+                        j.createdBy, j.modifiedOn, j.modifiedBy)
+                    clusterManager!!.addItem(offsetItem)
+                }
             }
-        }
+        })
+        thread.start()
+//        thread.isDaemon = true
+
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
@@ -446,5 +487,27 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    inner class MyClusterManager<T: SalesOutletResult>(var context: Context, var map: GoogleMap): ClusterManager<T>(context, map){
+        override fun onCameraIdle() {
+            super.onCameraIdle()
+            selectedPoint = mMap?.cameraPosition?.target
+            try {
+                if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {
+
+                    getSalesOutletBoundaries()
+                }
+                if(mLocationMapPresenter.isClickedMarker!!)
+                    mLocationMapPresenter.isClickedMarker = false
+                else {
+                    binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
+                    mLocationMapPresenter.setObserveForSubmitButton(false)
+                }
+
+            } catch (e: Exception) {
+                txtAddress.text = null
+            }
+        }
     }
 }

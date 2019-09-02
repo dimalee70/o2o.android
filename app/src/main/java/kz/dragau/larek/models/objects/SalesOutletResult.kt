@@ -1,6 +1,8 @@
 package kz.dragau.larek.models.objects
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
+import com.google.maps.android.clustering.ClusterItem
 import java.time.OffsetDateTime
 
 data class SalesOutletResult(
@@ -40,8 +42,50 @@ data class SalesOutletResult(
 
     @field:SerializedName("modifiedBy")
     val  modifiedBy: String? = null
-){
+): ClusterItem {
+
+    constructor(
+            salesOutletId: String?,
+
+            name: String?,
+
+            address: String?,
+
+            latLng: LatLng,
+
+            stateCode: Integer?,
+
+            statusCode: Integer?,
+
+            importSequenceNumber: String?,
+
+            createdOn: String?,
+
+            createdBy: String?,
+
+            modifiedOn: String?,
+
+            modifiedBy: String?) : this(salesOutletId,
+                name, address, latLng.latitude, latLng.longitude,
+                stateCode, statusCode,
+                importSequenceNumber, createdOn, createdBy,
+                modifiedOn, modifiedBy) {}
+
+    override fun getSnippet(): String {
+        return  address!!
+    }
+
+    override fun getTitle(): String {
+        return name!!
+    }
+
+    override fun getPosition(): LatLng {
+        return LatLng(latitude!!, longitude!!)
+    }
+
     override fun toString(): String {
         return "SalesOutletResult(salesOutletId=$salesOutletId, name=$name, address=$address, latitude=$latitude, longitude=$longitude, stateCode=$stateCode, statusCode=$statusCode, importSequenceNumber=$importSequenceNumber, createdOn=$createdOn, createdBy=$createdBy, modifiedOn=$modifiedOn, modifiedBy=$modifiedBy)"
     }
+
+
 }
