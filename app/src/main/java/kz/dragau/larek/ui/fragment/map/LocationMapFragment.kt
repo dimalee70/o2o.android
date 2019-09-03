@@ -31,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.maps.android.PolyUtil
+import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_store.*
@@ -54,7 +55,30 @@ import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
 
-class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMarkerClickListener {
+class LocationMapFragment : BaseMvpFragment(), LocationMapView,
+    ClusterManager.OnClusterClickListener<SalesOutletResult>,
+    ClusterManager.OnClusterItemClickListener<SalesOutletResult>{
+
+    override fun onClusterItemClick(p0: SalesOutletResult?): Boolean {
+        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
+        binding.txtAddress.text = p0.title + "\n" + p0.snippet
+//        binding.txtAddress.text = "Test"
+
+        mLocationMapPresenter.isClickedMarker = true
+
+        mLocationMapPresenter.setObserveForSubmitButton(true)
+        return false
+    }
+
+    override fun onClusterClick(p0: Cluster<SalesOutletResult>?): Boolean {
+
+//        binding.txtAddress.text = "Test"
+
+//        mLocationMapPresenter.isClickedMarker = true
+//
+//        mLocationMapPresenter.setObserveForSubmitButton(true)
+        return true
+    }
 
 
     private val LOCATION_REQUEST = 665
@@ -248,13 +272,16 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
         }
 
         clusterManager = MyClusterManager(context!!, mMap!!)
-//        clusterManager!!.renderer = SalesClusterRenderer(context, mMap, clusterManager)
+        clusterManager!!.setOnClusterClickListener (this)
+        clusterManager!!.setOnClusterItemClickListener (this)
+        clusterManager!!.renderer = SalesClusterRenderer(context, mMap, clusterManager)
+        mMap?.setOnMarkerClickListener(clusterManager)
         mMap?.setOnCameraMoveStartedListener {
             selectedPoint = null
 //            showLoading()
         }
 
-        mMap!!.setOnMarkerClickListener(this)
+//        mMap!!.setOnMarkerClickListener(this)
 
 
         mMap?.setOnCameraIdleListener(clusterManager)
@@ -307,17 +334,18 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
 
     }
 
-    override fun onMarkerClick(p0: Marker?): Boolean {
-        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
-        binding.txtAddress.text = p0.title + "\n" + p0.snippet
-//        binding.txtAddress.text = "Test"
-
-        mLocationMapPresenter.isClickedMarker = true
-
-        mLocationMapPresenter.setObserveForSubmitButton(true)
+//    override fun onMarkerClick(p0: Marker?): Boolean {
+//        if(p0.t)
+//        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
+//        binding.txtAddress.text = p0.title + "\n" + p0.snippet
+////        binding.txtAddress.text = "Test"
+//
+//        mLocationMapPresenter.isClickedMarker = true
+//
+//        mLocationMapPresenter.setObserveForSubmitButton(true)
 //        Toast.makeText(context!!, p0!!.title + " " + p0.snippet, Toast.LENGTH_SHORT).show()
-        return false
-    }
+//        return false
+//    }
 
     private fun getSalesOutletBoundaries(){
 
@@ -471,23 +499,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView, GoogleMap.OnMark
         mLocationMapPresenter.detachLifecycle(lifecycleRegistry )
     }
 
-    fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
-        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
-        vectorDrawable!!.setBounds(
-            0,
-            0,
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight
-        )
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
+
 
     inner class MyClusterManager<T: SalesOutletResult>(var context: Context, var map: GoogleMap): ClusterManager<T>(context, map){
         override fun onCameraIdle() {
