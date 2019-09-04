@@ -57,28 +57,9 @@ import javax.inject.Inject
 
 class LocationMapFragment : BaseMvpFragment(), LocationMapView,
     ClusterManager.OnClusterClickListener<SalesOutletResult>,
-    ClusterManager.OnClusterItemClickListener<SalesOutletResult>{
+    ClusterManager.OnClusterItemClickListener<SalesOutletResult>,
+    SimpleSearchView.OnQueryTextListener{
 
-    override fun onClusterItemClick(p0: SalesOutletResult?): Boolean {
-        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
-        binding.txtAddress.text = p0.title + "\n" + p0.snippet
-//        binding.txtAddress.text = "Test"
-
-        mLocationMapPresenter.isClickedMarker = true
-
-        mLocationMapPresenter.setObserveForSubmitButton(true)
-        return false
-    }
-
-    override fun onClusterClick(p0: Cluster<SalesOutletResult>?): Boolean {
-
-//        binding.txtAddress.text = "Test"
-
-//        mLocationMapPresenter.isClickedMarker = true
-//
-//        mLocationMapPresenter.setObserveForSubmitButton(true)
-        return true
-    }
 
 
     private val LOCATION_REQUEST = 665
@@ -92,6 +73,23 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
     private var clusterManager: MyClusterManager<SalesOutletResult>? = null
     private var salesOutletResponse: SalesOutletResponse? = null
 
+    @Inject
+    lateinit var router: Router
+
+    @InjectPresenter
+    lateinit var mLocationMapPresenter: LocationMapPresenter
+
+    @Inject
+    lateinit var saleSelector: SaleSelector
+
+    lateinit var binding: FragmentLocationMapBinding
+
+    @ProvidePresenter
+    fun providePresenter(): LocationMapPresenter
+    {
+        return LocationMapPresenter(router, saleSelector)
+    }
+
     companion object {
         const val TAG = "LocationMapFragment"
 
@@ -102,25 +100,6 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
             return fragment
         }
     }
-
-    @Inject
-    lateinit var router: Router
-
-    @InjectPresenter
-    lateinit var mLocationMapPresenter: LocationMapPresenter
-
-    @Inject
-    lateinit var saleSelector: SaleSelector
-
-    @ProvidePresenter
-    fun providePresenter(): LocationMapPresenter
-    {
-        return LocationMapPresenter(router, saleSelector)
-    }
-
-
-
-    lateinit var binding: FragmentLocationMapBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
@@ -146,7 +125,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
 
         mLocationMapPresenter.observeForCancellSearchButton()
             .observe(this, Observer {
-                response -> response.let { if (response) getSalesOutletBoundaries() else mMap!!.clear() }
+                response -> response.let { if (response) mLocationMapPresenter.getSalesOutletBoundaries() else mMap!!.clear() }
             })
 
         mLocationMapPresenter.obseverForSubmitButton()
@@ -155,62 +134,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
                     else binding.btnProceed.visibility = View.GONE}
             })
         activity!!.toolbarCl.visibility = View.VISIBLE
-        activity!!.searchView.setOnQueryTextListener(object: SimpleSearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                mLocationMapPresenter.getSalesOutlenByName(query!!)
-                mLocationMapPresenter.setObserveForCancellSearchButton(false)
-                mLocationMapPresenter.setObserveForSubmitButton(false)
-                Timber.i("SimpleSearchView", "Submit:" + query)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Timber.i("SimpleSearchView", "Text changed:" + newText)
-                return false
-            }
-
-            override fun onQueryTextCleared(): Boolean {
-                Toast.makeText(context!!, "Text cleared", Toast.LENGTH_SHORT).show()
-                Timber.i("SimpleSearchView", "Text cleared")
-                return false
-            }
-        })
-    }
-
-//    private fun mark() {
-//
-//        mMap?.addMarker(MarkerOptions()
-//            .position(LatLng(43.253874, 76.955835))
-//            .icon(BitmapDescriptorFactory.defaultMarker
-//                (BitmapDescriptorFactory.HUE_GREEN)))
-//    }
-
-    private fun showSalesOutlet(salesOutletResponse: SalesOutletResponse?) {
-        mMap?.clear()
-
-        if(salesOutletResponse!!.resultObject != null && salesOutletResponse.resultObject!!.size > 0) {
-            this.salesOutletResponse = salesOutletResponse
-
-            readItems()
-
-            mMap!!.animateCamera(CameraUpdateFactory.zoomTo(mMap!!.cameraPosition.zoom + 0.0005f), 200, null)
-
-//            salesOutletResponse!!.resultObject!!.forEach {
-//                if (it.latitude != null && it.longitude != null) {
-//                    mMap?.addMarker(
-//                        MarkerOptions()
-//                            .position(LatLng(it.latitude, it.longitude))
-//                            .title(it.name).snippet(it.address).visible(true)
-//                            .anchor(0f, 0.5f)
-//                            .icon(
-//                                bitmapDescriptorFromVector(context!!, R.drawable.ic_marker)
-//                            )
-//                    )!!.showInfoWindow()
-//                }
-//            }
-        }else{
-            Toast.makeText(context!!, "Ничего не найдено", Toast.LENGTH_SHORT).show()
-        }
+        activity!!.searchView.setOnQueryTextListener(this)
     }
 
     override fun onCreateView(
@@ -240,197 +164,6 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         }
     }
 
-    override fun changeMapType(mapType: Int) {
-        mMap?.mapType = mapType
-    }
-
-    override fun setUpMap(mapType: Int) {
-        gps = GPS(App.appComponent.context())
-
-        mMap?.mapType = mapType
-        val settings = mMap?.uiSettings
-        settings?.setAllGesturesEnabled(true)
-        settings?.isMyLocationButtonEnabled = true
-        settings?.isMapToolbarEnabled = true
-
-        val fine = Manifest.permission.ACCESS_FINE_LOCATION
-        val coarse = Manifest.permission.ACCESS_COARSE_LOCATION
-        val granted = PackageManager.PERMISSION_GRANTED
-
-        applyCameraUpdate(CameraUpdateFactory.newLatLngZoom(LatLng(43.238949, 76.889709), 14f))
-
-        if (ActivityCompat.checkSelfPermission(App.appComponent.context(), fine) != granted && ActivityCompat.checkSelfPermission(
-                App.appComponent.context(),
-                coarse
-            ) != granted
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(arrayOf(fine, coarse), LOCATION_REQUEST)
-            }
-        } else {
-            goToMyLocation()
-        }
-
-        clusterManager = MyClusterManager(context!!, mMap!!)
-        clusterManager!!.setOnClusterClickListener (this)
-        clusterManager!!.setOnClusterItemClickListener (this)
-        clusterManager!!.renderer = SalesClusterRenderer(context, mMap, clusterManager)
-        mMap?.setOnMarkerClickListener(clusterManager)
-        mMap?.setOnCameraMoveStartedListener {
-            selectedPoint = null
-//            showLoading()
-        }
-
-//        mMap!!.setOnMarkerClickListener(this)
-
-
-        mMap?.setOnCameraIdleListener(clusterManager)
-//        try {
-//            readItems()
-//        }catch (e: JSONException){
-//            println("Error")
-//        }
-
-//        mMap?.setOnCameraIdleListener {
-//            selectedPoint = mMap?.cameraPosition?.target
-//            try {
-//                if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {
-//
-//                    getSalesOutletBoundaries()
-//                }
-//                if(mLocationMapPresenter.isClickedMarker!!)
-//                    mLocationMapPresenter.isClickedMarker = false
-//                else {
-//                    binding.txtAddress.text = getAddressByCoordinates(selectedPoint!!)
-//                    mLocationMapPresenter.setObserveForSubmitButton(false)
-//                }
-//
-//            } catch (e: Exception) {
-//                txtAddress.text = null
-//            }
-//        }
-    }
-
-    private fun readItems(){
-        val thread: Thread = Thread(Runnable {
-            val items: List<SalesOutletResult> = salesOutletResponse!!.resultObject!!
-            for (i in 0..10){
-                var offset: Double = i/60.0
-                for (j in items){
-                    var position: LatLng = j.position
-                    var lat: Double = position.latitude + offset
-                    var lng: Double = position.longitude + offset
-                    var offsetItem = SalesOutletResult(j.salesOutletId, j.name,
-                        j.address,
-                        LatLng(lat,lng), j.stateCode, j.statusCode,
-                        j.importSequenceNumber, j.createdOn,
-                        j.createdBy, j.modifiedOn, j.modifiedBy)
-                    clusterManager!!.addItem(offsetItem)
-                }
-            }
-        })
-        thread.start()
-//        thread.isDaemon = true
-
-    }
-
-//    override fun onMarkerClick(p0: Marker?): Boolean {
-//        if(p0.t)
-//        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
-//        binding.txtAddress.text = p0.title + "\n" + p0.snippet
-////        binding.txtAddress.text = "Test"
-//
-//        mLocationMapPresenter.isClickedMarker = true
-//
-//        mLocationMapPresenter.setObserveForSubmitButton(true)
-//        Toast.makeText(context!!, p0!!.title + " " + p0.snippet, Toast.LENGTH_SHORT).show()
-//        return false
-//    }
-
-    private fun getSalesOutletBoundaries(){
-
-        if(mMap!!.cameraPosition.zoom.toInt() <= 11){
-            Toast.makeText(context!!, Constants.zoomFarWarning, Toast.LENGTH_SHORT).show()
-        }else{
-
-
-
-            if(selectedPoint != null){
-                if(PolyUtil.containsLocation(selectedPoint, po.points, true)) {
-//                    Toast.makeText(context!!, selectedPoint!!.longitude.toString() + " " + selectedPoint!!.latitude.toString(), Toast.LENGTH_SHORT).show()
-                }
-                else{
-
-                    po.points.clear()
-                    addToPo()
-                    drawMarkers()
-                }
-
-            }
-            else{
-                drawMarkers()
-            }
-        }
-    }
-
-    private fun addToPo(){
-        val farLeft = mMap!!.projection.visibleRegion.farLeft
-        val nearLeft =   mMap!!.projection.visibleRegion.nearLeft
-        val nearRight = mMap!!.projection.visibleRegion.nearRight
-        val farRight = mMap!!.projection.visibleRegion.farRight
-
-        po.add(farLeft,
-            nearLeft,
-            nearRight,
-            farRight
-        )
-    }
-
-    private fun drawMarkers(){
-        mMap!!.clear()
-        mLocationMapPresenter.createBoundaries(
-            Points(mMap!!.projection.visibleRegion.farLeft.longitude, mMap!!.projection.visibleRegion.farLeft.latitude),
-            Points(mMap!!.projection.visibleRegion.nearLeft.longitude, mMap!!.projection.visibleRegion.nearLeft.latitude),
-            Points(mMap!!.projection.visibleRegion.nearRight.longitude, mMap!!.projection.visibleRegion.nearRight.latitude),
-            Points(mMap!!.projection.visibleRegion.farRight.longitude, mMap!!.projection.visibleRegion.farRight.latitude)
-        )
-    }
-
-    private fun goToMyLocation()
-    {
-        if(gps?.canGetLocation() == true) {
-            mMap?.isMyLocationEnabled = true
-            val myLocation = mMap?.myLocation ?: gps!!.location
-
-            if (myLocation != null) {
-                applyCameraUpdate(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(myLocation.latitude, myLocation.longitude), 14f
-                    )
-                )
-            }
-        }
-    }
-
-
-    @Throws(IOException::class)
-    private fun getAddressByCoordinates(point: LatLng): String? {
-        val geocoder = Geocoder(activity, Locale.getDefault())
-        val addresses: List<Address>
-
-        addresses = geocoder.getFromLocation(point.latitude, point.longitude, 1)
-
-        return if (addresses.isNotEmpty()) {
-            /*String city = addresses.get(0).getLocality();
-                String state = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalCode = addresses.get(0).getPostalCode();
-                String knownName = addresses.get(0).getFeatureName();*/
-            addresses[0].getAddressLine(0)
-        } else null
-
-    }
-
     private fun showLoading() {
         btnProceed.visibility = View.GONE
         txtMessage.text = null
@@ -456,6 +189,181 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         }
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.toolbarCl.visibility = View.GONE
+        mLocationMapPresenter.detachLifecycle(lifecycleRegistry )
+    }
+
+
+    override fun changeMapType(mapType: Int) {
+        mMap?.mapType = mapType
+    }
+
+    private fun showSalesOutlet(salesOutletResponse: SalesOutletResponse?) {
+        mMap?.clear()
+        if(salesOutletResponse!!.resultObject != null && salesOutletResponse.resultObject!!.size > 0) {
+            this.salesOutletResponse = salesOutletResponse
+
+            mLocationMapPresenter.readItems()
+
+            mMap!!.animateCamera(CameraUpdateFactory.zoomTo(mMap!!.cameraPosition.zoom + 0.0005f), 200, null)
+        }else{
+            Toast.makeText(context!!, "Ничего не найдено", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun readItems(){
+        val thread: Thread = Thread(Runnable {
+            val items: List<SalesOutletResult> = salesOutletResponse!!.resultObject!!
+            for (i in 0..10) {
+                var offset: Double = i / 60.0
+                for (j in items) {
+                    var position: LatLng = j.position
+                    var lat: Double = position.latitude + offset
+                    var lng: Double = position.longitude + offset
+                    var offsetItem = SalesOutletResult(
+                        j.salesOutletId, j.name,
+                        j.address,
+                        LatLng(lat, lng), j.stateCode, j.statusCode,
+                        j.importSequenceNumber, j.createdOn,
+                        j.createdBy, j.modifiedOn, j.modifiedBy
+                    )
+                    clusterManager!!.addItem(offsetItem)
+                }
+            }
+        })
+        thread.start()
+//        thread.isDaemon = true
+
+    }
+
+
+    override fun setUpMap(mapType: Int) {
+        gps = GPS(App.appComponent.context())
+
+        mMap?.mapType = mapType
+        val settings = mMap?.uiSettings
+        settings?.setAllGesturesEnabled(true)
+        settings?.isMyLocationButtonEnabled = true
+        settings?.isMapToolbarEnabled = true
+
+        val fine = Manifest.permission.ACCESS_FINE_LOCATION
+        val coarse = Manifest.permission.ACCESS_COARSE_LOCATION
+        val granted = PackageManager.PERMISSION_GRANTED
+
+        applyCameraUpdate(CameraUpdateFactory.newLatLngZoom(LatLng(43.238949, 76.889709), 14f))
+
+        if (ActivityCompat.checkSelfPermission(App.appComponent.context(), fine) != granted && ActivityCompat.checkSelfPermission(
+                App.appComponent.context(),
+                coarse
+            ) != granted
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(arrayOf(fine, coarse), LOCATION_REQUEST)
+            }
+        } else {
+            mLocationMapPresenter.goToMyLocation()
+        }
+
+        clusterManager = MyClusterManager(context!!, mMap!!)
+        clusterManager!!.setOnClusterClickListener (this)
+        clusterManager!!.setOnClusterItemClickListener (this)
+        clusterManager!!.renderer = SalesClusterRenderer(context, mMap, clusterManager)
+        mMap?.setOnMarkerClickListener(clusterManager)
+        mMap?.setOnCameraMoveStartedListener {
+            selectedPoint = null
+//            showLoading()
+        }
+
+        mMap?.setOnCameraIdleListener(clusterManager)
+    }
+
+    override fun goToMyLocation()
+    {
+        if(gps?.canGetLocation() == true) {
+            mMap?.isMyLocationEnabled = true
+            val myLocation = mMap?.myLocation ?: gps!!.location
+
+            if (myLocation != null) {
+                applyCameraUpdate(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(myLocation.latitude, myLocation.longitude), 14f
+                    )
+                )
+            }
+        }
+    }
+
+    override fun getSalesOutletBoundaries(){
+
+        if(mMap!!.cameraPosition.zoom.toInt() <= 11){
+            Toast.makeText(context!!, Constants.zoomFarWarning, Toast.LENGTH_SHORT).show()
+        }else{
+
+
+
+            if(selectedPoint != null){
+                if(PolyUtil.containsLocation(selectedPoint, po.points, true)) {
+//                    Toast.makeText(context!!, selectedPoint!!.longitude.toString() + " " + selectedPoint!!.latitude.toString(), Toast.LENGTH_SHORT).show()
+                }
+                else{
+
+                    po.points.clear()
+                    mLocationMapPresenter.addToPo()
+                    mLocationMapPresenter.drawMarkers()
+                }
+
+            }
+            else{
+                mLocationMapPresenter.drawMarkers()
+            }
+        }
+    }
+
+    override fun drawMarkers(){
+        mMap!!.clear()
+        mLocationMapPresenter.createBoundaries(
+            Points(mMap!!.projection.visibleRegion.farLeft.longitude, mMap!!.projection.visibleRegion.farLeft.latitude),
+            Points(mMap!!.projection.visibleRegion.nearLeft.longitude, mMap!!.projection.visibleRegion.nearLeft.latitude),
+            Points(mMap!!.projection.visibleRegion.nearRight.longitude, mMap!!.projection.visibleRegion.nearRight.latitude),
+            Points(mMap!!.projection.visibleRegion.farRight.longitude, mMap!!.projection.visibleRegion.farRight.latitude)
+        )
+    }
+
+
+    override fun addToPo(){
+        val farLeft = mMap!!.projection.visibleRegion.farLeft
+        val nearLeft =   mMap!!.projection.visibleRegion.nearLeft
+        val nearRight = mMap!!.projection.visibleRegion.nearRight
+        val farRight = mMap!!.projection.visibleRegion.farRight
+
+        po.add(farLeft,
+            nearLeft,
+            nearRight,
+            farRight
+        )
+    }
+
+    @Throws(IOException::class)
+    private fun getAddressByCoordinates(point: LatLng): String? {
+        val geocoder = Geocoder(activity, Locale.getDefault())
+        val addresses: List<Address>
+
+        addresses = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+
+        return if (addresses.isNotEmpty()) {
+            /*String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName();*/
+            addresses[0].getAddressLine(0)
+        } else null
+
+    }
+
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
         if (requestCode == LOCATION_REQUEST) {
@@ -465,7 +373,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
                 if (granted) break
             }
             if (granted && mMap != null) {
-                goToMyLocation()
+                mLocationMapPresenter.goToMyLocation()
             }
         }
     }
@@ -493,12 +401,39 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        activity!!.toolbarCl.visibility = View.GONE
-        mLocationMapPresenter.detachLifecycle(lifecycleRegistry )
+    override fun onClusterItemClick(p0: SalesOutletResult?): Boolean {
+        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
+        binding.txtAddress.text = p0.title + "\n" + p0.snippet
+//        binding.txtAddress.text = "Test"
+
+        mLocationMapPresenter.isClickedMarker = true
+
+        mLocationMapPresenter.setObserveForSubmitButton(true)
+        return false
     }
 
+    override fun onClusterClick(p0: Cluster<SalesOutletResult>?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        mLocationMapPresenter.getSalesOutlenByName(query!!)
+//                mLocationMapPresenter.setObserveForCancellSearchButton(false)
+//                mLocationMapPresenter.setObserveForSubmitButton(false)
+        Timber.i("SimpleSearchView", "Submit:" + query)
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        Timber.i("SimpleSearchView", "Text changed:" + newText)
+        return false
+    }
+
+    override fun onQueryTextCleared(): Boolean {
+        Toast.makeText(context!!, "Text cleared", Toast.LENGTH_SHORT).show()
+        Timber.i("SimpleSearchView", "Text cleared")
+        return false
+    }
 
 
     inner class MyClusterManager<T: SalesOutletResult>(var context: Context, var map: GoogleMap): ClusterManager<T>(context, map){
@@ -508,7 +443,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
             try {
                 if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {
 
-                    getSalesOutletBoundaries()
+                    mLocationMapPresenter.getSalesOutletBoundaries()
                 }
                 if(mLocationMapPresenter.isClickedMarker!!)
                     mLocationMapPresenter.isClickedMarker = false

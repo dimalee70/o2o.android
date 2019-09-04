@@ -111,14 +111,16 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
                     result ->
                     run {
                         liveSalesOutletResponse.value = result
-
+                        setObserveForCancellSearchButton(false)
+                        setObserveForSubmitButton(false)
 
                     }
                 },
                 {
                     error ->
                     run {
-
+//                        liveSalesOutletResponse.value = null
+                        viewState.showError(error)
                         Timber.i(error.localizedMessage)
                     }
                 }
@@ -126,7 +128,11 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
         )
     }
 
-    fun getSalesOutlenByBoundary(boundaries: Boundaries){
+    fun readItems(){
+        viewState.readItems()
+    }
+
+    fun getSalesOutletByBoundary(boundaries: Boundaries){
 
         val jsonArray: JsonArray = JsonArray()
 
@@ -157,6 +163,8 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
                     {
                         error ->
                         run {
+//                            liveSalesOuterResponseBoundary.value =
+                            viewState.showError(error)
                             Timber.i(error.localizedMessage)
                         }
                     }
@@ -164,8 +172,24 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
         )
     }
 
+    fun drawMarkers(){
+        viewState.drawMarkers()
+    }
+
+    fun goToMyLocation(){
+        viewState.goToMyLocation()
+    }
+
+    fun addToPo(){
+        viewState.addToPo()
+    }
+
+    fun getSalesOutletBoundaries(){
+        viewState.getSalesOutletBoundaries()
+    }
+
     fun createBoundaries(p1: Points, p2: Points, p3: Points, p4: Points){
-        getSalesOutlenByBoundary(Boundaries(mutableListOf(p1,p2,p3,p4,p1)))
+        getSalesOutletByBoundary(Boundaries(mutableListOf(p1,p2,p3,p4,p1)))
     }
 
     fun observeForSalesOutletResponseBoundary(): MutableLiveData<SalesOutletResponse>{

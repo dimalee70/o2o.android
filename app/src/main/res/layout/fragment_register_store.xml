@@ -203,6 +203,7 @@
                     android:background="#979797"
                     android:scaleType="center"
                     android:clickable="true"
+                    android:onClick="@{(v) -> presenter.addPhoto()}"
             />
 
         </LinearLayout>

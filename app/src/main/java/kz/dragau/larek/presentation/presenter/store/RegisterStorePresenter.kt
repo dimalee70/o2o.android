@@ -32,6 +32,10 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
         router.navigateTo(Screens.LocationMapScreen())
     }
 
+    fun addPhoto(){
+        println("Add PHOTO")
+    }
+
     override fun onDestroy() {
         saleSelector.listener = null
         super.onDestroy()

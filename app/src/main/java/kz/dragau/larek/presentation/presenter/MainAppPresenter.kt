@@ -14,6 +14,7 @@ import kz.dragau.larek.App
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
+import kz.dragau.larek.api.TokenInterceptor
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.models.objects.User
@@ -30,6 +31,9 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
 
     @Inject
     lateinit var userDao: UserDao
+
+    @Inject
+    lateinit var tokenInterceptor: TokenInterceptor
 
     init {
         App.appComponent.inject(this)
@@ -61,6 +65,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                 .subscribe(
                     { user: User ->
 //                        router.newRootScreen(Screens.LoginScreen())
+                        tokenInterceptor.token = "Bearer " + user.token
                         router.newRootScreen(Screens.StoreScreen())
 //                        router.newRootScreen(Screens.LocationMapScreen())
                     },

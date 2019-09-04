@@ -15,6 +15,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
 import kz.dragau.larek.R
+import kz.dragau.larek.api.TokenInterceptor
 import kz.dragau.larek.extensions.showErrorAlertDialog
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.view.MainAppView
@@ -34,6 +35,7 @@ class MainAppActivity : BaseActivity(), MainAppView {
         const val TAG = "MainAppActivity"
         fun getIntent(context: Context): Intent = Intent(context, MainAppActivity::class.java)
     }
+
 
     @Inject
     lateinit var router: Router

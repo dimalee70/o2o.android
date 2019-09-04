@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.*
+import kz.dragau.larek.api.TokenInterceptor
 import rxfirebase2.auth.RxFirebaseAuth
 import kz.dragau.larek.api.response.TokenResponse
 import kz.dragau.larek.models.db.Converters.Companion.toOffsetDateTime
@@ -43,6 +44,9 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var tokenInterceptor: TokenInterceptor
 
     val userRequstModel = LoginRequestModel()
 
@@ -204,6 +208,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                         }
 
                         saveToDb(result)
+                        tokenInterceptor.token = "Bearer " + result.resultObject!!.token
 
                 },
                 {
