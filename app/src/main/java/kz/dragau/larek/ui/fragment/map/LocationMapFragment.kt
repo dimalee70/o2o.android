@@ -4,8 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -32,7 +30,6 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.maps.android.PolyUtil
 import com.google.maps.android.clustering.Cluster
-import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_store.*
 import kotlinx.android.synthetic.main.fragment_location_map.*
@@ -41,17 +38,13 @@ import kz.dragau.larek.Constants
 import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.databinding.FragmentLocationMapBinding
 import kz.dragau.larek.models.objects.Points
-import kz.dragau.larek.models.objects.SalesClusterItem
 import kz.dragau.larek.models.objects.SalesOutletResult
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
-import kz.dragau.larek.ui.adapters.MyItemReader
 import kz.dragau.larek.ui.adapters.SalesClusterRenderer
-import org.json.JSONException
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import java.io.IOException
-import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
 
@@ -216,21 +209,25 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
 
     override fun readItems(){
         val thread: Thread = Thread(Runnable {
+            clusterManager!!.clearItems()
             val items: List<SalesOutletResult> = salesOutletResponse!!.resultObject!!
             for (i in 0..10) {
-                var offset: Double = i / 60.0
+                val offset: Double = i / 60.0
                 for (j in items) {
-                    var position: LatLng = j.position
-                    var lat: Double = position.latitude + offset
-                    var lng: Double = position.longitude + offset
-                    var offsetItem = SalesOutletResult(
-                        j.salesOutletId, j.name,
-                        j.address,
-                        LatLng(lat, lng), j.stateCode, j.statusCode,
-                        j.importSequenceNumber, j.createdOn,
-                        j.createdBy, j.modifiedOn, j.modifiedBy
-                    )
-                    clusterManager!!.addItem(offsetItem)
+                    if(j.longitude != null && j.latitude != null) {
+                        val position: LatLng = j.position
+                        val lat: Double = position.latitude + offset
+                        val lng: Double = position.longitude + offset
+                        val offsetItem = SalesOutletResult(
+                            j.salesOutletId, j.name,
+                            j.address,
+                            LatLng(lat, lng), j.isAcceptOrders
+//                            ,j.stateCode, j.statusCode,
+//                            j.importSequenceNumber, j.createdOn,
+//                            j.createdBy, j.modifiedOn, j.modifiedBy
+                        )
+                        clusterManager!!.addItem(offsetItem)
+                    }
                 }
             }
         })
@@ -402,7 +399,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
     }
 
     override fun onClusterItemClick(p0: SalesOutletResult?): Boolean {
-        mLocationMapPresenter.setSalesOutler(p0!!.title, p0.title, p0.snippet)
+        mLocationMapPresenter.setSalesOutler(p0!!)
         binding.txtAddress.text = p0.title + "\n" + p0.snippet
 //        binding.txtAddress.text = "Test"
 

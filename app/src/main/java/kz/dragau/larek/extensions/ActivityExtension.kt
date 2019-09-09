@@ -1,5 +1,6 @@
 package kz.dragau.larek.extensions
 
+import android.content.res.Resources
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kz.dragau.larek.presentation.presenter.dialogs.ErrorDialogPresenter
@@ -14,3 +15,7 @@ inline fun AppCompatActivity.showErrorAlertDialog(func: ErrorDialogPresenter.() 
     ErrorDialogPresenter(this, title, message).apply {
         func()
     }.create(null)
+
+inline  fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+inline fun Int.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()

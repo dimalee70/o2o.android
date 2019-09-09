@@ -22,26 +22,29 @@ data class SalesOutletResult(
     @field:SerializedName("longitude")
     val longitude: Double?  = null,
 
-    @field:SerializedName("stateCode")
-    val stateCode: Integer? = null,
+//    @field:SerializedName("stateCode")
+//    val stateCode: Integer? = null,
+//
+//    @field:SerializedName("statusCode")
+//    val statusCode: Integer? = null,
+//
+//    @field:SerializedName("importSequenceNumber")
+//    val importSequenceNumber: String? = null,
+//
+//    @field:SerializedName("createdOn")
+//    val createdOn: String? = null,
+//
+//    @field:SerializedName(" createdBy")
+//    val createdBy: String? = null,
+//
+//    @field:SerializedName("modifiedOn")
+//    val  modifiedOn: String? = null,
+//
+//    @field:SerializedName("modifiedBy")
+//    val  modifiedBy: String? = null,
 
-    @field:SerializedName("statusCode")
-    val statusCode: Integer? = null,
-
-    @field:SerializedName("importSequenceNumber")
-    val importSequenceNumber: String? = null,
-
-    @field:SerializedName("createdOn")
-    val createdOn: String? = null,
-
-    @field:SerializedName(" createdBy")
-    val createdBy: String? = null,
-
-    @field:SerializedName("modifiedOn")
-    val  modifiedOn: String? = null,
-
-    @field:SerializedName("modifiedBy")
-    val  modifiedBy: String? = null
+    @field:SerializedName("isAcceptOrders")
+    var isAcceptOrders: Boolean? = true
 ): ClusterItem {
 
     constructor(
@@ -53,23 +56,27 @@ data class SalesOutletResult(
 
             latLng: LatLng,
 
-            stateCode: Integer?,
+//            stateCode: Integer?,
+//
+//            statusCode: Integer?,
+//
+//            importSequenceNumber: String?,
+//
+//            createdOn: String?,
+//
+//            createdBy: String?,
+//
+//            modifiedOn: String?,
+//
+//            modifiedBy: String?,
 
-            statusCode: Integer?,
-
-            importSequenceNumber: String?,
-
-            createdOn: String?,
-
-            createdBy: String?,
-
-            modifiedOn: String?,
-
-            modifiedBy: String?) : this(salesOutletId,
-                name, address, latLng.latitude, latLng.longitude,
-                stateCode, statusCode,
-                importSequenceNumber, createdOn, createdBy,
-                modifiedOn, modifiedBy) {}
+            isAcceptOrders: Boolean?
+            ) : this(salesOutletId,
+                name, address, latLng.latitude, latLng.longitude,isAcceptOrders
+//                stateCode, statusCode,
+//                importSequenceNumber, createdOn, createdBy,
+//                modifiedOn, modifiedBy
+        ) {}
 
     override fun getSnippet(): String {
         return  address!!
@@ -84,7 +91,7 @@ data class SalesOutletResult(
     }
 
     override fun toString(): String {
-        return "SalesOutletResult(salesOutletId=$salesOutletId, name=$name, address=$address, latitude=$latitude, longitude=$longitude, stateCode=$stateCode, statusCode=$statusCode, importSequenceNumber=$importSequenceNumber, createdOn=$createdOn, createdBy=$createdBy, modifiedOn=$modifiedOn, modifiedBy=$modifiedBy)"
+        return "SalesOutletResult(salesOutletId=$salesOutletId, name=$name, address=$address, latitude=$latitude, longitude=$longitude, isAcceptOrders=$isAcceptOrders)"
     }
 
 

@@ -1,26 +1,38 @@
 package kz.dragau.larek.ui.activity.store
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.ferfalk.simplesearchview.utils.DimensUtils
+import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_store.*
+import kotlinx.android.synthetic.main.fragment_register_store.*
+import kz.dragau.larek.App
 import kz.dragau.larek.Constants
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
+import kz.dragau.larek.presentation.presenter.map.SaleSelector
+import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import kz.dragau.larek.presentation.view.store.StoreView
 import kz.dragau.larek.presentation.presenter.store.StorePresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
+import javax.inject.Inject
 
 class StoreActivity : BaseActivity(), StoreView {
 
@@ -29,11 +41,26 @@ class StoreActivity : BaseActivity(), StoreView {
         fun getIntent(context: Context): Intent = Intent(context, StoreActivity::class.java)
     }
 
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var saleSelector: SaleSelector
+
     @InjectPresenter
     lateinit var mStorePresenter: StorePresenter
 
+    @ProvidePresenter
+    fun providePresenter(): StorePresenter
+    {
+        return StorePresenter(router, saleSelector)
+    }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
         toolbar.title = ""
@@ -56,6 +83,19 @@ class StoreActivity : BaseActivity(), StoreView {
         searchView.setMenuItem(item)
         val revealCenter = searchView.revealAnimationCenter
         revealCenter.x -= DimensUtils.convertDpToPx(Constants.extraRevealCenterPadding, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == Activity.RESULT_OK) {
+                avatarIv.setImageURI(result.uri)
+                mStorePresenter.changeImage(result.uri)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Croppinf failed: " + result.error, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onResumeFragments() {

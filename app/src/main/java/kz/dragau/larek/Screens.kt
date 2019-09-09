@@ -44,6 +44,19 @@ class Screens {
         }
     }
 
+//    class GalleryScreen: SupportAppScreen(){
+//        override fun getActivityIntent(context: Context?): Intent {
+//            return Intent(Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        }
+//    }
+//
+//    class CameraScreen: SupportAppScreen(){
+//        override fun getActivityIntent(context: Context?): Intent {
+//            return Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+//        }
+//    }
+
     class StoreScreen: SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, StoreActivity::class.java)

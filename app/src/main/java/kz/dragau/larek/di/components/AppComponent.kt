@@ -25,6 +25,7 @@ import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
+import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
@@ -62,6 +63,7 @@ interface AppComponent {
     fun inject(activity: MainAppActivity)
     fun inject(activity: ProductActivity)
     fun inject(activity: ScanActivity)
+    fun inject(activity: StoreActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
     fun inject(fragment: ConfirmCodeFragment)
@@ -79,7 +81,7 @@ interface AppComponent {
     fun inject(presenter: ProductRegisterPresenter)
     fun inject(presenter: ScanPresenter)
     fun inject(presenter: RegisterStorePresenter)
-
+    fun inject(presenter: StorePresenter)
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp
 

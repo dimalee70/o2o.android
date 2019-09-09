@@ -17,11 +17,13 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
 import kz.dragau.larek.Constants
+import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.models.objects.Boundaries
 import kz.dragau.larek.models.objects.Points
 import kz.dragau.larek.models.objects.SalesOuter
+import kz.dragau.larek.models.objects.SalesOutletResult
 import kz.dragau.larek.presentation.presenter.BasePresenter
 import kz.dragau.larek.presentation.view.map.LocationMapView
 import org.jetbrains.annotations.Async
@@ -37,7 +39,7 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
     var liveCancellSearchButton = MutableLiveData<Boolean>()
     var liveSubmitButton = MutableLiveData<Boolean>()
     var isClickedMarker: Boolean? = false
-    var salesOuter: SalesOuter? = null
+    var salesOuter: SalesOutletResult? = null
     var isSubmitButton: Boolean = false
 
     @Inject
@@ -94,9 +96,9 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
         liveSubmitButton.value = false
     }
 
-    fun setSalesOutler(name: String?, legacyNmae: String?, address: String?)
+    fun setSalesOutler(salesOutletResult: SalesOutletResult)
     {
-        salesOuter = SalesOuter(name, legacyNmae, address)
+        salesOuter = salesOutletResult
     }
 
     @SuppressLint("CheckResult")
@@ -203,36 +205,5 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
     fun obseverForSubmitButton(): MutableLiveData<Boolean>{
         return  liveSubmitButton
     }
-
-//    fun getTokenResultApi(token: String){
-//        val jsonObject: JsonObject = JsonObject()
-//        jsonObject.addProperty(Constants.verificationCode,token )
-//        client.getToken(jsonObject)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                {
-//                        result ->
-//                    run{
-//                        viewState?.hideProgress()
-//                    }
-//
-//                    saveToDb(result)
-//
-//                },
-//                {
-//                        error ->
-//                    run {
-//                        viewState?.hideProgress()
-//                    }
-//                    if (error is HttpException) {
-//                        if (error.code() == 500) {
-//                        }
-//                    }
-//
-//                }
-//            )
-//    }
-
 
 }

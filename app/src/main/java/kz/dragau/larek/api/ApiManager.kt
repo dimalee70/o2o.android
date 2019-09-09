@@ -11,6 +11,7 @@ import kz.dragau.larek.api.response.TokenResponse
 import kz.dragau.larek.models.objects.Boundaries
 import kz.dragau.larek.models.objects.User
 import kz.dragau.larek.models.shared.DataHolder
+import org.json.JSONObject
 import retrofit2.http.*
 
 
@@ -30,5 +31,8 @@ interface ApiManager {
 
     @POST("v1/salesoutlet/getbyboundary")
     fun getSalesOuterByBoundary(@Body body: JsonArray): Observable<SalesOutletResponse>
+
+    @POST("/api/v1/salesoutlet/create")
+    fun registerStore(@Body body: JSONObject): Observable<String>
 
 }
