@@ -57,16 +57,16 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
 
     fun registerStore(){
         val gson = Gson()
-//        val jsonObject = JSONObject(gson.toJson(saleSelector.salesOuter))
-        val jsonObject = JSONObject("{\n" +
-                "\t\"name\":\"Шалом\",\n" +
-                "\t\"address\":\"Богенбай батыра 51\",\n" +
-                "\t\"latitude\":43.254568,\n" +
-                "\t\"longitude\":76.962351,\n" +
-                "\t\"isAcceptOrders\":false\n" +
-                "}")
-        println("body")
-        println(jsonObject.toString())
+        val jsonObject = JSONObject(gson.toJson(saleSelector.salesOuter))
+//        val jsonObject = JSONObject("{\n" +
+//                "\t\"name\":\"Шалом\",\n" +
+//                "\t\"address\":\"Богенбай батыра 51\",\n" +
+//                "\t\"latitude\":43.254568,\n" +
+//                "\t\"longitude\":76.962351,\n" +
+//                "\t\"isAcceptOrders\":false\n" +
+//                "}")
+//        println("body")
+//        println(jsonObject.toString())
         client.registerStore(jsonObject)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
