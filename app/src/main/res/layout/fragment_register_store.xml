@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
     >
             <!--android:background="@color/whiteColor"-->
 
@@ -178,39 +178,88 @@
        />
         </LinearLayout>
 
-        <LinearLayout
-                android:id="@+id/storePhotoLl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/onlineBookingLl"
-                android:layout_marginTop="26dp"
-        >
-            <ImageView
-                    android:id="@+id/avatarIv"
-                    android:layout_width="0dp"
-                    android:layout_height="68dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:layout_marginStart="14dp"
-                    android:src="@drawable/splash_screen"
-            />
+<!--        <LinearLayout-->
+<!--                android:id="@+id/storePhotoLl"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/onlineBookingLl"-->
+<!--                android:layout_marginTop="26dp"-->
+<!--        >-->
 
-            <ImageView
-                    android:id="@+id/avaIv"
-                    android:layout_width="68dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/storePhotoLl"
+                    android:layout_width="match_parent"
                     android:layout_height="68dp"
-                    android:layout_gravity="end|center"
-                    android:layout_marginEnd="16dp"
-                    app:srcCompat="@drawable/ic_store_photo"
-                    android:background="#979797"
-                    android:scaleType="center"
-                    android:clickable="true"
-            />
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/onlineBookingLl"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@color/whiteColor"
+                    >
+
+                <GridView
+                        android:id="@+id/imageGv"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:numColumns="1"
+                        android:verticalSpacing="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginStart="2dp"
+                        android:horizontalSpacing="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/avaIv"
+                        />
+<!--                android:stretchMode="spacingWidthUniform"-->
+<!--                        android:gravity="center"-->
+<!--                        android:columnWidth="100dp"-->
+                <ImageView
+                        android:id="@+id/avaIv"
+                        android:layout_width="68dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="end|center"
+                        android:background="#979797"
+                        android:scaleType="center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        app:srcCompat="@drawable/ic_store_photo"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+<!--                        android:layout_marginEnd="16dp"-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--            <ImageView-->
+<!--                    android:id="@+id/avatarIv"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="68dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:adjustViewBounds="true"-->
+<!--                    android:scaleType="fitXY"-->
+<!--                    android:layout_marginStart="14dp"-->
+<!--                    android:src="@drawable/splash_screen"-->
+<!--            />-->
+
+<!--            <ImageView-->
+<!--                    android:id="@+id/avaIv"-->
+<!--                    android:layout_width="68dp"-->
+<!--                    android:layout_height="68dp"-->
+<!--                    android:layout_gravity="end|center"-->
+<!--                    android:layout_marginEnd="16dp"-->
+<!--                    app:srcCompat="@drawable/ic_store_photo"-->
+<!--                    android:background="#979797"-->
+<!--                    android:scaleType="center"-->
+<!--                    android:clickable="true"-->
+<!--            />-->
 <!--                    android:onClick="@{(v) -> presenter.addPhoto()}"-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <Button
                 android:id="@+id/btnLogin"

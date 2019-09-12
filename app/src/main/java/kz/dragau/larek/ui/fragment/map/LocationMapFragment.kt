@@ -221,7 +221,8 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
                         val offsetItem = SalesOutletResult(
                             j.salesOutletId, j.name,
                             j.address,
-                            LatLng(lat, lng), j.isAcceptOrders
+                            LatLng(lat, lng)
+//                            , j.isAcceptOrders
 //                            ,j.stateCode, j.statusCode,
 //                            j.importSequenceNumber, j.createdOn,
 //                            j.createdBy, j.modifiedOn, j.modifiedBy
@@ -417,18 +418,18 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         mLocationMapPresenter.getSalesOutlenByName(query!!)
 //                mLocationMapPresenter.setObserveForCancellSearchButton(false)
 //                mLocationMapPresenter.setObserveForSubmitButton(false)
-        Timber.i("SimpleSearchView", "Submit:" + query)
+//        Timber.i("SimpleSearchView", "Submit:" + query)
         return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        Timber.i("SimpleSearchView", "Text changed:" + newText)
+//        Timber.i("SimpleSearchView", "Text changed:" + newText)
         return false
     }
 
     override fun onQueryTextCleared(): Boolean {
-        Toast.makeText(context!!, "Text cleared", Toast.LENGTH_SHORT).show()
-        Timber.i("SimpleSearchView", "Text cleared")
+//        Toast.makeText(context!!, "Text cleared", Toast.LENGTH_SHORT).show()
+//        Timber.i("SimpleSearchView", "Text cleared")
         return false
     }
 

@@ -20,7 +20,7 @@ data class SalesOutletResult(
     val latitude: Double? = null,
 
     @field:SerializedName("longitude")
-    val longitude: Double?  = null,
+    val longitude: Double?  = null
 
 //    @field:SerializedName("stateCode")
 //    val stateCode: Integer? = null,
@@ -43,8 +43,7 @@ data class SalesOutletResult(
 //    @field:SerializedName("modifiedBy")
 //    val  modifiedBy: String? = null,
 
-    @field:SerializedName("isAcceptOrders")
-    var isAcceptOrders: Boolean? = true
+
 ): ClusterItem {
 
     constructor(
@@ -54,7 +53,8 @@ data class SalesOutletResult(
 
             address: String?,
 
-            latLng: LatLng,
+            latLng: LatLng
+//            ,
 
 //            stateCode: Integer?,
 //
@@ -70,13 +70,17 @@ data class SalesOutletResult(
 //
 //            modifiedBy: String?,
 
-            isAcceptOrders: Boolean?
+//            isAcceptOrders: Boolean?
             ) : this(salesOutletId,
-                name, address, latLng.latitude, latLng.longitude,isAcceptOrders
+                name, address, latLng.latitude, latLng.longitude
 //                stateCode, statusCode,
 //                importSequenceNumber, createdOn, createdBy,
 //                modifiedOn, modifiedBy
-        ) {}
+        ) {
+    }
+
+    @field:SerializedName("isAcceptOrders")
+    private var isAcceptOrders: Boolean? = true
 
     override fun getSnippet(): String {
         return  address!!

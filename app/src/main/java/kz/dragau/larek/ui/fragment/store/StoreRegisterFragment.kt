@@ -22,7 +22,9 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -46,6 +48,7 @@ import kz.dragau.larek.models.objects.SalesOutletResult
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
 import kz.dragau.larek.ui.activity.store.StoreActivity
+import kz.dragau.larek.ui.adapters.ImageAdapter
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
@@ -98,6 +101,19 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
             showPictureDialog()
         }
 
+        val imageGridView = binding.imageGv
+        imageGridView.adapter = ImageAdapter(context!!, images)
+        if(images.size >= 3)
+            imageGridView.numColumns = 3
+        else if(images.size == 2){
+            imageGridView.numColumns = 2
+        }
+        else if(images.size == 0) {
+            binding.avaIv.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+
+        }
+
+
         binding.onlineBooking.setOnCheckedChangeListener(this)
         return binding.root
     }
@@ -112,9 +128,10 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
         saleSelector.salesOuter?.let { showSale(it) }
 //        Glide.with(context!!).load(bitmap?.let { saveImage(it) }).into(binding.avatarIv)
 
-        if (saleSelector.imageSelector != null) {
-            binding.avatarIv.setImageURI(Uri.parse(saleSelector.imageSelector))
-        }
+
+//        if (saleSelector.imageSelector != null) {
+//            binding.avatarIv.setImageURI(Uri.parse(saleSelector.imageSelector))
+//        }
     }
 
     override fun onPause() {
@@ -169,7 +186,7 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
 
 
 
-    override fun showSale(salesOuter: SalesOutletResult) {
+    override fun showSale(salesOuter: SalesOuter) {
         binding.storeTitleEt.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
         binding.storeLegalTitleEt.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
         binding.storeAddressEt.text = Editable.Factory.getInstance().newEditable(salesOuter.address)
@@ -232,14 +249,14 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
 //    }
 
 
-    fun rotate(bitmap: Bitmap, degree: Int): Bitmap
-    {
-        val w = bitmap.width
-        val h = bitmap.height
-        val mtx = Matrix()
-        mtx.setRotate(degree.toFloat())
-        return Bitmap.createBitmap(bitmap, 0,0, w, h, mtx, true)
-    }
+//    fun rotate(bitmap: Bitmap, degree: Int): Bitmap
+//    {
+//        val w = bitmap.width
+//        val h = bitmap.height
+//        val mtx = Matrix()
+//        mtx.setRotate(degree.toFloat())
+//        return Bitmap.createBitmap(bitmap, 0,0, w, h, mtx, true)
+//    }
 
 //    override fun onDestroy() {
 //        saleSelector.listener = null
@@ -259,6 +276,15 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
 //        var path = MediaStore.Images.Media.insertImage(context.contentResolver, image, "Title", null)
 //        return Uri.parse(path)
 //    }
+
+    private var images = arrayOf(
+        "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
+        ,
+        "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
+        ,
+        "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+        "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg"
+        )
 
     override fun changeSwitch() {
         updateSwitch(binding.onlineBooking.isChecked)

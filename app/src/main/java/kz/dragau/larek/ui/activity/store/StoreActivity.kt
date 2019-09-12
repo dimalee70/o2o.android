@@ -90,7 +90,7 @@ class StoreActivity : BaseActivity(), StoreView {
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
-                avatarIv.setImageURI(result.uri)
+//                avatarIv.setImageURI(result.uri)
                 mStorePresenter.changeImage(result.uri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Croppinf failed: " + result.error, Toast.LENGTH_LONG).show()

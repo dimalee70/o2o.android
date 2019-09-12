@@ -5,7 +5,7 @@ import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.models.objects.SalesOutletResult
 
 class SaleSelector{
-    var salesOuter: SalesOutletResult? = null
+    var salesOuter: SalesOuter? = null
     var imageSelector: String? = null
     var listener: Listener? = null
 

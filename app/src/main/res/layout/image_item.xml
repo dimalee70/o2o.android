@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp">
+
+        <ImageView
+                android:id="@+id/avaIv"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                app:srcCompat="@drawable/splash_screen"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                >
+            <!--            android:scaleType="centerCrop"-->
+        </ImageView>
+
+        <View
+                android:id="@+id/transparentV"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="#BF000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                >
+        </View>
+        <TextView
+                android:id="@+id/countPhotoTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/whiteColor"
+                android:text="13\nфото"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <LinearLayout-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="120dp">-->
+<!--        <ImageView-->
+<!--                android:id="@+id/avaIv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="120dp"-->
+<!--                app:srcCompat="@drawable/splash_screen"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                >-->
+<!--    &lt;!&ndash;            android:scaleType="centerCrop"&ndash;&gt;-->
+<!--        </ImageView>-->
+<!--        -->
+<!--        <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="120dp"-->
+<!--                android:background="#80000000"-->
+<!--                >-->
+<!--        </View>-->
+<!--    </LinearLayout>-->
+</layout>

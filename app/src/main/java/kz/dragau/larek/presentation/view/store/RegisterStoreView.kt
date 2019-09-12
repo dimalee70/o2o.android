@@ -7,7 +7,7 @@ import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.models.objects.SalesOutletResult
 
 interface RegisterStoreView : MvpView, SwitchButton.OnCheckedChangeListener {
-    fun showSale(salesOuter: SalesOutletResult)
+    fun showSale(salesOuter: SalesOuter)
     fun showPictureDialog()
 //    fun choseFromGallery()
 //    fun takePhotoFromCamera()

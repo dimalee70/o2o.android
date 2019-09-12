@@ -39,7 +39,7 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
     var liveCancellSearchButton = MutableLiveData<Boolean>()
     var liveSubmitButton = MutableLiveData<Boolean>()
     var isClickedMarker: Boolean? = false
-    var salesOuter: SalesOutletResult? = null
+    var salesOuter: SalesOuter? = null
     var isSubmitButton: Boolean = false
 
     @Inject
@@ -98,7 +98,9 @@ class LocationMapPresenter (private val router: Router, private val saleSelector
 
     fun setSalesOutler(salesOutletResult: SalesOutletResult)
     {
-        salesOuter = salesOutletResult
+        salesOuter = SalesOuter(salesOutletResult.name,
+            salesOutletResult.address, salesOutletResult.latitude,
+            salesOutletResult.longitude)
     }
 
     @SuppressLint("CheckResult")

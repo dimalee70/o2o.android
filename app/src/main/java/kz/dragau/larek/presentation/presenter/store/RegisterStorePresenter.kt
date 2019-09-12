@@ -3,6 +3,7 @@ package kz.dragau.larek.presentation.presenter.store
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -56,8 +57,15 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
     }
 
     fun registerStore(){
-        val gson = Gson()
-        val jsonObject = JSONObject(gson.toJson(saleSelector.salesOuter))
+//        val gson = Gson().newBuilder().registerTypeAdapter(JSONObject::class.java)
+//        val jsonObject = JSONObject(gson.toJson(saleSelector.salesOuter))
+//        val salesOuterAnotation = SalesOuter.ana
+//        var jsonObject: JsonObject = JsonObject()
+//        jsonObject.addProperty(saleSelector.salesOuter.name, )
+//        jsonObject.addProperty("address","Богенбай батыра 51" )
+//        jsonObject.addProperty("latitude", 43.254568 )
+//        jsonObject.addProperty("longitude",76.962351 )
+//        jsonObject.addProperty("isAcceptOrders",false )
 //        val jsonObject = JSONObject("{\n" +
 //                "\t\"name\":\"Шалом\",\n" +
 //                "\t\"address\":\"Богенбай батыра 51\",\n" +
@@ -67,14 +75,14 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
 //                "}")
 //        println("body")
 //        println(jsonObject.toString())
-        client.registerStore(jsonObject)
+        client.registerStore(saleSelector.salesOuter!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     result ->
                     run {
-
+                        println(result)
                     }
                 },
                 {
