@@ -20,11 +20,14 @@ import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import kz.dragau.larek.presentation.presenter.product.ProductRegisterPresenter
 import kz.dragau.larek.presentation.presenter.product.ScanPresenter
 import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
+import kz.dragau.larek.presentation.presenter.store.ShowImageFragmentPressenter
+import kz.dragau.larek.presentation.presenter.store.ShowImagePresenter
 import kz.dragau.larek.presentation.presenter.store.StorePresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
+import kz.dragau.larek.ui.activity.store.ShowImageActivity
 import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
@@ -32,13 +35,14 @@ import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
+import kz.dragau.larek.ui.fragment.store.ShowImageFragment
 import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 
 @Singleton
 @CustomApplicationScope
 @Component(modules = [ApplicationModule::class, NavigationModule::class,
     ServiceUtilModule::class, RoomModule::class, WSocketModule::class,
-    SaleSelectionModule::class])
+    SaleSelectionModule::class, ImageListModule::class])
 interface AppComponent {
     @ApplicationContext
     fun context(): Context
@@ -64,6 +68,7 @@ interface AppComponent {
     fun inject(activity: ProductActivity)
     fun inject(activity: ScanActivity)
     fun inject(activity: StoreActivity)
+    fun inject(activty: ShowImageActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
     fun inject(fragment: ConfirmCodeFragment)
@@ -71,6 +76,7 @@ interface AppComponent {
     fun inject(fragment: LocationMapFragment)
     fun inject(fragment: ProductRegisterFragment)
     fun inject(fragment: StoreRegisterFragment)
+    fun inject(fragment: ShowImageFragment)
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
@@ -82,6 +88,8 @@ interface AppComponent {
     fun inject(presenter: ScanPresenter)
     fun inject(presenter: RegisterStorePresenter)
     fun inject(presenter: StorePresenter)
+    fun inject(presenter: ShowImagePresenter)
+    fun inject(presenter: ShowImageFragmentPressenter)
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp
 

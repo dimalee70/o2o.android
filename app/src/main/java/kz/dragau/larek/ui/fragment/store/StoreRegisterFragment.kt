@@ -1,63 +1,28 @@
 package kz.dragau.larek.ui.fragment.store
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.graphics.Matrix
-import android.graphics.Point
-import android.graphics.drawable.BitmapDrawable
-import android.media.ExifInterface
-import android.media.MediaScannerConnection
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.text.Editable
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.store.RegisterStoreView
 import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.bumptech.glide.Glide
 import com.suke.widget.SwitchButton
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kz.dragau.larek.App
-import kz.dragau.larek.Constants
-import kz.dragau.larek.Screens
 import kz.dragau.larek.databinding.FragmentRegisterStoreBinding
-import kz.dragau.larek.extensions.toDp
-import kz.dragau.larek.extensions.toPx
+import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.models.objects.SalesOuter
-import kz.dragau.larek.models.objects.SalesOutletResult
-import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
-import kz.dragau.larek.ui.activity.store.StoreActivity
-import kz.dragau.larek.ui.adapters.ImageAdapter
+import kz.dragau.larek.ui.adapters.images.ImageAdapter
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
-import timber.log.Timber
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.Exception
-import java.util.*
 import javax.inject.Inject
 
 class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
@@ -77,6 +42,9 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     lateinit var router: Router
 
     @Inject
+    lateinit var imageList: Images
+
+    @Inject
     lateinit var saleSelector: SaleSelector
 
     @InjectPresenter
@@ -85,7 +53,33 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     @ProvidePresenter
     fun providePresenter(): RegisterStorePresenter
     {
-        return RegisterStorePresenter(router, saleSelector)
+        imageList.images = arrayOf(
+            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
+            ,
+            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
+            ,
+            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg",
+            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
+            ,
+            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
+            ,
+            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg",
+            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
+            ,
+            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
+            ,
+            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg",
+            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
+            ,
+            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
+            ,
+            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg"
+        )
+        return RegisterStorePresenter(router, saleSelector, imageList.images!!)
     }
 
     lateinit var binding: FragmentRegisterStoreBinding
@@ -102,13 +96,14 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
         }
 
         val imageGridView = binding.imageGv
-        imageGridView.adapter = ImageAdapter(context!!, images)
-        if(images.size >= 3)
+        imageGridView.adapter =
+            ImageAdapter(context!!, imageList.images!!, router)
+        if(imageList.images!!.size >= 3)
             imageGridView.numColumns = 3
-        else if(images.size == 2){
+        else if(imageList.images!!.size == 2){
             imageGridView.numColumns = 2
         }
-        else if(images.size == 0) {
+        else if(imageList.images!!.size == 0) {
             binding.avaIv.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
 
         }
@@ -119,7 +114,9 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
     }
 
@@ -156,7 +153,7 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
             CropImage.activity(null)
 //                .setMaxCropResultSize(1920,1080)
     //            .setMinCropResultSize(1920, 100.toPx())
-                .setAspectRatio(3,1)
+//                .setAspectRatio(3,1)
 //                .setRequestedSize(150,50, CropImageView.RequestSizeOptions.RESIZE_EXACT)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(it)
@@ -277,14 +274,14 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
 //        return Uri.parse(path)
 //    }
 
-    private var images = arrayOf(
-        "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
-        ,
-        "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
-        ,
-        "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-        "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg"
-        )
+//    private var images = arrayOf(
+//        "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
+//        ,
+//        "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
+//        ,
+//        "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+//        "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg"
+//        )
 
     override fun changeSwitch() {
         updateSwitch(binding.onlineBooking.isChecked)

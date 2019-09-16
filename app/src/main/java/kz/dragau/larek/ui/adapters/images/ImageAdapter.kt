@@ -1,22 +1,19 @@
-package kz.dragau.larek.ui.adapters
+package kz.dragau.larek.ui.adapters.images
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import kz.dragau.larek.R
+import kz.dragau.larek.Screens
 import kz.dragau.larek.databinding.ImageItemBinding
+import kz.dragau.larek.ui.adapters.images.BaseImageAdapter
+import ru.terrakok.cicerone.Router
 
-class ImageAdapter(private val context: Context, private var images: Array<String>): BaseAdapter() {
+class ImageAdapter(private val context: Context, private var images: Array<String>, private var router: Router): BaseImageAdapter<String>(context, images) {
 
     lateinit var imageItemBinding: ImageItemBinding
 
@@ -36,7 +33,7 @@ class ImageAdapter(private val context: Context, private var images: Array<Strin
 //        imageItemBinding.root.tag = viewHolder
 
 //        imageItemBinding.avaIv.setImageResource(R.drawable.splash_screen)
-        if(position == 2){
+        if(position == 2 && images.size > 3){
             imageItemBinding.transparentV.visibility = View.VISIBLE
             imageItemBinding.countPhotoTv.visibility  = View.VISIBLE
             imageItemBinding.countPhotoTv.text = images.size.toString() + "\nфото"
@@ -50,23 +47,8 @@ class ImageAdapter(private val context: Context, private var images: Array<Strin
     }
 
     private fun showImagesActivity() {
-        Toast.makeText(context, "Show ImageActivity", Toast.LENGTH_SHORT).show()
-    }
 
-    override fun getItem(position: Int): String {
-        return images[position]
+        router.navigateTo(Screens.ImagesScreen())
     }
-
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-    override fun getCount(): Int {
-        return images.size
-    }
-
-//    class ViewHolder(val imageView: ImageView){
-//
-//    }
 
 }

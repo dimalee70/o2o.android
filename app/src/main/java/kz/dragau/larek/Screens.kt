@@ -9,6 +9,7 @@ import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.product.AddProductActivity
+import kz.dragau.larek.ui.activity.store.ShowImageActivity
 import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
@@ -16,6 +17,7 @@ import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
+import kz.dragau.larek.ui.fragment.store.ShowImageFragment
 import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -23,6 +25,12 @@ class Screens {
     class MainScreen : SupportAppScreen() {
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, MainAppActivity::class.java)
+        }
+    }
+
+    class ImagesScreen : SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, ShowImageActivity::class.java)
         }
     }
 
@@ -145,6 +153,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return StoreRegisterFragment.newInstance()
+        }
+    }
+
+    class ShowImagesScreen : SupportAppScreen(){
+        init {
+            this.screenKey =  javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return ShowImageFragment.newInstance()
         }
     }
 

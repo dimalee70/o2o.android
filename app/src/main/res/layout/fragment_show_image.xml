@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+    <data>
+        <variable name="presenter" type="kz.dragau.larek.presentation.presenter.store.ShowImageFragmentPressenter"/>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:background="#979797"
+                android:onClick="@{(v) -> presenter.addPhoto()}"
+                app:backgroundTint="#979797"
+                app:srcCompat="@drawable/ic_store_photo"
+                />
+<!--                android:id="@+id/floating_action_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="bottom|end"-->
+<!--                android:layout_margin="16dp"-->
+<!--                android:background="#979797"-->
+<!--                android:scaleType="center"-->
+<!--                android:tint="#979797"-->
+<!--                app:backgroundTint="#979797"-->
+<!--                app:fabSize="auto"-->
+<!--                app:borderWidth="0dp"-->
+<!--                app:elevation="0dp"-->
+<!--                app:srcCompat="@drawable/ic_store_photo"-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+            <kz.dragau.larek.custom.ImageGridView
+                    android:id="@+id/imageGv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:verticalSpacing="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="2dp"
+                    android:horizontalSpacing="2dp"
+                    android:numColumns="3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:stretchMode="columnWidth"
+                    />
+
+
+    <!--        <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                android:text="Hello Word!!!"-->
+    <!--            >-->
+    <!--        </TextView>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        xmlns:tools="http://schemas.android.com/tools"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        tools:context=".ui.fragment.store.ShowImageFragment">-->
+
+<!--</FrameLayout>-->

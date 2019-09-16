@@ -20,7 +20,7 @@ import javax.inject.Inject
 import kotlin.math.sqrt
 
 @InjectViewState
-class RegisterStorePresenter(private val router: Router, private var saleSelector: SaleSelector) : MvpPresenter<RegisterStoreView>()
+class RegisterStorePresenter(private val router: Router, private var saleSelector: SaleSelector, private var imageList: Array<String> ) : MvpPresenter<RegisterStoreView>()
 {
     @Inject
     lateinit var client: ApiManager
