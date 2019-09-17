@@ -268,7 +268,9 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         clusterManager = MyClusterManager(context!!, mMap!!)
         clusterManager!!.setOnClusterClickListener (this)
         clusterManager!!.setOnClusterItemClickListener (this)
-        clusterManager!!.renderer = SalesClusterRenderer(context, mMap, clusterManager)
+        var salesClusterRenderer = SalesClusterRenderer(context, mMap, clusterManager)
+//        salesClusterRenderer.minClusterSize = 5
+        clusterManager!!.renderer = salesClusterRenderer
         mMap?.setOnMarkerClickListener(clusterManager)
         mMap?.setOnCameraMoveStartedListener {
             selectedPoint = null
@@ -437,6 +439,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
     inner class MyClusterManager<T: SalesOutletResult>(var context: Context, var map: GoogleMap): ClusterManager<T>(context, map){
         override fun onCameraIdle() {
             super.onCameraIdle()
+//            clusterManager!!.cluster()
             selectedPoint = mMap?.cameraPosition?.target
             try {
                 if(mLocationMapPresenter.observeForCancellSearchButton().value != false) {

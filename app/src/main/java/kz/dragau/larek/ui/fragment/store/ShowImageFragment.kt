@@ -54,6 +54,7 @@ class ShowImageFragment : BaseMvpFragment(), ShowImageFragmentView {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -62,7 +63,7 @@ class ShowImageFragment : BaseMvpFragment(), ShowImageFragmentView {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_image, container, false)
         binding.imageGv.adapter = ShowImageAdapter(context!!, imageList.images!!, router)
-        binding.imageGv
+//        binding.imageGv
         binding.presenter = mShowImagePresenter
         return binding.root
     }

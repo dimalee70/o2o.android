@@ -4,6 +4,7 @@ import kz.dragau.larek.BuildConfig
 
 object Constants
 {
+    const val PHOTO_POSITION = "PHOTO_POSITION"
     const val IMAGE_DIRECTORY = "/o2o"
     const val GALLERY = 1
     const val CAMERA = 2

@@ -17,6 +17,7 @@ import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
+import kz.dragau.larek.ui.fragment.store.ImageViewPagerFragment
 import kz.dragau.larek.ui.fragment.store.ShowImageFragment
 import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
@@ -163,6 +164,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return ShowImageFragment.newInstance()
+        }
+    }
+
+    class ImageViewPagerScreen(private var position: Int): SupportAppScreen(){
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return ImageViewPagerFragment.newInstance(position)
         }
     }
 

@@ -3,11 +3,14 @@ package kz.dragau.larek.ui.activity.store
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import kotlinx.android.synthetic.main.activity_show_image.*
 import kotlinx.android.synthetic.main.fragment_sms_code.*
 import kz.dragau.larek.App
 import kz.dragau.larek.R
@@ -47,14 +50,16 @@ class ShowImageActivity : BaseActivity(), ShowImageView {
         return ShowImagePresenter(router, imageList.images!!)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_image)
-
+        setSupportActionBar(prod_toolbar)
         if(savedInstanceState == null){
             navigator.applyCommands(arrayOf<Command>(Replace(Screens.ShowImagesScreen())))
+        }
+        back_button_iv.setOnClickListener{
+            onBackPressed()
         }
 
     }
@@ -71,6 +76,23 @@ class ShowImageActivity : BaseActivity(), ShowImageView {
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_sample, menu)
+//        var item = menu!!.findItem(R.id.action_search)
+//        item.isVisible = false
+        return super.onCreateOptionsMenu(menu)
+    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId){
+//            R.id.back_button_iv -> {
+//                super.onBackPressed()
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     var navigator: SupportAppNavigator = object : SupportAppNavigator(this, R.id.activity_images_frame_layout) {
         override fun setupFragmentTransaction(

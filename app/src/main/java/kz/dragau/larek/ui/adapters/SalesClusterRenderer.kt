@@ -28,7 +28,7 @@ class SalesClusterRenderer<T: SalesOutletResult>(
     private val makerImageView: ImageView = ImageView(context)
 
     public override fun shouldRenderAsCluster(cluster: Cluster<T>?): Boolean {
-        return cluster!!.size > 1
+        return cluster!!.size > 3
     }
 
     override fun onBeforeClusterRendered(cluster: Cluster<T>?, markerOptions: MarkerOptions?) {

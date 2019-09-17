@@ -11,4 +11,8 @@ class ShowImagePresenter(private var router: Router, private var images: Array<S
     init {
         App.appComponent.inject(this)
     }
+
+    fun goBack(){
+        router.exit()
+    }
 }
