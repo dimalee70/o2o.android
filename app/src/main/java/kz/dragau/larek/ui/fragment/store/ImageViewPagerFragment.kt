@@ -68,7 +68,7 @@ class ImageViewPagerFragment : BaseMvpFragment(), ImageViewPagerView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_image_view_pager,
             container, false)
         binding.imageVp.adapter = ImagePagerAdapter(context!!, imageList.images!!)
-        binding.imageVp.addOnPageChangeListener(ImageChangeListener(imageList, activity!!.pageTv!!))
+        binding.imageVp!!.addOnPageChangeListener(ImageChangeListener(imageList, activity!!.pageTv!!))
         activity!!.pageTv!!.text = (binding.imageVp.currentItem + 1).toString() + " из " + imageList.images!!.size
         setHasOptionsMenu(true)
         binding.imageVp.currentItem = position!!

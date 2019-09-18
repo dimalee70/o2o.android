@@ -29,8 +29,13 @@ class Screens {
         }
     }
 
-    class ImagesScreen : SupportAppScreen(){
+    class ImagesScreen(private var position: Int? = null) : SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
+            position?.let {
+                val intent = Intent(context, ShowImageActivity::class.java)
+                intent.putExtra(Constants.PHOTO_POSITION, position!!)
+                return intent
+            }
             return Intent(context, ShowImageActivity::class.java)
         }
     }

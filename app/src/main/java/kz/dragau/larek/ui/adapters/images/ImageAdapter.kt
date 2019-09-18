@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import kz.dragau.larek.R
@@ -41,9 +42,22 @@ class ImageAdapter(private val context: Context, private var images: Array<Strin
                 showImagesActivity()
             }
         }
+        imageItemBinding.avaIv.setOnClickListener {
+            showImagePager(position)
+        }
+//        else if(position != 2){
+//            showImagePager(position)
+//        }
         Glide.with(imageItemBinding.root).load(image).into(imageItemBinding.avaIv)
         return imageItemBinding.root
 
+    }
+
+    private fun showImagePager(position: Int) {
+//        Toast.makeText(context, "Click Image", Toast.LENGTH_SHORT).show()
+//        router.navigateTo(Screens.ImageViewPagerScreen(position))
+//        navigator.applyCommands(arrayOf<Command>(Replace(Screens.ImageViewPagerScreen(0))))
+        router.navigateTo(Screens.ImagesScreen(position))
     }
 
     private fun showImagesActivity() {

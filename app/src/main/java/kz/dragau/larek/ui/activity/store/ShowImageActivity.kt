@@ -13,6 +13,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.activity_show_image.*
 import kotlinx.android.synthetic.main.fragment_sms_code.*
 import kz.dragau.larek.App
+import kz.dragau.larek.Constants
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.models.objects.Images
@@ -55,8 +56,13 @@ class ShowImageActivity : BaseActivity(), ShowImageView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_image)
         setSupportActionBar(prod_toolbar)
+        val position = intent.getIntExtra(Constants.PHOTO_POSITION, -1)
         if(savedInstanceState == null){
-            navigator.applyCommands(arrayOf<Command>(Replace(Screens.ShowImagesScreen())))
+            if (position != -1)
+                navigator.applyCommands(arrayOf<Command>(Replace(Screens.ImageViewPagerScreen(position))))
+            else {
+                navigator.applyCommands(arrayOf<Command>(Replace(Screens.ShowImagesScreen())))
+            }
         }
         back_button_iv.setOnClickListener{
             onBackPressed()
