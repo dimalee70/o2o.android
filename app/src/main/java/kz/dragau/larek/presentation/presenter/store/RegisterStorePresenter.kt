@@ -1,29 +1,34 @@
 package kz.dragau.larek.presentation.presenter.store
 
+import android.annotation.SuppressLint
+import android.location.Geocoder
+import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kz.dragau.larek.App
+import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
+import kz.dragau.larek.api.requests.RegisterStoreRequestModel
 import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
-import kz.dragau.larek.presentation.presenter.map.SaleSelector.Listener
 import kz.dragau.larek.presentation.view.store.RegisterStoreView
-import org.json.JSONObject
+import kz.dragau.larek.ui.rule.NotEmptyRule
+import kz.dragau.larek.ui.rule.NotNullRule
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
-import kotlin.math.sqrt
+import ru.whalemare.rxvalidator.Validator
 
 @InjectViewState
-class RegisterStorePresenter(private val router: Router, private var saleSelector: SaleSelector, private var imageList: Array<String> ) : MvpPresenter<RegisterStoreView>()
+class RegisterStorePresenter(private val router: Router, private var saleSelector: SaleSelector, private var imageList: ArrayList<Uri> ) : MvpPresenter<RegisterStoreView>()
 {
     @Inject
     lateinit var client: ApiManager
+
+    var registerStoreRequestModel = RegisterStoreRequestModel()
 
     init {
         App.appComponent.inject(this)
@@ -34,6 +39,20 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
 //        }
     }
 
+    val validator = Validator().apply {
+        add(NotNullRule())
+        add(NotEmptyRule())
+    }
+
+    private fun onNameTextChanges(text: String){
+        validator.validate(text,
+            onSuccess = {
+                viewState?.onNameValid()
+            },
+            onError = {
+                viewState?.onNameInvalid(it)
+            })
+    }
     private fun updateSale() {
         viewState.showSale(saleSelector.salesOuter!!)
 //        saleSelector.salesOuter?.let { viewState.showSale(it) }
@@ -57,6 +76,10 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
     }
 
     fun registerStore(){
+
+//        viewState?.initSalesOutlet()
+        viewState?.initGeocoder()
+
 //        val gson = Gson().newBuilder().registerTypeAdapter(JSONObject::class.java)
 //        val jsonObject = JSONObject(gson.toJson(saleSelector.salesOuter))
 //        val salesOuterAnotation = SalesOuter.ana
@@ -75,29 +98,39 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
 //                "}")
 //        println("body")
 //        println(jsonObject.toString())
+
+
+    }
+
+
+    fun registerToServer(){
+
         client.registerStore(saleSelector.salesOuter!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    result ->
+                        result ->
                     run {
                         println(result)
                     }
                 },
                 {
-                    error ->
-                    run {
 
+                        error ->
+                    run {
+                        viewState.showError(App.appComponent.context().getString(
+                            R.string.default_error_message), -1)
                     }
                     if (error is HttpException) {
                         if (error.code() == 500) {
                         }
+
+                        viewState.showError(App.appComponent.context().getString(
+                            R.string.default_error_message), -1)
                     }
                 }
             )
-
-//        val jsonObject =
     }
     //    fun getTokenResultApi(token: String){
 //        val jsonObject: JsonObject = JsonObject()

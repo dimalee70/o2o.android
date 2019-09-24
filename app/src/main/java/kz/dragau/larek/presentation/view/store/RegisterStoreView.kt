@@ -1,5 +1,6 @@
 package kz.dragau.larek.presentation.view.store
 
+import android.content.Context
 import android.util.DisplayMetrics
 import com.arellomobile.mvp.MvpView
 import com.suke.widget.SwitchButton
@@ -12,4 +13,10 @@ interface RegisterStoreView : MvpView, SwitchButton.OnCheckedChangeListener {
 //    fun choseFromGallery()
 //    fun takePhotoFromCamera()
     fun changeSwitch()
+    fun onNameValid()
+    fun onNameInvalid(errorMessage: String)
+//    fun initSalesOutlet()
+    fun checkAddress()
+    fun showError(message: String?, codeError: Int)
+    fun initGeocoder()
 }

@@ -1,15 +1,18 @@
 package kz.dragau.larek.ui.activity.store
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_show_image.*
 import kotlinx.android.synthetic.main.fragment_sms_code.*
 import kz.dragau.larek.App
@@ -48,7 +51,7 @@ class ShowImageActivity : BaseActivity(), ShowImageView {
 
     @ProvidePresenter
     fun providePresenter(): ShowImagePresenter {
-        return ShowImagePresenter(router, imageList.images!!)
+        return ShowImagePresenter(router, imageList)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +102,20 @@ class ShowImageActivity : BaseActivity(), ShowImageView {
 //        }
 //        return super.onOptionsItemSelected(item)
 //    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == Activity.RESULT_OK) {
+//                avatarIv.setImageURI(result.uri)
+                mShowImagePresenter.addImage(result.uri)
+//                mStorePresenter.changeImage(result.uri)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Croppinf failed: " + result.error, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     var navigator: SupportAppNavigator = object : SupportAppNavigator(this, R.id.activity_images_frame_layout) {
         override fun setupFragmentTransaction(

@@ -2,6 +2,7 @@ package kz.dragau.larek.ui.adapters.images
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import kz.dragau.larek.ui.adapters.images.BaseImageAdapter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class ShowImageAdapter(private val context: Context, private var images: Array<String>, private var router: Router): BaseImageAdapter<String>(context, images) {
+class ShowImageAdapter(private val context: Context, private var images: ArrayList<Uri>, private var router: Router): BaseImageAdapter<Uri>(context, images) {
 
 
     lateinit var showImageItemBinding: ImageShowItemBinding
@@ -31,7 +32,7 @@ class ShowImageAdapter(private val context: Context, private var images: Array<S
         showImageItemBinding.avaIv.setOnClickListener{
             openViewPager(position)
         }
-        Glide.with(showImageItemBinding.root).load(image).into(showImageItemBinding.avaIv)
+        Glide.with(showImageItemBinding.root).load(image.path).into(showImageItemBinding.avaIv)
         return showImageItemBinding.root
     }
 

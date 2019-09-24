@@ -21,6 +21,7 @@ import kz.dragau.larek.App
 import kz.dragau.larek.Constants
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
+import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
 import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import kz.dragau.larek.presentation.view.store.StoreView
@@ -47,13 +48,17 @@ class StoreActivity : BaseActivity(), StoreView {
     @Inject
     lateinit var saleSelector: SaleSelector
 
+    @Inject
+    lateinit var imageList: Images
+
     @InjectPresenter
     lateinit var mStorePresenter: StorePresenter
+
 
     @ProvidePresenter
     fun providePresenter(): StorePresenter
     {
-        return StorePresenter(router, saleSelector)
+        return StorePresenter(router, imageList)
     }
 
 
@@ -79,7 +84,7 @@ class StoreActivity : BaseActivity(), StoreView {
     }
 
     private fun setupSearchView(menu: Menu?){
-        var item: MenuItem = menu!!.findItem(R.id.action_search)
+        val item: MenuItem = menu!!.findItem(R.id.action_search)
         searchView.setMenuItem(item)
         val revealCenter = searchView.revealAnimationCenter
         revealCenter.x -= DimensUtils.convertDpToPx(Constants.extraRevealCenterPadding, this)
@@ -91,7 +96,8 @@ class StoreActivity : BaseActivity(), StoreView {
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
 //                avatarIv.setImageURI(result.uri)
-                mStorePresenter.changeImage(result.uri)
+                mStorePresenter.addImage(result.uri)
+//                mStorePresenter.changeImage(result.uri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Croppinf failed: " + result.error, Toast.LENGTH_LONG).show()
             }

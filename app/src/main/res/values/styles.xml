@@ -47,6 +47,7 @@
         <item name="android:textViewStyle">@style/Widget.TextView.Primary</item>
 
         <item name="editTextStyle">@style/Widget.EditText.Primary</item>
+<!--        <item name="textInputEditTextStyle">@style/Widget.TextInputEditText.Primary</item>-->
         <item name="buttonStyle">@style/Widget.Button.Primary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -75,6 +76,9 @@
         <item name="settingsFieldTextColor">@color/settingsFieldTextColor</item>
         <item name="whiteColor">@color/whiteColor</item>
         <item name="hintTextColor">@color/hintTextColor</item>
+        <item name="colorControlNormal">@color/whiteColor</item>
+        <item name="colorControlActivated">@color/greenTextColor</item>
+        <item name="colorControlHighlight">@color/lightBlueTextColor</item>
     </style>
 
     <style name="Theme.App.Light" parent="Base.Theme.App">

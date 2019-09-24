@@ -1,31 +1,110 @@
 package kz.dragau.larek.ui.fragment.store
 
+import android.content.Context
+import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.GridView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.store.RegisterStoreView
 import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.seatgeek.placesautocomplete.DetailsCallback
+import com.seatgeek.placesautocomplete.OnPlaceSelectedListener
+import com.seatgeek.placesautocomplete.model.Place
+import com.seatgeek.placesautocomplete.model.PlaceDetails
 import com.suke.widget.SwitchButton
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.fragment_register_store.*
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentRegisterStoreBinding
 import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
+import kz.dragau.larek.ui.adapters.TestPlacesAutocompleteAdapter
 import kz.dragau.larek.ui.adapters.images.ImageAdapter
+import kz.dragau.larek.ui.rule.AddressRule
+import kz.dragau.larek.ui.rule.MinLengthRule
+import kz.dragau.larek.ui.rule.NotEmptyRule
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
+import ru.whalemare.rxvalidator.RxCombineValidator
+import ru.whalemare.rxvalidator.RxValidator
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
+class StoreRegisterFragment: BaseMvpFragment(), RegisterStoreView {
+
+    override fun onNameValid() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onNameInvalid(errorMessage: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun checkAddress() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun initGeocoder() {
+//        saleSelector.salesOuter = SalesOuter(mRegisterStorePresenter.registerStoreRequestModel.name,
+//        mRegisterStorePresenter.registerStoreRequestModel.address,
+//        mRegisterStorePresenter.registerStoreRequestModel.latitude,
+//        mRegisterStorePresenter.registerStoreRequestModel.longitute,
+//        mRegisterStorePresenter.registerStoreRequestModel.isChecked)
+
+        if(saleSelector.salesOuter == null) {
+            val geocoder = Geocoder(context)
+            try {
+                val addresses = geocoder.getFromLocationName(mRegisterStorePresenter.registerStoreRequestModel.address, 1)
+
+                if (addresses.size > 0) {
+                    saleSelector.salesOuter = SalesOuter(mRegisterStorePresenter.registerStoreRequestModel.name,
+                        mRegisterStorePresenter.registerStoreRequestModel.address,
+                        addresses.get(0).latitude,
+                        addresses.get(0).longitude,
+                        mRegisterStorePresenter.registerStoreRequestModel.isChecked)
+//                saleSelector.salesOuter = SalesOuter(null, null, null, null, true)
+//                    saleSelector.salesOuter!!.latitude = addresses.get(0).latitude
+//                    saleSelector.salesOuter!!.longitude = addresses.get(0).longitude
+                    mRegisterStorePresenter.registerToServer()
+                } else {
+                    saleSelector.salesOuter = null
+                    showError("Ошибка", -1)
+                }
+            }catch (e: Exception){
+                saleSelector.salesOuter = null
+                showError(e)
+            }
+        }
+        else {
+            mRegisterStorePresenter.registerToServer()
+        }
+    }
+
+
+//    override fun initSalesOutlet() {
+//        saleSelector.salesOuter!!.name = binding.storeTitleEt.editText!!.text.toString()
+//        saleSelector.salesOuter!!.isAcceptOrders = binding.onlineBooking.isChecked
+//
+//            binding.storeTitleEt.editText!!.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
+////        binding.storeTitleEt.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
+//        binding.storeLegalTitleEt.editText!!.text  = Editable.Factory.getInstance().newEditable(salesOuter.name)
+//        binding.storeAddressEt.editText!!.text  = Editable.Factory.getInstance().newEditable(salesOuter.address)
+//    }
+
 
     companion object {
         const val TAG = "StoreRegisterFragment"
@@ -50,35 +129,17 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     @InjectPresenter
     lateinit var mRegisterStorePresenter: RegisterStorePresenter
 
+    private var imageAdapter: ImageAdapter? = null
+
+    private var width: Int? = null
+
+    private var imageGridView: GridView? = null
+
+    private var gridViewArrayAdapter: ArrayAdapter<Uri>? = null
+
     @ProvidePresenter
     fun providePresenter(): RegisterStorePresenter
     {
-        imageList.images = arrayOf(
-            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
-            ,
-            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
-            ,
-            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg",
-            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
-            ,
-            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
-            ,
-            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg",
-            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
-            ,
-            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
-            ,
-            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg",
-            "https://i.pinimg.com/originals/94/dd/57/94dd573e4b4de604ea7f33548da99fd6.jpg"
-            ,
-            "https://stimg.cardekho.com/images/carexteriorimages/930x620/Kia/Kia-Seltos/6232/1562746799300/front-left-side-47.jpg?tr=w-375,e-sharpen"
-            ,
-            "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-            "https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/48181678987_dd26a6ed67_k.jpg"
-        )
         return RegisterStorePresenter(router, saleSelector, imageList.images!!)
     }
 
@@ -89,28 +150,80 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register_store, container, false)
+        binding.registerStoreViewModel = mRegisterStorePresenter.registerStoreRequestModel
         binding.presenter = mRegisterStorePresenter
+        binding.onlineBooking.isChecked = mRegisterStorePresenter.registerStoreRequestModel.isChecked
+
+        val nameObservable: Observable<Boolean> = RxValidator(binding.storeTitleEt).apply {
+            add(NotEmptyRule())
+//            add(MinLengthRule(5))
+        }.asObservable()
+
+        val nameLegalObservable = RxValidator(binding.storeLegalTitleEt).apply {
+            add(NotEmptyRule())
+        }.asObservable()
+
+        val addressObservable = RxValidator(binding.storeAddressEt).apply {
+            add(NotEmptyRule())
+//            add(AddressRule(context!!, saleSelector))
+        }.asObservable()
+
+        RxCombineValidator(nameObservable, nameLegalObservable, addressObservable )
+            .asObservable()
+            .distinctUntilChanged()
+            .subscribe({
+                binding.finishButton.isEnabled = it
+            },
+        {
+            binding.finishButton.isEnabled = false
+        })
 
         binding.avaIv.setOnClickListener{
             showPictureDialog()
         }
 
-        val imageGridView = binding.imageGv
-        imageGridView.adapter =
-            ImageAdapter(context!!, imageList.images!!, router)
-        if(imageList.images!!.size >= 3)
-            imageGridView.numColumns = 3
-        else if(imageList.images!!.size == 2){
-            imageGridView.numColumns = 2
+        if(this.width == null) {
+            this.width = binding.avaIv.layoutParams.width
         }
-        else if(imageList.images!!.size == 0) {
-            binding.avaIv.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
 
-        }
+//        gridViewArrayAdapter = ArrayAdapter<Uri>(
+//            this.context!!, android.R.layout.simple_list_item_1,
+//            imageList.images!!
+//        )
+        imageGridView = binding.imageGv
+        imageAdapter = ImageAdapter(context!!, imageList.images!!, router)
+//        imageGridView!!.adapter =imageAdapter
+
+        changeGridView()
+
 
 
         binding.onlineBooking.setOnCheckedChangeListener(this)
         return binding.root
+    }
+
+    private fun changeGridView() {
+
+        imageAdapter!!.notifyDataSetChanged()
+//        imageGridView!!.invalidateViews()
+        imageGridView!!.adapter = imageAdapter
+
+        if(imageList.images!!.size >= 3)
+            binding.imageGv.numColumns = 3
+
+//        imageGridView!!.numColumns = 3
+        else if(imageList.images!!.size == 2){
+            binding.imageGv.numColumns = 2
+        }
+        else if(imageList.images!!.size == 0) {
+            binding.avaIv.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+        }
+        else if(imageList.images!!.size > 0){
+            binding.avaIv.layoutParams.width = width!!
+        }
+
+
+//        binding.avaIv.layoutParams.width = 204
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,9 +236,30 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     override fun onResume() {
         super.onResume()
         saleSelector.salesOuter?.let { showSale(it) }
+
+
+
 //        Glide.with(context!!).load(bitmap?.let { saveImage(it) }).into(binding.avatarIv)
 
 
+//        print(imageList.images)
+//        println()
+//        binding.avaIv.layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
+//        val imageGridView = binding.imageGv
+//        imageGridView.adapter =
+//            ImageAdapter(context!!, imageList.images!!, router)
+//        if(imageList.images!!.size >= 3)
+//            imageGridView.numColumns = 3
+//        else if(imageList.images!!.size == 2){
+//            imageGridView.numColumns = 2
+//        }
+//        else if(imageList.images!!.size == 0) {
+//            binding.avaIv.layoutParams.width = width!!
+
+
+//        }
+
+        changeGridView()
 //        if (saleSelector.imageSelector != null) {
 //            binding.avatarIv.setImageURI(Uri.parse(saleSelector.imageSelector))
 //        }
@@ -133,6 +267,20 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
 
     override fun onPause() {
         super.onPause()
+
+//        binding.storeTitleEt.editText!!.text.let{
+//            if(saleSelector.salesOuter == null)
+//                saleSelector.salesOuter = SalesOuter(null, null, null, null, null)
+//            saleSelector.salesOuter!!.name = it.toString()
+//        }
+//        binding.storeAddressEt.editText!!.text.let {
+////            if(saleSelector.salesOuter == null)
+////                saleSelector.salesOuter = SalesOuter(null, null, null, null, null)
+////            saleSelector.salesOuter!!.name = it.toString()
+//            saleSelector.salesOuter!!.address = it.toString()
+//        }
+
+
 //        if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                binding.avatarIv.drawable.constantState!! != context!!.getDrawable(R.drawable.splash_screen)
 //            } else {
@@ -152,7 +300,7 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
         this.activity?.let {
             CropImage.activity(null)
 //                .setMaxCropResultSize(1920,1080)
-    //            .setMinCropResultSize(1920, 100.toPx())
+//                .setMinCropResultSize(1920, 100.toPx())
 //                .setAspectRatio(3,1)
 //                .setRequestedSize(150,50, CropImageView.RequestSizeOptions.RESIZE_EXACT)
                 .setGuidelines(CropImageView.Guidelines.ON)
@@ -182,11 +330,18 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     }
 
 
-
+//
     override fun showSale(salesOuter: SalesOuter) {
-        binding.storeTitleEt.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
-        binding.storeLegalTitleEt.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
-        binding.storeAddressEt.text = Editable.Factory.getInstance().newEditable(salesOuter.address)
+        mRegisterStorePresenter.registerStoreRequestModel.name = salesOuter.name
+        mRegisterStorePresenter.registerStoreRequestModel.address = salesOuter.address
+//        mRegisterStorePresenter.registerStoreRequestModel.latitude = salesOuter.latitude
+//        mRegisterStorePresenter.registerStoreRequestModel.longitute = salesOuter.longitude
+
+//        binding.storeTitleEt.editText!!.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
+//        binding.storeTitleEt.text = Editable.Factory.getInstance().newEditable(salesOuter.name)
+
+//        binding.storeLegalTitleEt.editText!!.text  = Editable.Factory.getInstance().newEditable(salesOuter.name)
+//        binding.storeAddressEt.editText!!.text  = Editable.Factory.getInstance().newEditable(salesOuter.address)
 
     }
 //    override fun choseFromGallery() {
@@ -292,7 +447,8 @@ class StoreRegisterFragment : BaseMvpFragment(), RegisterStoreView {
     }
 
     override fun onCheckedChanged(view: SwitchButton?, isChecked: Boolean) {
-        saleSelector.salesOuter?.let { it.isAcceptOrders = isChecked }
+        mRegisterStorePresenter.registerStoreRequestModel.isChecked = isChecked
+//        saleSelector.salesOuter?.let { it.isAcceptOrders = isChecked }
     }
 
 //    fun getDisplayMetric(): Point {

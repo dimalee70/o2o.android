@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.activity.crop.CropActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.product.AddProductActivity
@@ -40,6 +41,11 @@ class Screens {
         }
     }
 
+//    class CropScreen(): SupportAppScreen(){
+//        override fun getActivityIntent(context: Context?): Intent {
+//            return Intent(context, CropActivity::class.java)
+//        }
+//    }
     class LoginScreen : SupportAppScreen() {
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, LoginInActivity::class.java)

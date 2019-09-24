@@ -6,6 +6,7 @@ data class SalesOuter(
                       var latitude: Double?,
                       var longitude: Double?,
                       var isAcceptOrders: Boolean? = true){
+
     override fun toString(): String {
         return "SalesOuter(name=$name, address=$address, latitude=$latitude, longitude=$longitude, isAcceptOrders=$isAcceptOrders)"
     }

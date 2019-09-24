@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 
-abstract class BaseImageAdapter<T>(private var context: Context, private var list: Array<T>): BaseAdapter() {
+abstract class BaseImageAdapter<T>(private var context: Context, private var list: ArrayList<T>): BaseAdapter() {
 
     override fun getItem(position: Int): Any {
         return list[position]!!

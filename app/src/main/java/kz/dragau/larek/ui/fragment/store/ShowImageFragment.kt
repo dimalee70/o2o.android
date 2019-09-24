@@ -1,5 +1,6 @@
 package kz.dragau.larek.ui.fragment.store
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kz.dragau.larek.App
+import kz.dragau.larek.Screens
 import kz.dragau.larek.databinding.FragmentShowImageBinding
 import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.presentation.presenter.store.ShowImageFragmentPressenter
@@ -44,6 +46,8 @@ class ShowImageFragment : BaseMvpFragment(), ShowImageFragmentView {
     @InjectPresenter
     lateinit var mShowImagePresenter: ShowImageFragmentPressenter
 
+    private var showImageAdapter: ShowImageAdapter? = null
+
     @ProvidePresenter
     fun providePresenter(): ShowImageFragmentPressenter{
         return ShowImageFragmentPressenter(router, imageList.images!!)
@@ -62,9 +66,15 @@ class ShowImageFragment : BaseMvpFragment(), ShowImageFragmentView {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_image, container, false)
-        binding.imageGv.adapter = ShowImageAdapter(context!!, imageList.images!!, router)
+        showImageAdapter = ShowImageAdapter(context!!, imageList.images!!, router )
+        binding.imageGv.adapter = showImageAdapter
 //        binding.imageGv
         binding.presenter = mShowImagePresenter
+        binding.floatingActionButton.setOnClickListener{
+//            mShowImagePresenter.addPhoto()
+            showPictureDialog()
+        }
+
         return binding.root
     }
 
@@ -73,15 +83,27 @@ class ShowImageFragment : BaseMvpFragment(), ShowImageFragmentView {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        showImageAdapter!!.notifyDataSetChanged()
+        binding.imageGv.adapter = showImageAdapter
+    }
+
     override fun showPictureDialog() {
         this.activity?.let {
             CropImage.activity(null)
 //                .setMaxCropResultSize(1920,1080)
-                //            .setMinCropResultSize(1920, 100.toPx())
+//                .setMinCropResultSize(1920, 100.toPx())
 //                .setAspectRatio(3,1)
 //                .setRequestedSize(150,50, CropImageView.RequestSizeOptions.RESIZE_EXACT)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(it)
+//        this.activity?.let {
+//            val intent = CropImage.activity(null)
+//                .setGuidelines(CropImageView.Guidelines.ON)
+//                .getIntent(this.context!!)
+//            intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+//            startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
     }
 }

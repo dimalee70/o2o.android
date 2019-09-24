@@ -1,6 +1,7 @@
 package kz.dragau.larek.ui.adapters.images
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import kz.dragau.larek.R
 import kz.dragau.larek.databinding.ImageViewpagerItemBinding
 
 class ImagePagerAdapter(private var context: Context,
-                        private var images: Array<String>): PagerAdapter() {
+                        private var images: ArrayList<Uri>): PagerAdapter() {
 
     lateinit var binding: ImageViewpagerItemBinding
 
@@ -28,7 +29,7 @@ class ImagePagerAdapter(private var context: Context,
         val image = images[position]
         binding = DataBindingUtil.inflate(LayoutInflater.from(container.context),
             R.layout.image_viewpager_item, container, false)
-        Glide.with(binding.root).load(image).into(binding.imageIv)
+        Glide.with(binding.root).load(image.path).into(binding.imageIv)
 
         container.addView(binding.root)
         return binding.root

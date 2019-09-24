@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="kz.dragau.larek">
+<!--    31:1E:48:6F:97:74:9E:CE:2A:A7:7D:AB:21:A4:CA:CE:DA:8B:85:21-->
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -26,6 +27,7 @@
                 android:theme="@style/MyActionBarTheme"
                 />
         <activity android:name=".ui.activity.product.AddProductActivity" />
+
         <activity
                 android:name=".ui.activity.crop.CropActivity"
                 android:configChanges="orientation"
@@ -33,9 +35,19 @@
                 android:noHistory="true"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.App.Dark.FullScreen" />
-        <activity
-                android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-                android:theme="@style/Base.Theme.AppCompat" />
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+                android:theme="@style/Base.Theme.AppCompat"/>
+        
+        <!--        <activity-->
+<!--                android:name="com.theartofdev.edmodo.cropper.CropImageActivity"-->
+<!--                android:noHistory="true"-->
+<!--                android:theme="@style/Base.Theme.AppCompat"-->
+<!--                android:configChanges="orientation"-->
+<!--                android:launchMode="singleTask"-->
+<!--                android:screenOrientation="portrait"-->
+<!--                />-->
+<!--                android:theme="@style/Theme.App.Dark.FullScreen" -->
         <activity
                 android:name=".ui.activity.product.ScanActivity"
                 android:theme="@style/MyActionBarTheme" />
