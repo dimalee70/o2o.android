@@ -32,7 +32,7 @@ interface ApiManager {
     @POST("v1/salesoutlet/create")
     fun registerStore(@Body body: SalesOuter): Observable<SaleCreateResponse>
 
-//    @POST("v1/salesoutlet/uploadphoto")
-//    fun uploadPhoto()
+    @POST("v1/salesoutlet/uploadphoto")
+    fun uploadPhoto(@Body body: JsonObject): Observable<SaleCreateResponse>
 
 }

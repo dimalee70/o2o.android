@@ -8,13 +8,18 @@
 <!--            android:title="@string/search_hint"-->
 <!--            app:iconTint="@android:color/white"-->
 <!--            app:showAsAction="ifRoom" />-->
+    <item
+            android:id="@+id/action_crop"
+            android:icon="@drawable/ic_photo"
+            android:title="@string/search_hint"
+            app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_status"
+    <item android:id="@+id/action_delete"
             android:orderInCategory="10"
-            android:title="@string/action_status"
+            android:title="@string/action_delete"
             app:showAsAction="never"/>
-    <item android:id="@+id/action_settings"
-            android:orderInCategory="11"
-            android:title="@string/action_settings"
-            app:showAsAction="never"/>
+<!--    <item android:id="@+id/action_settings"-->
+<!--            android:orderInCategory="11"-->
+<!--            android:title="@string/action_settings"-->
+<!--            app:showAsAction="never"/>-->
 </menu>

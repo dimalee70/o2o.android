@@ -16,4 +16,12 @@ class ImageViewPagerPresenter(private var router: Router) : MvpPresenter<ImageVi
     init {
         App.appComponent.inject(this)
     }
+
+    fun showPictureDialog(){
+        viewState?.showPictureDialog()
+    }
+
+    fun showConfirmDialog(){
+        viewState?.showConfirm()
+    }
 }

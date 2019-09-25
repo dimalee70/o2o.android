@@ -4,6 +4,11 @@ import kz.dragau.larek.BuildConfig
 
 object Constants
 {
+    const val mimeType = "MimeType"
+    const val base64BodyKey = "base64Body"
+    const val objectIdKey = "objectId"
+    //    const val CONFIRM_MESSAGE = "Вы действительно хотите удалить это фотографию? Отменить это действие будет невозможно"
+//    const val CONFIRM_TITLE = "Подтверждение"
     const val PHOTO_POSITION = "PHOTO_POSITION"
     const val IMAGE_DIRECTORY = "/o2o"
     const val GALLERY = 1

@@ -387,6 +387,7 @@
                 android:layout_marginEnd="86dp"
                 android:layout_marginBottom="52dp"
                 android:enabled="false"
+                android:visibility="gone"
                 android:onClick="@{(v) -> presenter.registerStore()}"
                 app:layout_constraintTop_toBottomOf="@+id/storePhotoLl"
         />

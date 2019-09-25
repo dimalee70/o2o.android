@@ -83,4 +83,8 @@
     <string name="search_hint">Название магазина</string>
     <string name="toolbarTitleMap">Выберите торгоую точку для регитсрации</string>
     <string name="google_maps_api_key">AIzaSyDiW7UDLjXAqKeo8vRJYQ0ZC5nNVOuOAT0</string>
+    <string name="action_delete">Удалить</string>
+    <string name="confirm_title">Подтверждение</string>
+    <string name="confirm_message">Вы действительно хотите удалить эту фотографию? Отменить это действие будет невозможно.</string>
+    <string name="empty_text_rule">Обязательно к заполнению</string>
 </resources>

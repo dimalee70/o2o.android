@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="minPhotoIconWidth">68dp</dimen>
+    <dimen name="dialogMargination">30dp</dimen>
     <dimen name="minTextSize">4sp</dimen>
     <dimen name="maxTextSize">11sp</dimen>
     <dimen name="stepGranularity">1sp</dimen>

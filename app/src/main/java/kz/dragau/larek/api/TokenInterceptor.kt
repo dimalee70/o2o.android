@@ -18,6 +18,7 @@ class TokenInterceptor @Inject constructor(): Interceptor{
         val originalHttpUrrl = original.url()
         val requestBuilder = original.newBuilder()
             .addHeader("Authorization", token)
+            .addHeader("Content-Type", "application/json")
             .url(originalHttpUrrl)
 
         val request = requestBuilder.build()

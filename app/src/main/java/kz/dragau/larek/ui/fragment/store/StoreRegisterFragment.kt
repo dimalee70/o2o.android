@@ -155,16 +155,16 @@ class StoreRegisterFragment: BaseMvpFragment(), RegisterStoreView {
         binding.onlineBooking.isChecked = mRegisterStorePresenter.registerStoreRequestModel.isChecked
 
         val nameObservable: Observable<Boolean> = RxValidator(binding.storeTitleEt).apply {
-            add(NotEmptyRule())
+            add(NotEmptyRule(getString(R.string.empty_text_rule)))
 //            add(MinLengthRule(5))
         }.asObservable()
 
         val nameLegalObservable = RxValidator(binding.storeLegalTitleEt).apply {
-            add(NotEmptyRule())
+            add(NotEmptyRule(getString(R.string.empty_text_rule)))
         }.asObservable()
 
         val addressObservable = RxValidator(binding.storeAddressEt).apply {
-            add(NotEmptyRule())
+            add(NotEmptyRule(getString(R.string.empty_text_rule)))
 //            add(AddressRule(context!!, saleSelector))
         }.asObservable()
 
@@ -173,9 +173,11 @@ class StoreRegisterFragment: BaseMvpFragment(), RegisterStoreView {
             .distinctUntilChanged()
             .subscribe({
                 binding.finishButton.isEnabled = it
+                binding.finishButton.visibility = if(it) View.VISIBLE else View.GONE
             },
         {
             binding.finishButton.isEnabled = false
+            binding.finishButton.visibility = View.VISIBLE
         })
 
         binding.avaIv.setOnClickListener{
@@ -219,6 +221,7 @@ class StoreRegisterFragment: BaseMvpFragment(), RegisterStoreView {
             binding.avaIv.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
         }
         else if(imageList.images!!.size > 0){
+            binding.imageGv.numColumns = 1
             binding.avaIv.layoutParams.width = width!!
         }
 

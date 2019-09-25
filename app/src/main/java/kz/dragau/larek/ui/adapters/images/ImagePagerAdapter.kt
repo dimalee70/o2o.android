@@ -38,4 +38,8 @@ class ImagePagerAdapter(private var context: Context,
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as LinearLayout)
     }
+
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
 }
