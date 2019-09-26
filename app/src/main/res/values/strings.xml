@@ -90,4 +90,5 @@
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
     <string name="toolbarTitleMain">ГЛАВНАЯ</string>
+    <string name="customsText">Онлайн заказы</string>
 </resources>

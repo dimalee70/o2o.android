@@ -1,47 +1,35 @@
 package kz.dragau.larek.ui.fragment.store
 
-import android.content.Context
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.store.RegisterStoreView
 import kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.seatgeek.placesautocomplete.DetailsCallback
-import com.seatgeek.placesautocomplete.OnPlaceSelectedListener
-import com.seatgeek.placesautocomplete.model.Place
-import com.seatgeek.placesautocomplete.model.PlaceDetails
 import com.suke.widget.SwitchButton
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.fragment_register_store.*
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentRegisterStoreBinding
 import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
-import kz.dragau.larek.ui.adapters.TestPlacesAutocompleteAdapter
 import kz.dragau.larek.ui.adapters.images.ImageAdapter
-import kz.dragau.larek.ui.rule.AddressRule
-import kz.dragau.larek.ui.rule.MinLengthRule
 import kz.dragau.larek.ui.rule.NotEmptyRule
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import ru.whalemare.rxvalidator.RxCombineValidator
 import ru.whalemare.rxvalidator.RxValidator
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class StoreRegisterFragment: BaseMvpFragment(), RegisterStoreView {

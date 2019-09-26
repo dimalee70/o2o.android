@@ -41,6 +41,7 @@ class RecyclerBindingAdapter<T>(
                 onItemClickListener!!.onItemClick(position, item)
         }
         holder.binding.setVariable(variableId, item)
+        holder.binding.executePendingBindings()
     }
 
     override fun getItemViewType(position: Int): Int {

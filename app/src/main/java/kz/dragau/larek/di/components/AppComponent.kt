@@ -13,6 +13,8 @@ import kz.dragau.larek.models.db.Db
 import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.confirm.ConfirmCodePresenter
+import kz.dragau.larek.presentation.presenter.home.HomeMainPresenter
+import kz.dragau.larek.presentation.presenter.home.HomePresenter
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import kz.dragau.larek.presentation.presenter.login.SmsCodePresenter
 import kz.dragau.larek.presentation.presenter.registration.RegistrationPresenter
@@ -28,6 +30,7 @@ import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.store.ShowImageActivity
 import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
+import kz.dragau.larek.ui.fragment.home.HomeMainFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
@@ -78,6 +81,7 @@ interface AppComponent {
     fun inject(fragment: StoreRegisterFragment)
     fun inject(fragment: ShowImageFragment)
     fun inject(fragment: ImageViewPagerFragment)
+    fun inject(fragment: HomeMainFragment)
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
@@ -92,6 +96,8 @@ interface AppComponent {
     fun inject(presenter: ShowImagePresenter)
     fun inject(presenter: ShowImageFragmentPressenter)
     fun inject(pressenter: ImageViewPagerPresenter)
+    fun inject(pressenter: HomePresenter)
+    fun inject(pressenter: HomeMainPresenter)
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp
 
