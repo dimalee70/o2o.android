@@ -104,6 +104,7 @@
     <color name="transparent_blue">#CCFF0000</color>
 
     <color name="iconPhoneColor">#919191</color>
+    <color name="toolbarTitleColor">#117B23</color>
 
 
 </resources>

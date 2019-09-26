@@ -87,4 +87,7 @@
     <string name="confirm_title">Подтверждение</string>
     <string name="confirm_message">Вы действительно хотите удалить эту фотографию? Отменить это действие будет невозможно.</string>
     <string name="empty_text_rule">Обязательно к заполнению</string>
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
+    <string name="toolbarTitleMain">ГЛАВНАЯ</string>
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_animation"
+        app:startDestination="@id/homeMainFragment">
+
+    <fragment
+            android:id="@+id/homeMainFragment"
+            android:name="kz.dragau.larek.ui.fragment.home.HomeMainFragment"
+            android:label="fragment_fling_animation"
+            tools:layout="@layout/fragment_home_main" />
+<!--    <fragment-->
+<!--            android:id="@+id/springAnimationFragment"-->
+<!--            android:name="com.example.sagar.physicsanimation.springanimation.SpringAnimationFragment"-->
+<!--            android:label="fragment_spring_animation"-->
+<!--            tools:layout="@layout/fragment_spring_animation" />-->
+
+    <fragment
+        android:id="@+id/springAnimationFragment"
+        android:name="kz.dragau.larek.ui.fragment.login.PhoneNumberFragment"
+        android:label="fragment_fling_animation"
+        tools:layout="@layout/fragment_product_register"/>
+
+</navigation>

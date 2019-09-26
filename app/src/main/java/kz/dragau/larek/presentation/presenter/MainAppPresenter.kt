@@ -66,7 +66,8 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
                     { user: User ->
 //                        router.newRootScreen(Screens.LoginScreen())
                         tokenInterceptor.token = "Bearer " + user.token
-                        router.newRootScreen(Screens.StoreScreen())
+//                        router.newRootScreen(Screens.StoreScreen())
+                        router.newRootScreen(Screens.HomeScreen())
 //                        router.newRootScreen(Screens.LocationMapScreen())
                     },
                     {

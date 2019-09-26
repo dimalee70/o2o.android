@@ -22,6 +22,7 @@ import kz.dragau.larek.presentation.presenter.product.ScanPresenter
 import kz.dragau.larek.presentation.presenter.store.*
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.activity.home.HomeActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.store.ShowImageActivity
@@ -67,6 +68,7 @@ interface AppComponent {
     fun inject(activity: ScanActivity)
     fun inject(activity: StoreActivity)
     fun inject(activty: ShowImageActivity)
+    fun inject(activity: HomeActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
     fun inject(fragment: ConfirmCodeFragment)

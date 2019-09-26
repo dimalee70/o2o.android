@@ -7,12 +7,14 @@ import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.crop.CropActivity
+import kz.dragau.larek.ui.activity.home.HomeActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
 import kz.dragau.larek.ui.activity.product.AddProductActivity
 import kz.dragau.larek.ui.activity.store.ShowImageActivity
 import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
+import kz.dragau.larek.ui.fragment.home.HomeMainFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
@@ -80,6 +82,12 @@ class Screens {
     class StoreScreen: SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, StoreActivity::class.java)
+        }
+    }
+
+    class HomeScreen: SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, HomeActivity::class.java)
         }
     }
 
@@ -185,6 +193,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return ImageViewPagerFragment.newInstance(position)
+        }
+    }
+
+    class HomeMainScreen: SupportAppScreen(){
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return HomeMainFragment.newInstance()
         }
     }
 

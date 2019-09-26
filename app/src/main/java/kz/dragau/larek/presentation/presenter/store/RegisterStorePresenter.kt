@@ -19,7 +19,6 @@ import kz.dragau.larek.extensions.encodeImage
 import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
 import kz.dragau.larek.presentation.view.store.RegisterStoreView
-import kz.dragau.larek.ui.rule.NotEmptyRule
 import kz.dragau.larek.ui.rule.NotNullRule
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
