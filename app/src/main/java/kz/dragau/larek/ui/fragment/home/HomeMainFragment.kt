@@ -74,8 +74,23 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_main, container, false)
         binding.presenter = mHomeMainPresenter
         var customList = ArrayList<Customs>()
-        customList.add(Customs("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUcp-vFwbcy-8m14jgD4p947IV_1TqO--f87Y54u-JvyiiDh1k", "Константин",
-            "Аль фараби, к45Б", "8 этаж/105", 5500))
+        customList.add(Customs("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUcp-vFwbcy-8m14jgD4p947IV_1TqO--f87Y54u-JvyiiDh1k",
+            "Константин",
+            "Аль фараби, к45Б 8 этаж/105",
+            5500))
+
+        customList.add(Customs("https://media.vanityfair.com/photos/58c2f5aa0a144505fae9e9ee/master/pass/avatar-sequels-delayed.jpg",
+            "Дмитрий",
+            "Аль фараби, к47Б",
+            10_000))
+        customList.add(Customs("https://cdn6.f-cdn.com/contestentries/918774/22954115/586eea98be949_thumb900.jpg",
+            "Бородач",
+            "Масанчи, к45Б 8 этаж/105",
+            1_000_000_500))
+        customList.add(Customs("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png",
+            "Волосач",
+            "Аль фараби, к4Б 8 этаж/105, подъезд номер 5, ключи под поласом возле входной двери",
+            5500))
 //        customList.add(Customs("Hello2"))
 //        customList.add(Customs("Hello3"))
 //        customList.add(Customs("Hello4"))
@@ -85,6 +100,7 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
         data.addAll(customList)
         recyclerBindingAdapter.setItems(data)
         binding.customsRv.adapter = recyclerBindingAdapter
+        binding.customsRv.setHasFixedSize(true)
         return binding.root
     }
 

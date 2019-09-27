@@ -9,7 +9,7 @@
 
     <dimen name="minHeaderTextSize">12sp</dimen>
     <dimen name="maxHeaderTextSize">16sp</dimen>
-    <dimen name="marginText">16dp</dimen>
+    <dimen name="marginText">16sp</dimen>
     <dimen name="smallDialogWidth">290dp</dimen>
     <dimen name="smallDialogHeight">310dp</dimen>
     <dimen name="largeDialogWidth">300dp</dimen>
