@@ -77,6 +77,7 @@
     <string name="mappingText">Или указать на карте</string>
     <string name="onlineBookingText">Принятие онлайн заказов</string>
     <string name="doneText">Готово</string>
+    <string name="addText">Добавить</string>
     <string name="action_search">Search</string>
     <string name="action_status">Status</string>
     <string name="action_settings">Settings</string>
@@ -91,4 +92,12 @@
     <string name="close_drawer">Close</string>
     <string name="toolbarTitleMain">ГЛАВНАЯ</string>
     <string name="customsText">Онлайн заказы</string>
+    <string name="register_product_title">РЕГИСТРАЦИЯ ПРОДУКТА</string>
+    <string name="error">erroe</string>
+    <string name="productCategoryHint">Категория</string>
+    <string name="productProducerHint">Производитель</string>
+    <string name="productNameHint">Наименование</string>
+    <string name="productBarcodeHint">Штрих-код</string>
+    <string name="productDescribeHint">Описание</string>
+    <string name="productChangePhotoText"><u>Изменить</u></string>
 </resources>

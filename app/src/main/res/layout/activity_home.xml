@@ -116,6 +116,7 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/drawer_header_layout"
             app:menu="@menu/drawer_menu"
+            app:itemBackground="@drawable/nav_view_item_background"
             />
 
 

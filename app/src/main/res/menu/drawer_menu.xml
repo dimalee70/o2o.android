@@ -3,12 +3,16 @@
 
     <group android:checkableBehavior="single">
         <item
-                android:id="@+id/homeMainFragment"
-                android:title="drawer_menu_item_fling"
-                android:checked="true"/>
+                android:id="@+id/item_product"
+                android:icon="@drawable/ic_product"
+                android:title="Продукция"
+                android:checked="true"
+                />
         <item
-                android:id="@+id/springAnimationFragment"
-                android:title="drawer_menu_item_spring" />
+                android:id="@+id/item_register_product"
+                android:icon="@drawable/ic_barcode"
+                android:title="Регистрация продукта"
+                />
 
     </group>
 

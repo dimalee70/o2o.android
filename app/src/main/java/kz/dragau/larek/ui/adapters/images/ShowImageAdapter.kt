@@ -7,28 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.bumptech.glide.Glide
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
-import kz.dragau.larek.databinding.ImageItemBinding
-import kz.dragau.larek.databinding.ImageShowItemBinding
-import kz.dragau.larek.presentation.presenter.store.ShowImageFragmentPressenter
-import kz.dragau.larek.ui.adapters.images.BaseImageAdapter
+import kz.dragau.larek.databinding.ItemImageShowBinding
 import ru.terrakok.cicerone.Router
-import javax.inject.Inject
 
 class ShowImageAdapter(private val context: Context, private var images: ArrayList<Uri>, private var router: Router): BaseImageAdapter<Uri>(context, images) {
 
 
-    lateinit var showImageItemBinding: ImageShowItemBinding
+    lateinit var showImageItemBinding: ItemImageShowBinding
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
         val image = images[position]
         showImageItemBinding =
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup!!.context),
-                R.layout.image_show_item, viewGroup, false)
+                R.layout.item_image_show, viewGroup, false)
         showImageItemBinding.avaIv.setOnClickListener{
             openViewPager(position)
         }
@@ -46,7 +41,7 @@ class ShowImageAdapter(private val context: Context, private var images: ArrayLi
 //    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
 //        val image = images[position]
 //        imageItemBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup!!.context),
-//            R.layout.image_item, viewGroup, false)
+//            R.layout.item_image, viewGroup, false)
 //
 ////        if (view == null){
 ////            val viewHolder = ViewHolder(imageItemBinding.avaIv)

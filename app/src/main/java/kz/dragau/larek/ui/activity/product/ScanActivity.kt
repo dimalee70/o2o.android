@@ -27,6 +27,7 @@ import com.journeyapps.barcodescanner.CaptureManager
 import kotlinx.android.synthetic.main.activity_scan.*
 import kz.dragau.larek.App
 import kz.dragau.larek.R
+import kz.dragau.larek.Screens
 import kz.dragau.larek.databinding.ActivityScanBinding
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import ru.terrakok.cicerone.Router
@@ -61,7 +62,13 @@ class ScanActivity : BaseActivity(), ScanView,
         ) {
             Toast.makeText(applicationContext, result.text, Toast.LENGTH_SHORT).show()
             Timber.i("Result from barcode " + result.text)
-            finish()
+//            router.let {
+//                it.navigateTo(Screens.ProductRegisterScreen())
+//            }
+            router.navigateTo(Screens.ProductScreen())
+//            mScanPresenter.navigateToRegisterScreen()
+//            finish()
+//            router.exit()
         }
         else
         {

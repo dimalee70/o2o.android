@@ -1,6 +1,8 @@
 package kz.dragau.larek.ui.adapters
 
+import android.graphics.Color
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -10,8 +12,10 @@ import java.util.*
 
 @BindingAdapter("setImage")
 fun CircleImageView.setImage(url: String){
+//    setColorFilter(Color.parseColor("#FFFFFF"))
     Glide.with(context)
         .load(url)
+//        .placeholder()
 //        .apply(RequestOptions()
 //            .circleCrop())
         .into(this)
@@ -23,4 +27,9 @@ fun TextView.setMoney(money: Int){
     format.maximumFractionDigits = 0
     format.currency = Currency.getInstance(Locale("kk", "KZ"))
     this.text = format.format(money)
+}
+
+@BindingAdapter("fillColor")
+fun CircleImageView.fillColor(color: String){
+    setColorFilter(Color.parseColor(color))
 }

@@ -3,7 +3,7 @@ package kz.dragau.larek.models.objects
 import java.text.NumberFormat
 import java.util.*
 
-class Customs(var imageUri: String, var name: String, var address: String, var cost: Int){
+data class Customs(var imageUri: String, var name: String, var address: String, var cost: Int){
 //    var test: String? = null
 //    init {
 //        var format = NumberFormat.getCurrencyInstance()

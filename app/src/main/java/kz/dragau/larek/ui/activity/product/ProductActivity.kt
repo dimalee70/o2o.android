@@ -115,11 +115,11 @@ class ProductActivity : BaseActivity(), ProductView {
         productRegisterFragment.sharedElementEnterTransition = changeBounds
         productRegisterFragment.sharedElementReturnTransition = changeBounds
 //
-        val view = productRegisterFragment.binding.makePhotoBtn
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.transitionName = LoginInActivity.LOGIN_TRANSITION
-        }
-        fragmentTransaction.addSharedElement(view , ProductActivity.PRODUCT_TRANSITION)
+//        val view = productRegisterFragment.binding.makePhotoBtn
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            view.transitionName = LoginInActivity.LOGIN_TRANSITION
+//        }
+//        fragmentTransaction.addSharedElement(view , ProductActivity.PRODUCT_TRANSITION)
     }
 
     override fun onBackPressed() {

@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.library.baseAdapters.BR
-import androidx.fragment.app.Fragment
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.home.HomeMainView
 import kz.dragau.larek.presentation.presenter.home.HomeMainPresenter
@@ -17,13 +16,14 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentHomeMainBinding
 import kz.dragau.larek.models.objects.Customs
+import kz.dragau.larek.models.objects.Types
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter
+import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter.OnItemClickListener
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import java.lang.ClassCastException
-import java.util.*
 import kotlin.collections.ArrayList
 
-class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter.OnItemClickListener<Customs> {
+class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Customs>{
 
 
 //    private var onItemClickListenerRecycler
@@ -47,24 +47,37 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
 
     lateinit var binding: FragmentHomeMainBinding
 
-    lateinit var recyclerBindingAdapter: RecyclerBindingAdapter<Customs>
+    lateinit var recyclerCustomsAdapter: RecyclerBindingAdapter<Customs>
 
-    private var onItemClickListenerRecycler: RecyclerBindingAdapter.OnItemClickListener<Customs>? = this
+    lateinit var recyclerTypesAdapter: RecyclerBindingAdapter<Types>
+
+    private var onCustomClickListenerRecycler: OnItemClickListener<Customs>? = this
+
+    private var onTypeClickListenerRecycle: OnItemClickListener<Types>? = object: OnItemClickListener<Types>{
+        override fun onItemClick(position: Int, item: Types) {
+            Toast.makeText(context!!, item.text, Toast.LENGTH_SHORT).show()
+        }
+
+    }
 //        object: RecyclerBindingAdapter.OnItemClickListener<Customs>{
 //            override fun onItemClick(position: Int, item: Customs) {
 //                Toast.makeText(context!!, item.text, Toast.LENGTH_SHORT).show()
 //            }
 //        }
 
-    var data = ObservableArrayList<Customs>()
+    var customs = ObservableArrayList<Customs>()
+    var types = ObservableArrayList<Types>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        recyclerBindingAdapter = RecyclerBindingAdapter(R.layout.custom_item, BR.data, context!!)
-        if(onItemClickListenerRecycler != null){
-            recyclerBindingAdapter.setOnItemClickListener(onItemClickListenerRecycler!!)
+        recyclerCustomsAdapter = RecyclerBindingAdapter(R.layout.item_custom, BR.data, context!!)
+        recyclerTypesAdapter = RecyclerBindingAdapter(R.layout.item_type, BR.data, context!!)
+        if(onCustomClickListenerRecycler != null){
+            recyclerCustomsAdapter.setOnItemClickListener(onCustomClickListenerRecycler!!)
         }
+        if(onTypeClickListenerRecycle != null)
+            recyclerTypesAdapter.setOnItemClickListener(onTypeClickListenerRecycle!!)
     }
 
     override fun onCreateView(
@@ -73,12 +86,22 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_main, container, false)
         binding.presenter = mHomeMainPresenter
-        var customList = ArrayList<Customs>()
+
+        val typesList = ArrayList<Types>()
+        typesList.add(Types("Акции", "#FF7058", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+        typesList.add(Types("Поставщики", "#FFB980", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+        typesList.add(Types("Сервис обслуживания", "#7985EB", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+        typesList.add(Types("Заказы", "#2CC245", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+        typesList.add(Types("Добавить торговую точку", "#FF7058", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+        typesList.add(Types("Доставки", "#4B5BE6", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        обслуживания
+//        торговую точку
+
+        val customList = ArrayList<Customs>()
         customList.add(Customs("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUcp-vFwbcy-8m14jgD4p947IV_1TqO--f87Y54u-JvyiiDh1k",
             "Константин",
             "Аль фараби, к45Б 8 этаж/105",
             5500))
-
         customList.add(Customs("https://media.vanityfair.com/photos/58c2f5aa0a144505fae9e9ee/master/pass/avatar-sequels-delayed.jpg",
             "Дмитрий",
             "Аль фараби, к47Б",
@@ -96,10 +119,13 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
 //        customList.add(Customs("Hello4"))
 //        customList.add(Customs("Hello5"))
 //        customList.add(Customs("Hello6"))
-
-        data.addAll(customList)
-        recyclerBindingAdapter.setItems(data)
-        binding.customsRv.adapter = recyclerBindingAdapter
+        types.addAll(typesList)
+        customs.addAll(customList)
+        recyclerTypesAdapter.setItems(types)
+        recyclerCustomsAdapter.setItems(customs)
+        binding.typesRv.adapter = recyclerTypesAdapter
+        binding.customsRv.adapter = recyclerCustomsAdapter
+        binding.typesRv.setHasFixedSize(true)
         binding.customsRv.setHasFixedSize(true)
         return binding.root
     }
@@ -112,7 +138,13 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            onItemClickListenerRecycler = this
+            onCustomClickListenerRecycler = this
+            onTypeClickListenerRecycle = object: OnItemClickListener<Types>{
+                override fun onItemClick(position: Int, item: Types) {
+                    Toast.makeText(context!!, item.text, Toast.LENGTH_SHORT).show()
+                }
+
+            }
         }catch (e: Throwable){
             throw ClassCastException(context.toString())
         }
@@ -120,6 +152,7 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, RecyclerBindingAdapter
 
     override fun onDetach() {
         super.onDetach()
-        onItemClickListenerRecycler = null
+        onCustomClickListenerRecycler = null
+        onTypeClickListenerRecycle = null
     }
 }

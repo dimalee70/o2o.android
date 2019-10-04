@@ -33,10 +33,12 @@ class ProductRegisterPresenter(private var router: Router): MvpPresenter<Product
 
     fun makePhoto() {
 
+        viewState?.showPictureDialog()
+
 //        var integration: IntentIntegrator = IntentIntegrator()
 
 
-        router.navigateTo(Screens.ScanScreen())
+//        router.navigateTo(Screens.ScanScreen())
 //        Timber.i("Click Photo")
 
 

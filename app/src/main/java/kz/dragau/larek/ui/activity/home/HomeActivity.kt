@@ -92,12 +92,12 @@ class HomeActivity : BaseActivity(), HomeView {
         actionBarDrawerToggle.syncState()
         navigationView.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.homeMainFragment -> {
+                R.id.item_product -> {
                     drawerLayout.closeDrawers()
                     router.navigateTo(Screens.HomeMainScreen())
                     return@setNavigationItemSelectedListener true
                 }
-                R.id.springAnimationFragment -> {
+                R.id.item_register_product -> {
                     drawerLayout.closeDrawers()
                     router.navigateTo(Screens.ScanScreen())
                     return@setNavigationItemSelectedListener true

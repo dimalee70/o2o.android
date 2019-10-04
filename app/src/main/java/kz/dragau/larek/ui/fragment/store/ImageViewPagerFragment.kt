@@ -3,9 +3,7 @@ package kz.dragau.larek.ui.fragment.store
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
-import android.widget.MultiAutoCompleteTextView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
@@ -20,14 +18,11 @@ import kotlinx.android.synthetic.main.activity_show_image.*
 import kz.dragau.larek.App
 import kz.dragau.larek.Constants
 import kz.dragau.larek.databinding.FragmentImageViewPagerBinding
-import kz.dragau.larek.databinding.ImageViewpagerItemBinding
 import kz.dragau.larek.extensions.showConfirmAlertDialog
-import kz.dragau.larek.extensions.showErrorAlertDialog
 import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.ui.adapters.images.ImagePagerAdapter
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
-import timber.log.Timber
 import javax.inject.Inject
 
 class ImageViewPagerFragment : BaseMvpFragment(), ImageViewPagerView {

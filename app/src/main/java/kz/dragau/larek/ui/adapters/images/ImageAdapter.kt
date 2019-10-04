@@ -6,25 +6,22 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
-import kz.dragau.larek.databinding.ImageItemBinding
-import kz.dragau.larek.ui.adapters.images.BaseImageAdapter
+import kz.dragau.larek.databinding.ItemImageBinding
 import ru.terrakok.cicerone.Router
-import java.io.File
 
 class ImageAdapter(private val context: Context, private var images: ArrayList<Uri>, private var router: Router): BaseImageAdapter<Uri>(context, images) {
 
-    lateinit var imageItemBinding: ImageItemBinding
+    lateinit var imageItemBinding: ItemImageBinding
 
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
         val image = images[position]
         imageItemBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup!!.context),
-            R.layout.image_item, viewGroup, false)
+            R.layout.item_image, viewGroup, false)
 
 //        if (view == null){
 //            val viewHolder = ViewHolder(imageItemBinding.avaIv)

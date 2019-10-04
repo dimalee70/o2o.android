@@ -28,4 +28,8 @@ class ScanPresenter(private val router: Router) : MvpPresenter<ScanView>() {
 //        router.navigateTo(Screens.ProductRegisterScreen())
         router.navigateTo(Screens.LoginScreen())
     }
+
+    fun navigateToRegisterScreen(){
+        router.navigateTo(Screens.ProductRegisterScreen())
+    }
 }

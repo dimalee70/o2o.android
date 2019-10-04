@@ -10,12 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import kz.dragau.larek.R
-import kz.dragau.larek.databinding.ImageViewpagerItemBinding
+import kz.dragau.larek.databinding.ItemImageViewpagerBinding
 
 class ImagePagerAdapter(private var context: Context,
                         private var images: ArrayList<Uri>): PagerAdapter() {
 
-    lateinit var binding: ImageViewpagerItemBinding
+    lateinit var binding: ItemImageViewpagerBinding
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object` as LinearLayout
@@ -28,7 +28,7 @@ class ImagePagerAdapter(private var context: Context,
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val image = images[position]
         binding = DataBindingUtil.inflate(LayoutInflater.from(container.context),
-            R.layout.image_viewpager_item, container, false)
+            R.layout.item_image_viewpager, container, false)
         Glide.with(binding.root).load(image.path).into(binding.imageIv)
 
         container.addView(binding.root)
