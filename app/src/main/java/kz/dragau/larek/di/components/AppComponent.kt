@@ -44,7 +44,7 @@ import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 @CustomApplicationScope
 @Component(modules = [ApplicationModule::class, NavigationModule::class,
     ServiceUtilModule::class, RoomModule::class, WSocketModule::class,
-    SaleSelectionModule::class, ImageListModule::class])
+    SaleSelectionModule::class, ImageListModule::class, ProductAddModule::class])
 interface AppComponent {
     @ApplicationContext
     fun context(): Context

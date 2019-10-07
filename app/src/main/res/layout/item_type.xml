@@ -54,15 +54,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:setImage="@{data.imageUrl}"
                         />
-<!--                        android:src="@drawable/ic_green_arrow_right"-->
-
-<!--                        app:fillColor="@{data.backColor}"-->
-<!--                        android:src="#FF7058"-->
-<!--                        app:civ_fill_color="@color/foobar"-->
-<!--                        android:background="#FF7058"-->
-<!--                        app:civ_circle_background_color="#FF7058"-->
-<!--                        app:setImage="@{data.imageUrl}"-->
-<!--                        android:background="@{data.backColor}"-->
 
                 <TextView
                         android:id="@+id/typeTv"

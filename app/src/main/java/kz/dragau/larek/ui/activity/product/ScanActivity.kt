@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_scan.*
 import kz.dragau.larek.App
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
+import kz.dragau.larek.api.requests.ProductRegisterViewModel
 import kz.dragau.larek.databinding.ActivityScanBinding
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import ru.terrakok.cicerone.Router
@@ -45,6 +46,9 @@ class ScanActivity : BaseActivity(), ScanView,
     @InjectPresenter
     lateinit var mScanPresenter: ScanPresenter
 
+    @Inject
+    lateinit var productRegisterViewModel: ProductRegisterViewModel
+
 
     @ProvidePresenter
     fun providePresenter(): ScanPresenter
@@ -61,6 +65,8 @@ class ScanActivity : BaseActivity(), ScanView,
             || result.barcodeFormat == BarcodeFormat.EAN_8
         ) {
             Toast.makeText(applicationContext, result.text, Toast.LENGTH_SHORT).show()
+            productRegisterViewModel.clearObject()
+            productRegisterViewModel.barCode = result.text
             Timber.i("Result from barcode " + result.text)
 //            router.let {
 //                it.navigateTo(Screens.ProductRegisterScreen())

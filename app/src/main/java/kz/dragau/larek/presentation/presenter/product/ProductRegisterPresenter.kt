@@ -10,6 +10,7 @@ import io.reactivex.disposables.Disposable
 import kz.dragau.larek.App
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
+import kz.dragau.larek.api.requests.ProductRegisterViewModel
 import kz.dragau.larek.presentation.view.product.ProductRegisterView
 import kz.dragau.larek.ui.activity.product.ScanActivity
 import ru.terrakok.cicerone.Router
@@ -17,7 +18,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
-class ProductRegisterPresenter(private var router: Router): MvpPresenter<ProductRegisterView>() {
+class ProductRegisterPresenter(private var router: Router, private var productRegisterViewModel: ProductRegisterViewModel): MvpPresenter<ProductRegisterView>() {
 
     @Inject
     lateinit var client: ApiManager
@@ -29,6 +30,10 @@ class ProductRegisterPresenter(private var router: Router): MvpPresenter<Product
 
     init {
         App.appComponent.inject(this)
+    }
+
+    fun registerStore(){
+        println(productRegisterViewModel)
     }
 
     fun makePhoto() {

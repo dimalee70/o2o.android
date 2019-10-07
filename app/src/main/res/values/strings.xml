@@ -100,4 +100,5 @@
     <string name="productBarcodeHint">Штрих-код</string>
     <string name="productDescribeHint">Описание</string>
     <string name="productChangePhotoText"><u>Изменить</u></string>
+    <string name="titleRegisterProduct">РЕГИСТРАЦИЯ</string>
 </resources>

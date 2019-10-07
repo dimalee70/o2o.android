@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.product.ProductRegisterView
@@ -17,8 +18,10 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.tiper.MaterialSpinner
+import kotlinx.android.synthetic.main.activity_product.*
 import kotlinx.android.synthetic.main.fragment_product_register.*
 import kz.dragau.larek.App
+import kz.dragau.larek.api.requests.ProductRegisterViewModel
 import kz.dragau.larek.databinding.FragmentProductRegisterBinding
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
@@ -44,12 +47,15 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
     @InjectPresenter
     lateinit var mProductRegisterPresenter: ProductRegisterPresenter
 
+    @Inject
+    lateinit var productRegisterViewModel: ProductRegisterViewModel
+
     lateinit var binding: FragmentProductRegisterBinding
 
 
     @ProvidePresenter
     fun providePresenter(): ProductRegisterPresenter{
-        return ProductRegisterPresenter(router)
+        return ProductRegisterPresenter(router, productRegisterViewModel)
     }
 
     private val listener by lazy {
@@ -71,8 +77,6 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
-
-
     }
 
     private fun MaterialSpinner.onClick() {
@@ -83,10 +87,11 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+//        pageTv.let { it.setText(R.string.titleRegisterProduct) }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_register, container, false)
 //        val frVew = binding.flMain
+        binding.productRegisterViewModel = productRegisterViewModel
         binding.presenter = mProductRegisterPresenter
-
         ArrayAdapter.createFromResource(context!!, R.array.categories_array, android.R.layout.simple_list_item_1
 
         ).let {
@@ -106,6 +111,10 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        pageTv.let { it.setText(R.string.titleRegisterProduct) }
+        activity!!.pageTv.setText(R.string.titleRegisterProduct)
+
 
     }
 

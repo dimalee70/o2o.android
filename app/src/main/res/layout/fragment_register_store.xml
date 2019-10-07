@@ -350,31 +350,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            <ImageView-->
-<!--                    android:id="@+id/avatarIv"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="68dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:adjustViewBounds="true"-->
-<!--                    android:scaleType="fitXY"-->
-<!--                    android:layout_marginStart="14dp"-->
-<!--                    android:src="@drawable/splash_screen"-->
-<!--            />-->
-
-<!--            <ImageView-->
-<!--                    android:id="@+id/avaIv"-->
-<!--                    android:layout_width="68dp"-->
-<!--                    android:layout_height="68dp"-->
-<!--                    android:layout_gravity="end|center"-->
-<!--                    android:layout_marginEnd="16dp"-->
-<!--                    app:srcCompat="@drawable/ic_store_photo"-->
-<!--                    android:background="#979797"-->
-<!--                    android:scaleType="center"-->
-<!--                    android:clickable="true"-->
-<!--            />-->
-<!--                    android:onClick="@{(v) -> presenter.addPhoto()}"-->
-
-<!--        </LinearLayout>-->
 
         <Button
                 android:id="@+id/finishButton"

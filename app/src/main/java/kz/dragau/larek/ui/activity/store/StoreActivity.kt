@@ -54,7 +54,6 @@ class StoreActivity : BaseActivity(), StoreView {
     @InjectPresenter
     lateinit var mStorePresenter: StorePresenter
 
-
     @ProvidePresenter
     fun providePresenter(): StorePresenter
     {

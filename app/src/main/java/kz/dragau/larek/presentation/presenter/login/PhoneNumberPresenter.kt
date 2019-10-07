@@ -307,7 +307,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                     return
                 }
 
-                userRequstModel.notifyPropertyChanged(BR.codeExpiryDate)
+                userRequstModel.notifyChange()
             }
         }, delay, period)
     }
