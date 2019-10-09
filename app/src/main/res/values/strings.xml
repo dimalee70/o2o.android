@@ -101,4 +101,5 @@
     <string name="productDescribeHint">Описание</string>
     <string name="productChangePhotoText"><u>Изменить</u></string>
     <string name="titleRegisterProduct">РЕГИСТРАЦИЯ</string>
+    <string name="toolbarCustoms">ОНЛАЙН ЗАКАЗЫ</string>
 </resources>

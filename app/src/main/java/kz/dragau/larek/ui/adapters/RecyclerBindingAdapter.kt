@@ -10,7 +10,10 @@ import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.include_custom.view.*
+import kotlinx.android.synthetic.main.item_custom.view.*
 import kz.dragau.larek.R
+import kz.dragau.larek.models.objects.Customs
 
 import java.util.ArrayList
 import java.util.Objects.compare
@@ -20,7 +23,8 @@ class RecyclerBindingAdapter<T>(
     private val variableId: Int,
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerBindingAdapter.BindingHolder>() {
-    private var items: ArrayList<T> = ArrayList()
+//    private var items: ArrayList<T> = ArrayList()
+    private var items: ObservableArrayList<T> = ObservableArrayList()
     private var onItemClickListener: OnItemClickListener<T>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerBindingAdapter.BindingHolder {
@@ -30,7 +34,15 @@ class RecyclerBindingAdapter<T>(
     }
 
     init {
-        //items.addOnListChangedCallback(ObservableListCallback())
+        items.addOnListChangedCallback(ObservableListCallback())
+    }
+
+//    fun <T> ObservableList<T>.subscribeRecycler(adapter: RecyclerView.Adapter<*>) {
+//        addOnListChangedCallback(ObservableListCallback())
+//    }
+
+    override fun getItemId(position: Int): Long {
+        return super.getItemId(position)
     }
 
     override fun onBindViewHolder(holder: RecyclerBindingAdapter.BindingHolder, position: Int) {
@@ -42,6 +54,18 @@ class RecyclerBindingAdapter<T>(
         }
         holder.binding.setVariable(variableId, item)
         holder.binding.executePendingBindings()
+        if(holderLayout == R.layout.item_custom || holderLayout == R.layout.item_custom_full){
+            holder.binding.root.closeIb.setOnClickListener{
+                removeAt(position)
+            }
+        }
+    }
+
+    fun removeAt(position: Int){
+        items.removeAt(position)
+//        notifyItemChanged(position)
+//        notifyItemRangeChanged(position, items.size)
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -84,16 +108,18 @@ class RecyclerBindingAdapter<T>(
     {
         if (this.items.isEmpty() && items != null)
         {
-            val list = ArrayList<T>()
-            list.addAll(items.toMutableList())
-            this.items = list
+//            val list = ArrayList<T>()
+//            list.addAll(items.toMutableList())
+//            this.items = list
 
-            notifyDataSetChanged()
+            this.items = items
+
+//            notifyDataSetChanged()
         }
         else if (this.items.isNotEmpty() && (items == null || items.isEmpty()))
         {
             this.items.clear()
-            notifyDataSetChanged()
+//            notifyDataSetChanged()
         }
         else {
             if (items != null) {
@@ -173,5 +199,7 @@ class RecyclerBindingAdapter<T>(
         override fun onItemRangeRemoved(sender: ObservableArrayList<T>, positionStart: Int, itemCount: Int) {
             notifyItemRangeRemoved(positionStart, itemCount)
         }
+
     }
+
 }

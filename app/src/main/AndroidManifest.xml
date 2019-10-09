@@ -20,10 +20,11 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.App.Dark"
             android:usesCleartextTraffic="true">
+        <activity android:name=".ui.activity.customs.CustomsActivity" />
         <activity android:name=".ui.activity.home.HomeActivity" />
         <activity
                 android:name=".ui.activity.store.ShowImageActivity"
-                android:configChanges="orientation"></activity>
+                android:configChanges="orientation" />
         <activity
                 android:name=".ui.activity.store.StoreActivity"
                 android:theme="@style/MyActionBarTheme" />

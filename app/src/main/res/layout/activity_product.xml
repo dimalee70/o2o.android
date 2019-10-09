@@ -74,7 +74,8 @@
                         android:src="@drawable/ic_left_arrow"
                         android:adjustViewBounds="true"
                         android:clickable="true"
-                        android:focusable="true"/>
+                        android:focusable="true"
+                        />
 
 <!--                <View-->
 <!--                        android:layout_width="match_parent" android:layout_height="0.5dp"-->

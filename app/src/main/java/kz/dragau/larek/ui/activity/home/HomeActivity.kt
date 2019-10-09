@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.transition.ChangeBounds
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -15,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import kotlinx.android.synthetic.main.activity_crop.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_store.*
 import kz.dragau.larek.App
@@ -107,6 +111,17 @@ class HomeActivity : BaseActivity(), HomeView {
                 }
             }
         }
+
+//        var parameter = RelativeLayout.LayoutParams(
+//            RelativeLayout.LayoutParams.WRAP_CONTENT,
+//            RelativeLayout.LayoutParams.WRAP_CONTENT)
+//        parameter.setMargins()
+
+//        for(i in 0..toolbar!!.childCount){
+//            if(toolbar.getChildAt(i) is ImageButton){
+//                (toolbar.getChildAt(i) as ImageButton).setPadding(50, 100, 50, 50)
+//            }
+//        }
 //        val navController = Navigation.findNavController(this, R.id.physics_animation_nav_fragment)
 //        navigationView.setupWithNavController(navController)
     }

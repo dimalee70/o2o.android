@@ -14,19 +14,24 @@ import kz.dragau.larek.presentation.view.home.HomeMainView
 import kz.dragau.larek.presentation.presenter.home.HomeMainPresenter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import kz.dragau.larek.App
+import kz.dragau.larek.Screens
 import kz.dragau.larek.databinding.FragmentHomeMainBinding
 import kz.dragau.larek.models.objects.Customs
 import kz.dragau.larek.models.objects.Types
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter.OnItemClickListener
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import ru.terrakok.cicerone.Router
 import java.lang.ClassCastException
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Customs>{
 
 
-//    private var onItemClickListenerRecycler
+
+
+    //    private var onItemClickListenerRecycler
     companion object {
         const val TAG = "HomeMainFragment"
 
@@ -45,6 +50,12 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Cu
     @InjectPresenter
     lateinit var mHomeMainPresenter: HomeMainPresenter
 
+    @Inject
+    lateinit var customs: ObservableArrayList<Customs>
+
+    @Inject
+    lateinit var router: Router
+
     lateinit var binding: FragmentHomeMainBinding
 
     lateinit var recyclerCustomsAdapter: RecyclerBindingAdapter<Customs>
@@ -52,6 +63,9 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Cu
     lateinit var recyclerTypesAdapter: RecyclerBindingAdapter<Types>
 
     private var onCustomClickListenerRecycler: OnItemClickListener<Customs>? = this
+
+//    var customs = ObservableArrayList<Customs>()
+    var types = ObservableArrayList<Types>()
 
     private var onTypeClickListenerRecycle: OnItemClickListener<Types>? = object: OnItemClickListener<Types>{
         override fun onItemClick(position: Int, item: Types) {
@@ -65,8 +79,6 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Cu
 //            }
 //        }
 
-    var customs = ObservableArrayList<Customs>()
-    var types = ObservableArrayList<Types>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
@@ -141,7 +153,7 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Cu
             onCustomClickListenerRecycler = this
             onTypeClickListenerRecycle = object: OnItemClickListener<Types>{
                 override fun onItemClick(position: Int, item: Types) {
-                    Toast.makeText(context!!, item.text, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, item.text, Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -154,5 +166,14 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Cu
         super.onDetach()
         onCustomClickListenerRecycler = null
         onTypeClickListenerRecycle = null
+    }
+
+    override fun openCustomsScreen() {
+        router.navigateTo(Screens.CustomScreen())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.customsRv.adapter!!.notifyDataSetChanged()
     }
 }

@@ -70,7 +70,6 @@ class ProductActivity : BaseActivity(), ProductView {
         back_button_iv.setOnClickListener{
             //            println("Click")
             onBackPressed()
-
         }
         if(savedInstanceState == null){
             navigator.applyCommands(arrayOf<Command>(Replace(Screens.ProductRegisterScreen())))

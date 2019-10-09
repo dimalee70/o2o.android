@@ -27,6 +27,7 @@
                 android:layout_marginStart="@dimen/marginText"
                 android:layout_marginEnd="@dimen/marginText"
                 android:layout_marginTop="11dp"
+                android:onClick="@{(v) -> presenter.openCustoms()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

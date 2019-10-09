@@ -7,6 +7,7 @@ import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
 import kz.dragau.larek.ui.activity.crop.CropActivity
+import kz.dragau.larek.ui.activity.customs.CustomsActivity
 import kz.dragau.larek.ui.activity.home.HomeActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
@@ -14,6 +15,7 @@ import kz.dragau.larek.ui.activity.product.AddProductActivity
 import kz.dragau.larek.ui.activity.store.ShowImageActivity
 import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
+import kz.dragau.larek.ui.fragment.customs.OnlineCustomsFragment
 import kz.dragau.larek.ui.fragment.home.HomeMainFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
@@ -43,11 +45,6 @@ class Screens {
         }
     }
 
-//    class CropScreen(): SupportAppScreen(){
-//        override fun getActivityIntent(context: Context?): Intent {
-//            return Intent(context, CropActivity::class.java)
-//        }
-//    }
     class LoginScreen : SupportAppScreen() {
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, LoginInActivity::class.java)
@@ -66,19 +63,6 @@ class Screens {
         }
     }
 
-//    class GalleryScreen: SupportAppScreen(){
-//        override fun getActivityIntent(context: Context?): Intent {
-//            return Intent(Intent.ACTION_PICK,
-//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//        }
-//    }
-//
-//    class CameraScreen: SupportAppScreen(){
-//        override fun getActivityIntent(context: Context?): Intent {
-//            return Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-//        }
-//    }
-
     class StoreScreen: SupportAppScreen(){
         override fun getActivityIntent(context: Context?): Intent {
             return Intent(context, StoreActivity::class.java)
@@ -91,6 +75,11 @@ class Screens {
         }
     }
 
+    class CustomScreen: SupportAppScreen(){
+        override fun getActivityIntent(context: Context?): Intent {
+            return Intent(context, CustomsActivity::class.java)
+        }
+    }
 
     class PhoneNumberScreen : SupportAppScreen() {
 
@@ -203,6 +192,16 @@ class Screens {
 
         override fun getFragment(): Fragment {
             return HomeMainFragment.newInstance()
+        }
+    }
+
+    class OnlineCustomsScreen: SupportAppScreen(){
+        init {
+            this.screenKey = javaClass.simpleName
+        }
+
+        override fun getFragment(): Fragment {
+            return OnlineCustomsFragment.newInstance()
         }
     }
 

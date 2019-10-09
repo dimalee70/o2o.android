@@ -6,5 +6,7 @@ import kz.dragau.larek.presentation.view.home.HomeMainView
 
 @InjectViewState
 class HomeMainPresenter : MvpPresenter<HomeMainView>() {
-
+    fun openCustoms(){
+        viewState.openCustomsScreen()
+    }
 }
