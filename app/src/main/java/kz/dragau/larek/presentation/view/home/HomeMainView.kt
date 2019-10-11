@@ -1,7 +1,7 @@
 package kz.dragau.larek.presentation.view.home
 
-import com.arellomobile.mvp.MvpView
+import kz.dragau.larek.presentation.BaseView
 
-interface HomeMainView : MvpView {
+interface HomeMainView : BaseView {
     fun openCustomsScreen()
 }

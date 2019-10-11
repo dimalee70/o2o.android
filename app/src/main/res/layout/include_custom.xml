@@ -3,7 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="data" type="kz.dragau.larek.models.objects.Customs" />
+        <variable name="data" type="kz.dragau.larek.models.objects.OrdersByOutletResult" />
     </data>
     <androidx.cardview.widget.CardView
             android:id="@+id/customCv"
@@ -22,7 +22,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="11dp"
                     android:layout_marginStart="10dp"
-                    app:setImage="@{data.imageUri}"
+                    app:setImage="@{data.image}"
                     app:civ_border_width="0dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:layout_marginStart="13dp"
-                    android:text="@={data.name}"
+                    android:text="@={data.contact.firstName}"
                     android:fontFamily="@font/roboto_bold"
                     android:textStyle="bold"
                     android:textSize="@dimen/maxHeaderTextSize"
@@ -62,7 +62,7 @@
                     android:layout_width="0dp"
                     android:minHeight="60dp"
                     android:layout_height="wrap_content"
-                    android:text="@={data.address}"
+                    android:text="@={data.contact.fullName}"
                     android:layout_marginTop="3dp"
                     app:layout_constraintTop_toBottomOf="@id/dividerV"
                     app:layout_constraintStart_toStartOf="@id/nameTv"
@@ -81,7 +81,7 @@
                     android:drawableStart="@drawable/ic_wallet"
                     android:drawablePadding="11dp"
                     android:layout_marginStart="20dp"
-                    app:money="@{data.cost}"
+                    app:money="@{data.price}"
                     app:layout_constraintTop_toBottomOf="@id/addressTv"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

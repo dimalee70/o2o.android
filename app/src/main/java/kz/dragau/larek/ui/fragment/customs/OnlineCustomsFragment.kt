@@ -18,6 +18,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentOnlineCustomsBinding
 import kz.dragau.larek.models.objects.Customs
+import kz.dragau.larek.models.objects.OrdersByOutletResult
 import kz.dragau.larek.models.objects.Types
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter
 import kz.dragau.larek.ui.common.SwipeToDeleteCallback
@@ -44,7 +45,7 @@ class OnlineCustomsFragment : BaseMvpFragment(), OnlineCustomsView {
     lateinit var mOnlineCustomsPresenter: OnlineCustomsPresenter
 
     @Inject
-    lateinit var customs: ObservableArrayList<Customs>
+    lateinit var customs: ObservableArrayList<OrdersByOutletResult>
 
     @ProvidePresenter
     fun providePressenter(): OnlineCustomsPresenter{
@@ -53,14 +54,14 @@ class OnlineCustomsFragment : BaseMvpFragment(), OnlineCustomsView {
 
     lateinit var binding: FragmentOnlineCustomsBinding
 
-    lateinit var recyclerCustomsAdapter: RecyclerBindingAdapter<Customs>
+    lateinit var recyclerCustomsAdapter: RecyclerBindingAdapter<OrdersByOutletResult>
 
 //    var customs = ObservableArrayList<Customs>()
 
-    private var onCustomClickListenerRecycler: RecyclerBindingAdapter.OnItemClickListener<Customs>? = object:
-        RecyclerBindingAdapter.OnItemClickListener<Customs> {
-        override fun onItemClick(position: Int, item: Customs) {
-            Toast.makeText(context!!, item.name, Toast.LENGTH_SHORT).show()
+    private var onCustomClickListenerRecycler: RecyclerBindingAdapter.OnItemClickListener<OrdersByOutletResult>? = object:
+        RecyclerBindingAdapter.OnItemClickListener<OrdersByOutletResult> {
+        override fun onItemClick(position: Int, item: OrdersByOutletResult) {
+            Toast.makeText(context!!, item.contactId, Toast.LENGTH_SHORT).show()
         }
     }
 

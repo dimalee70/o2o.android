@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.Observer
 import kz.dragau.larek.R
 import kz.dragau.larek.presentation.view.product.ProductRegisterView
 import kz.dragau.larek.presentation.presenter.product.ProductRegisterPresenter
@@ -22,7 +24,9 @@ import kotlinx.android.synthetic.main.activity_product.*
 import kotlinx.android.synthetic.main.fragment_product_register.*
 import kz.dragau.larek.App
 import kz.dragau.larek.api.requests.ProductRegisterViewModel
+import kz.dragau.larek.api.response.ProductCategoriesResponce
 import kz.dragau.larek.databinding.FragmentProductRegisterBinding
+import kz.dragau.larek.models.objects.ProductCategories
 import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
@@ -52,6 +56,7 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
 
     lateinit var binding: FragmentProductRegisterBinding
 
+    private val lifecycleRegistry = LifecycleRegistry(this)
 
     @ProvidePresenter
     fun providePresenter(): ProductRegisterPresenter{
@@ -77,6 +82,36 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
+        mProductRegisterPresenter.attachLifecycle(lifecycleRegistry)
+        mProductRegisterPresenter.observeForProductCategoriesResponseBoundary()
+            .observe(this, Observer {
+                response -> response.let {
+                    setProductCategories(response)
+            }
+            })
+    }
+
+    private fun setProductCategories(response: ProductCategoriesResponce){
+
+        ArrayAdapter<ProductCategories>(context!!, android.R.layout.simple_list_item_1, response.resultObject!!)
+            .let {
+                it.setDropDownViewResource(R.layout.item_spinner_simple)
+                binding.productCategoryMs.apply {
+                    adapter = it
+                    onItemSelectedListener = listener
+                }
+            }
+//        ArrayAdapter.createFromResource(context!!, response.resultObject!!, android.R.layout.simple_list_item_1
+
+//        ).let {
+//            it.setDropDownViewResource(R.layout.item_spinner_simple)
+//            binding.productCategoryMs.apply {
+//                adapter = it
+//                onItemSelectedListener = listener
+//            }
+////            spinner.adapter = it
+////            appCompatSpinner.adapter = it
+//        }
     }
 
     private fun MaterialSpinner.onClick() {
@@ -92,17 +127,18 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
 //        val frVew = binding.flMain
         binding.productRegisterViewModel = productRegisterViewModel
         binding.presenter = mProductRegisterPresenter
-        ArrayAdapter.createFromResource(context!!, R.array.categories_array, android.R.layout.simple_list_item_1
-
-        ).let {
-            it.setDropDownViewResource(R.layout.item_spinner_simple)
-            binding.productCategoryMs.apply {
-            adapter = it
-            onItemSelectedListener = listener
-            }
-//            spinner.adapter = it
-//            appCompatSpinner.adapter = it
-        }
+        mProductRegisterPresenter.getProductCategoris()
+//        ArrayAdapter.createFromResource(context!!, R.array.categories_array, android.R.layout.simple_list_item_1
+//
+//        ).let {
+//            it.setDropDownViewResource(R.layout.item_spinner_simple)
+//            binding.productCategoryMs.apply {
+//            adapter = it
+//            onItemSelectedListener = listener
+//            }
+////            spinner.adapter = it
+////            appCompatSpinner.adapter = it
+//        }
 //        material_spinner_1.let {
 //
 //        }
