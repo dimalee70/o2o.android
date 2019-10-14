@@ -5,6 +5,15 @@ import androidx.databinding.Bindable
 
 class ProductRegisterViewModel: BaseObservable() {
 
+    var isEnable: Boolean = true
+        @Bindable get
+        set(value){
+            field = value
+            notifyChange()
+        }
+
+    var productCategoryId: String? = null
+
     var categoryName: String? = null
         @Bindable get
         set(value){

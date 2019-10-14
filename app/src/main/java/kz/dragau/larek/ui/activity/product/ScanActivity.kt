@@ -1,22 +1,15 @@
 package kz.dragau.larek.ui.activity.product
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.Result
-import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import kotlinx.android.synthetic.main.content_scanner.*
 import kz.dragau.larek.presentation.view.product.ScanView
 import kz.dragau.larek.presentation.presenter.product.ScanPresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 
-import android.content.pm.PackageManager
-import android.view.Gravity
 import android.view.KeyEvent
-import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -27,12 +20,9 @@ import com.journeyapps.barcodescanner.CaptureManager
 import kotlinx.android.synthetic.main.activity_scan.*
 import kz.dragau.larek.App
 import kz.dragau.larek.R
-import kz.dragau.larek.Screens
 import kz.dragau.larek.api.requests.ProductRegisterViewModel
 import kz.dragau.larek.databinding.ActivityScanBinding
-import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import ru.terrakok.cicerone.Router
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -53,7 +43,7 @@ class ScanActivity : BaseActivity(), ScanView,
     @ProvidePresenter
     fun providePresenter(): ScanPresenter
     {
-        return ScanPresenter(router)
+        return ScanPresenter(router, productRegisterViewModel)
     }
 
     lateinit var binding: ActivityScanBinding
@@ -64,14 +54,16 @@ class ScanActivity : BaseActivity(), ScanView,
             || result.barcodeFormat == BarcodeFormat.CODE_39
             || result.barcodeFormat == BarcodeFormat.EAN_8
         ) {
-            Toast.makeText(applicationContext, result.text, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(applicationContext, result.text, Toast.LENGTH_SHORT).show()
             productRegisterViewModel.clearObject()
-            productRegisterViewModel.barCode = result.text
-            Timber.i("Result from barcode " + result.text)
+            mScanPresenter.checkProduct(result.text)
+            finish()
+//            productRegisterViewModel.barCode = result.text
+//            Timber.i("Result from barcode " + result.text)
 //            router.let {
 //                it.navigateTo(Screens.ProductRegisterScreen())
 //            }
-            router.navigateTo(Screens.ProductScreen())
+//            router.navigateTo(Screens.ProductScreen())
 //            mScanPresenter.navigateToRegisterScreen()
 //            finish()
 //            router.exit()

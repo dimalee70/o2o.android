@@ -10,14 +10,14 @@ class LoginRequestModel: BaseObservable(), Serializable {
     var mobilePhone: String? = null
         @Bindable get
         set(value) {
-            if (value == null)
-            {
+//            if (value == null)
+//            {
                 field = value
-                return
-            }
-            val re = Regex("[^+0-9]")
-            val tel = re.replace(value, "")
-            field = tel
+//                return
+//            }
+//            val re = Regex("[^+0-9]")
+//            val tel = re.replace(value, "")
+//            field = tel
             notifyPropertyChanged(BR.phone)
         }
 

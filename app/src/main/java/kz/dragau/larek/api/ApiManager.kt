@@ -38,4 +38,7 @@ interface ApiManager {
     @GET("v1/product/getproductcategories")
     fun getProductategories(): Observable<ProductCategoriesResponce>
 
+    @GET("v1/product/getproductbybarcode")
+    fun getProductByBarcode(@Query("barcode") barcode: String): Observable<ProductResponce>
+
 }

@@ -99,6 +99,7 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
                     run {
 //                        println(result)
                         result.resultObject?.let { uploadPhoto(it) }
+                        router.navigateTo(Screens.HomeScreen())
                     }
                 },
                 {

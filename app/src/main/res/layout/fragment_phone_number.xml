@@ -28,8 +28,10 @@
                     android:id="@+id/txtGreetings"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    style="@style/TextView.HeaderInverseColor"
-                    android:layout_marginStart="30dp"/>
+                    android:layout_marginStart="30dp"
+                    android:textSize="24sp"
+                    />
+<!--                    style="@style/TextView.HeaderInverseColor"-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phoneLayout"
@@ -58,7 +60,6 @@
                         android:hint="1234567890"
                         android:textSize="14sp"
                         app:keep_hint="true"
-                        android:textColorHint="#000000"
                         android:drawableStart="@drawable/phone"
                         android:text="@={loginViewModel.mobilePhone}"
                         app:onEditorEnterAction="@{presenter.startCheck}"
@@ -96,7 +97,6 @@
                             android:ems="6"
                             android:paddingStart="6dp"
                             android:layout_marginTop="26dp"
-                            android:textSize="14sp"
                             android:maxLength="6"
                             android:drawableStart="@drawable/ic_sms"
                             android:text="@={loginViewModel.smsCode}"
@@ -110,7 +110,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:secDiff="@{loginViewModel.codeExpiryDate}"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_marginTop="26dp"
                             android:layout_marginStart="2dp"
                             android:textAlignment="center"

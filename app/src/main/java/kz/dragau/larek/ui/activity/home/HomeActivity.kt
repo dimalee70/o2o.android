@@ -66,7 +66,7 @@ class HomeActivity : BaseActivity(), HomeView {
             navigator.applyCommands(arrayOf<Command>(Replace(Screens.HomeMainScreen())))
         }
         setContentView(R.layout.activity_home)
-        setupToolbar()
+//        setupToolbar()
         setupNavigationDrawer(homeToolbar)
 
     }
@@ -104,6 +104,7 @@ class HomeActivity : BaseActivity(), HomeView {
                 R.id.item_register_product -> {
                     drawerLayout.closeDrawers()
                     router.navigateTo(Screens.ScanScreen())
+//                    router.navigateTo(Screens.ProductScreen())
                     return@setNavigationItemSelectedListener true
                 }
                 else ->{

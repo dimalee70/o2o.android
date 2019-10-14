@@ -95,6 +95,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                             if (task.isSuccessful) {
                                 getToken(task.result?.token)
                                 stopTimedUpdate()
+                                router.navigateTo(Screens.StoreScreen())
                                     //router.navigateTo(Screens.SmsCodeScreen())
                             } else {
                                 if (task.exception?.message != null) {
@@ -238,7 +239,9 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
         }
         else {
             userRequstModel.mobilePhone?.let {
-                viewState?.verifyPhoneNumber(it)
+                val re = Regex("[^+0-9]")
+                val tel = re.replace(it, "")
+                viewState?.verifyPhoneNumber(tel)
                 //viewState?.hideProgress()
                 //router.navigateTo(Screens.SmsCodeScreen())
             }

@@ -118,12 +118,19 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
 
         mLocationMapPresenter.observeForCancellSearchButton()
             .observe(this, Observer {
-                response -> response.let { if (response) mLocationMapPresenter.getSalesOutletBoundaries() else mMap!!.clear() }
+                response -> response.let { if (response){
+                clusteringMap()
+                binding.arrowBack.visibility = View.GONE
+            }
+            else{
+                mMap!!.clear()
+                binding.arrowBack.visibility = View.VISIBLE
+            } }
             })
 
         mLocationMapPresenter.obseverForSubmitButton()
             .observe(this, Observer {
-                response -> response.let { if (response) binding!!.btnProceed.visibility = View.VISIBLE
+                response -> response.let { if (response) binding.btnProceed.visibility = View.VISIBLE
                     else binding.btnProceed.visibility = View.GONE}
             })
         activity!!.toolbarCl.visibility = View.VISIBLE
@@ -309,10 +316,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
 //                    Toast.makeText(context!!, selectedPoint!!.longitude.toString() + " " + selectedPoint!!.latitude.toString(), Toast.LENGTH_SHORT).show()
                 }
                 else{
-
-                    po.points.clear()
-                    mLocationMapPresenter.addToPo()
-                    mLocationMapPresenter.drawMarkers()
+                    clusteringMap()
                 }
 
             }
@@ -320,6 +324,13 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
                 mLocationMapPresenter.drawMarkers()
             }
         }
+    }
+
+    fun clusteringMap(){
+
+        po.points.clear()
+        mLocationMapPresenter.addToPo()
+        mLocationMapPresenter.drawMarkers()
     }
 
     override fun drawMarkers(){

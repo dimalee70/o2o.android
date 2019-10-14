@@ -7,6 +7,14 @@
     <color name="colorPrimaryDarkD">#000000</color>
     <color name="colorAccentDark">#ffffff</color>
 
+    <color name="darkColorText">#FFFFFF</color>
+    <color name="darkInverseTextColor">#FFFFFF</color>
+
+
+
+
+
+
     <color name="colorPrimary">#000000</color>
     <color name="colorPanel">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
@@ -41,11 +49,13 @@
     <color name="inverseTextColor">#ffffff</color>
     <color name="settingsFieldTextColor">#D9DFE7</color>
     <color name="lineColor">#BBBBBB</color>
+    <color name="textColorHint">#BBBBBB</color>
 
     <color name="colorUnselected">#BB000000</color>
     <color name="colorSelected">#BBFFFFFF</color>
 
     <color name="hintTextColor">#D6D6D6</color>
+
 
 
 

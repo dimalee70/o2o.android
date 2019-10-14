@@ -93,7 +93,8 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
 
     private fun setProductCategories(response: ProductCategoriesResponce){
 
-        ArrayAdapter<ProductCategories>(context!!, android.R.layout.simple_list_item_1, response.resultObject!!)
+        var productCategories = response.resultObject
+        ArrayAdapter<ProductCategories>(context!!, android.R.layout.simple_list_item_1, productCategories!!)
             .let {
                 it.setDropDownViewResource(R.layout.item_spinner_simple)
                 binding.productCategoryMs.apply {
@@ -101,6 +102,12 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
                     onItemSelectedListener = listener
                 }
             }
+
+
+        binding.productCategoryMs.selection = if(productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId } < 0 ) 0
+                                                else productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId}
+
+
 //        ArrayAdapter.createFromResource(context!!, response.resultObject!!, android.R.layout.simple_list_item_1
 
 //        ).let {

@@ -27,6 +27,7 @@
     <attr name="settingsFieldTextColor" format="reference"/>
     <attr name="hintTextColor" format="reference"/>
     <attr name="whiteColor" format="reference"/>
+    <attr name="textInputEditTextStyle" format="reference"/>
 
 
     <!-- Declare custom theme attributes that allow changing which styles are

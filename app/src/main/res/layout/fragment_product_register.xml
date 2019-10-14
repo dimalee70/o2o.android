@@ -52,6 +52,7 @@
                         android:prompt="@string/app_name"
                         android:textColorHint="@color/hintTextColor"
                         android:textColor="@color/whiteColor"
+                        android:enabled="@{productRegisterViewModel.isEnable}"
                         app:srcCompat="@drawable/ic_selector_drawable"
                         app:layout_constraintTop_toBottomOf="@+id/titleTv"
                         app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +79,7 @@
                             android:layout_height="wrap_content"
                             android:singleLine="true"
                             android:hint="@string/productProducerHint"
+                            android:enabled="@{productRegisterViewModel.isEnable}"
                             android:text="@={productRegisterViewModel.produserName}"
                             />
 <!--                            android:text="@={registerStoreViewModel.name}"-->
@@ -100,6 +102,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/productNameHint"
+                            android:enabled="false"
+                            android:focusable="false"
                             android:text="@={productRegisterViewModel.title}"
                             />
 
@@ -121,7 +125,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/productBarcodeHint"
-                            android:enabled="false"
+                            android:enabled="@{productRegisterViewModel.isEnable}"
                             android:focusable="false"
                             android:text="@={productRegisterViewModel.barCode}"
                             />
@@ -143,6 +147,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/productDescribeHint"
+                            android:enabled="@{productRegisterViewModel.isEnable}"
                             android:text="@={productRegisterViewModel.describe}"
                             />
 

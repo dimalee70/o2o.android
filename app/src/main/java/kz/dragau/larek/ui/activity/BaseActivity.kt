@@ -65,9 +65,9 @@ open class BaseActivity : MvpActivity(), BaseView {
         //sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         currentTheme = if (isDynamicThemingOn)
         {
-            sharedPref.getString(Constants.themePrefsKey, Constants.darkTheme)!!
+            sharedPref.getString(Constants.themePrefsKey, Constants.lightTheme)!!
         } else {
-            Constants.darkTheme
+            Constants.lightTheme
         }
         setAppTheme(currentTheme)
     }
@@ -83,13 +83,13 @@ open class BaseActivity : MvpActivity(), BaseView {
 
         if (isDynamicThemingOn)
         {
-            val theme = sharedPref.getString(Constants.themePrefsKey, Constants.darkTheme)
+            val theme = sharedPref.getString(Constants.themePrefsKey, Constants.lightTheme)
             if (currentTheme != theme)
                 recreate()
         }
         else
         {
-            if (currentTheme != Constants.darkTheme) {
+            if (currentTheme != Constants.lightTheme) {
                 recreate()
             }
         }
