@@ -7,9 +7,12 @@ import android.net.Uri
 import android.util.Base64
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import kz.dragau.larek.moxy.MvpAppCompatFragment
 import kz.dragau.larek.presentation.presenter.dialogs.ConfirmDialogPresenter
 import kz.dragau.larek.presentation.presenter.dialogs.ErrorDialogPresenter
+import kz.dragau.larek.presentation.presenter.dialogs.ProductExistDialogPresenter
 import kz.dragau.larek.presentation.presenter.dialogs.ProgressDialogPresenter
+import kz.dragau.larek.ui.activity.product.ScanActivity
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -51,3 +54,8 @@ fun Uri.encodeImage(): String? {
     }
     return null
 }
+
+inline fun ScanActivity.showExistsAlertDialog(func: ProductExistDialogPresenter.() -> Unit): AlertDialog? =
+    ProductExistDialogPresenter(this).apply{
+        func()
+    }.create(null)

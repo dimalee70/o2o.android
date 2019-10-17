@@ -47,6 +47,6 @@ class ConfirmDialogPresenter (private var context: Context, private val title: I
         with(noBtn) {
             setClickListenerToDialogButton(func)
         }
-
+//
 
 }

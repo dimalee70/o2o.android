@@ -3,9 +3,12 @@ package kz.dragau.larek.ui.activity.product
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.transition.ChangeBounds
+import android.util.Base64
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -36,6 +39,7 @@ import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 
@@ -76,6 +80,12 @@ class ProductActivity : BaseActivity(), ProductView {
         }
     }
 
+    fun encodeImage(bm: Bitmap): String {
+        var baos = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+    }
+
     override fun onResumeFragments() {
         super.onResumeFragments()
         navigatorHolder.setNavigator(navigator)
@@ -113,7 +123,10 @@ class ProductActivity : BaseActivity(), ProductView {
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
 //                avatarIv.setImageURI(result.uri)
-                mProductPresenter.changeImage(result.uri.path!!)
+                val inputStream = contentResolver.openInputStream(result.uri)
+                val selectedImage = BitmapFactory.decodeStream(inputStream)
+                val encodedImage = encodeImage(selectedImage)
+                mProductPresenter.changeImage(encodedImage)
 //                mStorePresenter.changeImage(result.uri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Croppinf failed: " + result.error, Toast.LENGTH_LONG).show()

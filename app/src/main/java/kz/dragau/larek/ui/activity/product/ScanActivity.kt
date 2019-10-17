@@ -10,7 +10,9 @@ import kz.dragau.larek.presentation.presenter.product.ScanPresenter
 import kz.dragau.larek.ui.activity.BaseActivity
 
 import android.view.KeyEvent
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.zxing.ResultPoint
@@ -20,9 +22,14 @@ import com.journeyapps.barcodescanner.CaptureManager
 import kotlinx.android.synthetic.main.activity_scan.*
 import kz.dragau.larek.App
 import kz.dragau.larek.R
+import kz.dragau.larek.Screens
 import kz.dragau.larek.api.requests.ProductRegisterViewModel
 import kz.dragau.larek.databinding.ActivityScanBinding
+import kz.dragau.larek.extensions.showExistsAlertDialog
+import kz.dragau.larek.presentation.presenter.dialogs.LoadingDialog
+import kz.dragau.larek.presentation.presenter.dialogs.ProductExistDialog
 import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.Screen
 import javax.inject.Inject
 
 
@@ -39,7 +46,6 @@ class ScanActivity : BaseActivity(), ScanView,
     @Inject
     lateinit var productRegisterViewModel: ProductRegisterViewModel
 
-
     @ProvidePresenter
     fun providePresenter(): ScanPresenter
     {
@@ -48,16 +54,18 @@ class ScanActivity : BaseActivity(), ScanView,
 
     lateinit var binding: ActivityScanBinding
 
+    private var productExistDialog: AlertDialog? = null
+
     override fun barcodeResult(result: BarcodeResult?) {
 
-        if(result!!.barcodeFormat == BarcodeFormat.CODE_128
-            || result.barcodeFormat == BarcodeFormat.CODE_39
-            || result.barcodeFormat == BarcodeFormat.EAN_8
-        ) {
+//        if(result!!.barcodeFormat == BarcodeFormat.CODE_128
+//            || result.barcodeFormat == BarcodeFormat.CODE_39
+//            || result.barcodeFormat == BarcodeFormat.EAN_8
+//        ) {
 //            Toast.makeText(applicationContext, result.text, Toast.LENGTH_SHORT).show()
             productRegisterViewModel.clearObject()
-            mScanPresenter.checkProduct(result.text)
-            finish()
+            mScanPresenter.checkProduct(result!!.text)
+//            finish()
 //            productRegisterViewModel.barCode = result.text
 //            Timber.i("Result from barcode " + result.text)
 //            router.let {
@@ -67,12 +75,12 @@ class ScanActivity : BaseActivity(), ScanView,
 //            mScanPresenter.navigateToRegisterScreen()
 //            finish()
 //            router.exit()
-        }
-        else
-        {
-            println("Error")
-            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
-        }
+//        }
+//        else
+//        {
+////            println("Error")
+//            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+//        }
 //        .setGravity(Gravity.LEFT,200,200).show()
     }
 
@@ -165,6 +173,43 @@ class ScanActivity : BaseActivity(), ScanView,
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         return zxingBarcodeScanner.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
     }
+
+    override fun showProductExistsDialog() {
+        if (productExistDialog == null){
+            productExistDialog = showExistsAlertDialog {
+                cancelable = true
+                okBtnClicklistener{
+                    dismissFunc
+//                    router.exit()
+                }
+                showBtnClickListener {
+                    router.navigateTo(Screens.ProductScreen())
+                }
+            }
+        }
+        productExistDialog?.show()
+    }
+
+//
+//    override fun showConfirm() {
+//        if(confirmDialog == null){
+//            confirmDialog = showConfirmAlertDialog ({
+//                cancelable = true
+//                yesBtnClickListener{
+//                    imageList.images!!.removeAt(binding.imageVp.currentItem)
+//                    if(imageList.images!!.size == 0){
+//                        router.exit()
+//                    }
+//                    binding.imageVp.adapter!!.notifyDataSetChanged()
+//                    activity!!.pageTv!!.text = (binding.imageVp.currentItem + 1).toString() + " из " + imageList.images!!.size
+//                }
+//                noBtnClickListener(dismissFunc)
+//            }, R.string.confirm_title,  R.string.confirm_message)
+//        }
+//        confirmDialog?.show()
+//    }
+
+
 
 
 

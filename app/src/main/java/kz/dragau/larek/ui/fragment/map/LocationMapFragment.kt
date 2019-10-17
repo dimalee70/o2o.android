@@ -164,7 +164,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         }
     }
 
-    private fun showLoading() {
+    override fun showLoading() {
         btnProceed.visibility = View.GONE
         txtMessage.text = null
         txtAddress.text = null
@@ -174,7 +174,7 @@ class LocationMapFragment : BaseMvpFragment(), LocationMapView,
         btnProceed.isEnabled = false
     }
 
-    private fun hideLoading() {
+    override fun hideLoading() {
         btnProceed.visibility = View.VISIBLE
         clLoading.visibility = View.GONE
     }

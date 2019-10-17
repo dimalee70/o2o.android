@@ -102,4 +102,6 @@
     <string name="productChangePhotoText"><u>Изменить</u></string>
     <string name="titleRegisterProduct">РЕГИСТРАЦИЯ</string>
     <string name="toolbarCustoms">ОНЛАЙН ЗАКАЗЫ</string>
+    <string name="loading_tv">идет проверка введеных вами данных</string>
+    <string name="exists_tv">Данный продукт уже есть в базе</string>
 </resources>

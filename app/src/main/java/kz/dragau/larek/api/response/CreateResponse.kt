@@ -1,5 +1,5 @@
 package kz.dragau.larek.api.response
 
-class SaleCreateResponse: BaseResponse(){
+class CreateResponse: BaseResponse(){
     override val resultObject: String? = null
 }

@@ -88,6 +88,7 @@ class RegisterStorePresenter(private val router: Router, private var saleSelecto
     }
 
 
+    @SuppressLint("CheckResult")
     fun registerToServer(){
 
         client.registerStore(saleSelector.salesOuter!!)

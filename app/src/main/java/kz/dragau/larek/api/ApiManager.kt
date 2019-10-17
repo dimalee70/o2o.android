@@ -5,7 +5,6 @@ import com.google.gson.JsonObject
 import io.reactivex.Observable
 import kz.dragau.larek.api.response.*
 import kz.dragau.larek.models.objects.SalesOuter
-import org.json.JSONObject
 import retrofit2.http.*
 
 
@@ -27,10 +26,10 @@ interface ApiManager {
     fun getSalesOuterByBoundary(@Body body: JsonArray): Observable<SalesOutletResponse>
 
     @POST("v1/salesoutlet/create")
-    fun registerStore(@Body body: SalesOuter): Observable<SaleCreateResponse>
+    fun registerStore(@Body body: SalesOuter): Observable<CreateResponse>
 
     @POST("v1/salesoutlet/uploadphoto")
-    fun uploadPhoto(@Body body: JsonObject): Observable<SaleCreateResponse>
+    fun uploadPhoto(@Body body: JsonObject): Observable<CreateResponse>
 
     @GET("v1/order/getordersbyoutlet")
     fun getOrdersByOutlet(@Query("salesOutletId") salesOuterId: String): Observable<OrdersByOutletResponce>
@@ -40,5 +39,11 @@ interface ApiManager {
 
     @GET("v1/product/getproductbybarcode")
     fun getProductByBarcode(@Query("barcode") barcode: String): Observable<ProductResponce>
+
+    @POST("v1/product/create")
+    fun createProduct(@Body body: JsonObject): Observable<CreateResponse>
+
+    @POST("v1/product/updateproduct")
+    fun updateProduct(@Body body: JsonObject): Observable<CreateResponse>
 
 }

@@ -52,8 +52,6 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
         Toast.makeText(context!!, item.contactId, Toast.LENGTH_SHORT).show()
     }
 
-
-
     @Inject
     lateinit var customs: ObservableArrayList<OrdersByOutletResult>
 

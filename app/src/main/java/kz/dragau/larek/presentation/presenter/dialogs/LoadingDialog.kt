@@ -5,8 +5,8 @@ import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import kz.dragau.larek.Constants
 
-class DelayedProgressDialog(val context: Context)
-{
+class LoadingDialog(val context: Context){
+
     private var runner: Runnable? = null
     var dialog: AlertDialog? = null
 
@@ -15,7 +15,7 @@ class DelayedProgressDialog(val context: Context)
         this.runner = Runnable {
             try {
                 if (dialog == null || (dialog != null && !dialog!!.isShowing)) {
-                    dialog = ProgressDialogPresenter(context).apply {}.create(null)
+                    dialog = LoadingDialogPresenter(context).apply {}.create(null)
                     dialog?.setCancelable(false)
                     dialog?.show()
                 }
@@ -35,3 +35,7 @@ class DelayedProgressDialog(val context: Context)
     }
 }
 
+object DialogHandler
+{
+    val dialogHandler = Handler()
+}

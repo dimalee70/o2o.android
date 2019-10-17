@@ -93,7 +93,7 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
 
     private fun setProductCategories(response: ProductCategoriesResponce){
 
-        var productCategories = response.resultObject
+        val productCategories = response.resultObject
         ArrayAdapter<ProductCategories>(context!!, android.R.layout.simple_list_item_1, productCategories!!)
             .let {
                 it.setDropDownViewResource(R.layout.item_spinner_simple)
@@ -103,9 +103,19 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
                 }
             }
 
+//        if(productRegisterViewModel.productCategoryId != null){
+//            val idx = productCategories.indexOfFirst { it.productCategoryId == productRegisterViewModel.productCategoryId}
+//            binding.productCategoryMs.selection = if (idx < 0) 0 else idx
+//        }
+//
+//
+//        binding.productCategoryMs.selection = if(productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId } < 0 ) 0
+//            else productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId}
 
-        binding.productCategoryMs.selection = if(productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId } < 0 ) 0
-                                                else productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId}
+
+        binding.productCategoryMs.selection = productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.categoryName }
+
+//        else productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId}
 
 
 //        ArrayAdapter.createFromResource(context!!, response.resultObject!!, android.R.layout.simple_list_item_1

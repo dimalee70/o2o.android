@@ -11,11 +11,9 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation
-import androidx.navigation.ui.setupWithNavController
-
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.activity_crop.*
@@ -24,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_store.*
 import kz.dragau.larek.App
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
+import kz.dragau.larek.models.objects.OrdersByOutletResult
 import kz.dragau.larek.presentation.view.home.HomeView
 import kz.dragau.larek.presentation.presenter.home.HomePresenter
 import kz.dragau.larek.ui.activity.BaseActivity
@@ -58,6 +57,8 @@ class HomeActivity : BaseActivity(), HomeView {
         return HomePresenter(router)
     }
 
+    @Inject
+    lateinit var customs: ObservableArrayList<OrdersByOutletResult>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
@@ -98,6 +99,11 @@ class HomeActivity : BaseActivity(), HomeView {
             when(it.itemId){
                 R.id.item_product -> {
                     drawerLayout.closeDrawers()
+//                    if(customs != null){
+//                        customs.clear()
+//                    }
+                    if(supportFragmentManager.findFragmentById(R.id.activity_home_frame_layout) is HomeMainFragment)
+                        return@setNavigationItemSelectedListener false
                     router.navigateTo(Screens.HomeMainScreen())
                     return@setNavigationItemSelectedListener true
                 }
@@ -212,6 +218,11 @@ class HomeActivity : BaseActivity(), HomeView {
 
 
     override fun onBackPressed() {
+//        var currentFragment = supportFragmentManager.findFragmentById(R.id.activity_home_frame_layout)
+//        println("Current fragment")
+//        println(currentFragment)
+//        var fragment = supportFragmentManager.backStackEntryCount
+        customs.clear()
         super.onBackPressed()
     }
 }

@@ -46,19 +46,42 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="34dp"
+                        app:selectedValue="@={productRegisterViewModel.categoryName}"
                         android:layout_marginStart="17dp"
                         android:layout_marginEnd="17dp"
                         android:hint="@string/productCategoryHint"
                         android:prompt="@string/app_name"
+                        android:focusableInTouchMode="false"
                         android:textColorHint="@color/hintTextColor"
-                        android:textColor="@color/whiteColor"
                         android:enabled="@{productRegisterViewModel.isEnable}"
                         app:srcCompat="@drawable/ic_selector_drawable"
                         app:layout_constraintTop_toBottomOf="@+id/titleTv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:selectedValue="@={productRegisterViewModel.categoryName}"
                         />
+<!--                        tools:ignore="UnusedAttribute"-->
+<!--                        android:focusable="false"-->
+
+<!--                <com.jaredrummler.materialspinner.MaterialSpinner-->
+<!--                        android:id="@+id/productCategoryMs"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="34dp"-->
+<!--                        android:layout_marginStart="17dp"-->
+<!--                        android:layout_marginEnd="17dp"-->
+<!--                        android:hint="@string/productCategoryHint"-->
+<!--                        android:prompt="@string/app_name"-->
+<!--                        android:textColorHint="@color/hintTextColor"-->
+<!--                        android:textColor="@color/whiteColor"-->
+<!--                        android:enabled="@{productRegisterViewModel.isEnable}"-->
+<!--                        android:focusable="true"-->
+<!--                        app:srcCompat="@drawable/ic_selector_drawable"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/titleTv"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:selectedValue="@={productRegisterViewModel.categoryName}"-->
+<!--                        tools:ignore="UnusedAttribute"-->
+<!--                        />-->
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/productProducerTi"
@@ -79,9 +102,10 @@
                             android:layout_height="wrap_content"
                             android:singleLine="true"
                             android:hint="@string/productProducerHint"
-                            android:enabled="@{productRegisterViewModel.isEnable}"
+                            android:focusable="true"
                             android:text="@={productRegisterViewModel.produserName}"
                             />
+<!--                            android:enabled="@{productRegisterViewModel.isEnable}"-->
 <!--                            android:text="@={registerStoreViewModel.name}"-->
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -102,8 +126,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/productNameHint"
-                            android:enabled="false"
-                            android:focusable="false"
+                            android:focusable="true"
+                            android:enabled="@{productRegisterViewModel.isEnable}"
                             android:text="@={productRegisterViewModel.title}"
                             />
 
@@ -125,7 +149,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/productBarcodeHint"
-                            android:enabled="@{productRegisterViewModel.isEnable}"
+                            android:enabled="false"
                             android:focusable="false"
                             android:text="@={productRegisterViewModel.barCode}"
                             />
@@ -149,6 +173,7 @@
                             android:hint="@string/productDescribeHint"
                             android:enabled="@{productRegisterViewModel.isEnable}"
                             android:text="@={productRegisterViewModel.describe}"
+                            android:focusable="true"
                             />
 
                 </com.google.android.material.textfield.TextInputLayout>

@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kz.dragau.larek.api.response.ErrorResponse
+import kz.dragau.larek.presentation.presenter.dialogs.LoadingDialog
 import timber.log.Timber
 
 
@@ -49,6 +50,9 @@ open class BaseActivity : MvpActivity(), BaseView {
     protected var isFullScreen: Boolean = false
 
     private var progressDialog: DelayedProgressDialog? = null
+
+    private var loadingDialog: LoadingDialog? = null
+
     var errorDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,6 +167,26 @@ open class BaseActivity : MvpActivity(), BaseView {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
             progressDialog?.show()
+        }
+    }
+
+    override fun showLoading() {
+        runOnUiThread{
+            if (loadingDialog == null)
+                loadingDialog = LoadingDialog(this)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+            loadingDialog?.show()
+        }
+    }
+
+    override fun hideLoading() {
+        runOnUiThread{
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            loadingDialog?.cancel()
+            loadingDialog = null
         }
     }
 

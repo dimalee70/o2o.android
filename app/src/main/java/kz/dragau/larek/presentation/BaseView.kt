@@ -18,4 +18,8 @@ interface BaseView : MvpView {
 
     fun hideKeyboard()
 
+    fun hideLoading()
+
+    fun showLoading()
+
 }

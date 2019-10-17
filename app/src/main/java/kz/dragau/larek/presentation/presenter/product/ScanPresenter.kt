@@ -49,14 +49,22 @@ fun  checkProduct(barcode: String){
                     result ->
                     run {
                         if(result.resultObject != null) {
-                            productRegisterViewModel.title = result.resultObject!!.name
+                            productRegisterViewModel.productId = result.resultObject.productId
+                            productRegisterViewModel.title = result.resultObject.name
                             productRegisterViewModel.produserName = result.resultObject.manufacturer
                             productRegisterViewModel.describe = result.resultObject.description
-                            productRegisterViewModel.productCategoryId = result.resultObject.productCategoryId
+                            productRegisterViewModel.categoryName = result.resultObject.productCategoryId
+                            productRegisterViewModel.barCode = result.resultObject.barCode
+                            if (result.resultObject.productImageBase64.isNullOrEmpty())
+                                productRegisterViewModel.isVisiblePhoto = false
+                            productRegisterViewModel.imageUri = result.resultObject.productImageBase64
+                            productRegisterViewModel.isVisiblePhoto = true
                             productRegisterViewModel.isEnable = false
-                            router.navigateTo(Screens.ProductScreen())
+                            viewState.showProductExistsDialog()
                             return@subscribe
                         }
+                        productRegisterViewModel.isVisiblePhoto = false
+                        productRegisterViewModel.isEnable = true
                         productRegisterViewModel.barCode = barcode
                         router.navigateTo(Screens.ProductScreen())
 
@@ -65,8 +73,9 @@ fun  checkProduct(barcode: String){
                 {
                     error ->
                     run {
+                        productRegisterViewModel.isVisiblePhoto = false
+                        productRegisterViewModel.isEnable = true
                         viewState.showError(error)
-                        println("Error")
                     }
                 }
             )

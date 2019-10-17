@@ -113,13 +113,14 @@
         <item name="opponentTurnTextColor">@color/lightOpponentTurnTextColor</item>
         <item name="settingsFieldTextColor">@color/lightSettingsFieldTextColor</item>
         <item name="hintTextColor">@color/lightHintTextColor</item>
+        <item name="colorControlActivated">@color/lightButtonHighlight</item>
     </style>
 
 
 
     <style name="Widget.TextInputEditText.Primary" parent="@android:style/TextAppearance">
-        <item name="colorControlNormal">#c5c5c5</item>
-        <item name="colorControlActivated">@color/greenBgColor</item>
+        <item name="colorControlNormal">@color/quantum_black_100</item>
+        <item name="colorControlActivated">@color/quantum_black_100</item>
         <item name="colorControlHighlight">@color/greenBgColor</item>
     </style>
 ®
@@ -217,8 +218,7 @@
         <item name="colorControlNormal">@color/greenBgColor</item>
         <item name="colorControlActivated">@color/greenBgColor</item>
         <item name="colorControlHighlight">@color/greenBgColor</item>
-        <item name="android:textColorHint">@color/greenBgColor</item>
-        <item name="android:textColor">@color/greenBgColor</item>
+        <item name="android:textColor">@color/quantum_black_100</item>
         <item name="android:backgroundTint" tools:targetApi="lollipop">@color/greenBgColor</item>
         <item name="android:textSize">18sp</item>
         <item name="background">@android:color/transparent</item>
@@ -295,5 +295,11 @@
     </style>
     <style name="MyActionBarTabTheme" parent="@style/Widget.AppCompat.ActionBar.TabView">
     </style>
+
+<!--    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">-->
+<!--        <item name="colorControlNormal">#c5c5c5</item>-->
+<!--        <item name="colorControlActivated">@color/btnDarkRed</item>-->
+<!--        <item name="colorControlHighlight">@color/greenBgColor</item>-->
+<!--    </style>-->
 
 </resources>

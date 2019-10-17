@@ -47,7 +47,7 @@ class HomeMainPresenter(private var router: Router) : BasePresenter<HomeMainView
                 {
                     error ->
                     run{
-                        viewState.showError(error)
+                        viewState!!.showError(error)
                         Timber.i(error.localizedMessage)
                     }
                 }
@@ -55,7 +55,7 @@ class HomeMainPresenter(private var router: Router) : BasePresenter<HomeMainView
         )
     }
     fun openCustoms(){
-        viewState.openCustomsScreen()
+        viewState!!.openCustomsScreen()
     }
 
     fun observeForOrderByOutletResponseBoundary(): MutableLiveData<OrdersByOutletResponce>{
