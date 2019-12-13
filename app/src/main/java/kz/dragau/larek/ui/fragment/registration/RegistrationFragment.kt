@@ -13,7 +13,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import kz.dragau.larek.App
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.databinding.FragmentRegistrationBinding
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 

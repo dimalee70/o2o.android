@@ -27,7 +27,7 @@ import kz.dragau.larek.api.requests.ProductRegisterViewModel
 import kz.dragau.larek.api.response.ProductCategoriesResponce
 import kz.dragau.larek.databinding.FragmentProductRegisterBinding
 import kz.dragau.larek.models.objects.ProductCategories
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import javax.inject.Inject
@@ -103,32 +103,8 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
                 }
             }
 
-//        if(productRegisterViewModel.productCategoryId != null){
-//            val idx = productCategories.indexOfFirst { it.productCategoryId == productRegisterViewModel.productCategoryId}
-//            binding.productCategoryMs.selection = if (idx < 0) 0 else idx
-//        }
-//
-//
-//        binding.productCategoryMs.selection = if(productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId } < 0 ) 0
-//            else productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId}
-
-
         binding.productCategoryMs.selection = productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.categoryName }
 
-//        else productCategories.indexOfFirst { it.productCategoryId ==  productRegisterViewModel.productCategoryId}
-
-
-//        ArrayAdapter.createFromResource(context!!, response.resultObject!!, android.R.layout.simple_list_item_1
-
-//        ).let {
-//            it.setDropDownViewResource(R.layout.item_spinner_simple)
-//            binding.productCategoryMs.apply {
-//                adapter = it
-//                onItemSelectedListener = listener
-//            }
-////            spinner.adapter = it
-////            appCompatSpinner.adapter = it
-//        }
     }
 
     private fun MaterialSpinner.onClick() {
@@ -145,20 +121,7 @@ class ProductRegisterFragment : BaseMvpFragment(), ProductRegisterView {
         binding.productRegisterViewModel = productRegisterViewModel
         binding.presenter = mProductRegisterPresenter
         mProductRegisterPresenter.getProductCategoris()
-//        ArrayAdapter.createFromResource(context!!, R.array.categories_array, android.R.layout.simple_list_item_1
-//
-//        ).let {
-//            it.setDropDownViewResource(R.layout.item_spinner_simple)
-//            binding.productCategoryMs.apply {
-//            adapter = it
-//            onItemSelectedListener = listener
-//            }
-////            spinner.adapter = it
-////            appCompatSpinner.adapter = it
-//        }
-//        material_spinner_1.let {
-//
-//        }
+
         return binding.root
     }
 

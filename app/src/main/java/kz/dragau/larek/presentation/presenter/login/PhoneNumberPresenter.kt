@@ -95,7 +95,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                             if (task.isSuccessful) {
                                 getToken(task.result?.token)
                                 stopTimedUpdate()
-                                router.navigateTo(Screens.StoreScreen())
+
                                     //router.navigateTo(Screens.SmsCodeScreen())
                             } else {
                                 if (task.exception?.message != null) {
@@ -210,6 +210,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
                         saveToDb(result)
                         tokenInterceptor.token = "Bearer " + result.resultObject!!.token
+                        router.navigateTo(Screens.StoreScreen())
 
                 },
                 {

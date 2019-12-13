@@ -1,4 +1,4 @@
-package photograd.kz.photograd.ui.fragment
+package kz.dragau.larek.ui.fragment
 
 import android.content.Context
 import android.util.Log
@@ -11,9 +11,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.R
+import kz.dragau.larek.moxy.MvpAppCompatFragment
 import kz.dragau.larek.api.response.ErrorResponse
 import kz.dragau.larek.extensions.showErrorAlertDialog
-import kz.dragau.larek.moxy.MvpAppCompatFragment
 import kz.dragau.larek.presentation.BaseView
 import kz.dragau.larek.presentation.presenter.dialogs.DelayedProgressDialog
 import kz.dragau.larek.presentation.presenter.dialogs.LoadingDialog
@@ -67,7 +67,6 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
             errorDialog = showErrorAlertDialog({
                 cancelable = true
                 closeIconClickListener {
-                    Timber.d(BASE_TAG, "Error dialog close button clicked")
                 }
             }, "Ошибка", msg)
             errorDialog?.show()

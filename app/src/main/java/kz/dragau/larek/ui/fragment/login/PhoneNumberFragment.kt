@@ -16,7 +16,6 @@ import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.fragment_phone_number.*
 import kz.dragau.larek.App
 import kz.dragau.larek.databinding.FragmentPhoneNumberBinding
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 //import ru.tinkoff.decoro.MaskImpl
 //import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -24,6 +23,7 @@ import ru.terrakok.cicerone.Router
 //import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import javax.inject.Inject
 import kz.dragau.larek.Constants
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import java.util.concurrent.TimeUnit
 
 

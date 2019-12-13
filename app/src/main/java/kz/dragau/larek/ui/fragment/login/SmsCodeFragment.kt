@@ -21,8 +21,8 @@ import kz.dragau.larek.databinding.FragmentSmsCodeBinding
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import kz.dragau.larek.ui.activity.LoginInActivity
 import kz.dragau.larek.ui.common.BackButtonListener
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 

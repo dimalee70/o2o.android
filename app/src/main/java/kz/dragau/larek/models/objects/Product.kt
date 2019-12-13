@@ -9,7 +9,7 @@ data class Product(
     @field:SerializedName("productCategoryId")
     var productCategoryId: String? = null,
 
-    @field:SerializedName("productImageBase64")
+    @field:SerializedName("base64")
     var productImageBase64: String? = null,
 
     @field:SerializedName("name")

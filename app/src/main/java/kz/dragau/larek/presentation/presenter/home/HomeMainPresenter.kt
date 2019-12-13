@@ -12,6 +12,7 @@ import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.response.OrdersByOutletResponce
 import kz.dragau.larek.api.response.SalesOutletResponse
 import kz.dragau.larek.models.objects.SalesOuter
+import kz.dragau.larek.models.objects.TestEvent
 import kz.dragau.larek.presentation.presenter.BasePresenter
 import kz.dragau.larek.presentation.view.home.HomeMainView
 import ru.terrakok.cicerone.Router
@@ -22,6 +23,8 @@ import javax.inject.Inject
 class HomeMainPresenter(private var router: Router) : BasePresenter<HomeMainView>() {
 
     var liveOrderByOutletResponse = MutableLiveData<OrdersByOutletResponce>()
+
+    var liveTestEventResponce = MutableLiveData<TestEvent>()
 
     @Inject
     lateinit var client: ApiManager
@@ -60,5 +63,9 @@ class HomeMainPresenter(private var router: Router) : BasePresenter<HomeMainView
 
     fun observeForOrderByOutletResponseBoundary(): MutableLiveData<OrdersByOutletResponce>{
         return liveOrderByOutletResponse
+    }
+
+    fun observeForTestEventResponseBoundaty(): MutableLiveData<TestEvent>{
+        return liveTestEventResponce
     }
 }

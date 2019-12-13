@@ -46,4 +46,10 @@ interface ApiManager {
     @POST("v1/product/updateproduct")
     fun updateProduct(@Body body: JsonObject): Observable<CreateResponse>
 
+    @POST("v1/product/uploadphoto")
+    fun uploadProductPhoto(@Body body: JsonObject): Observable<CreateResponse>
+
+    @POST("v1/product/updatephoto")
+    fun updatePhoto(@Body body: JsonObject): Observable<CreateResponse>
+
 }

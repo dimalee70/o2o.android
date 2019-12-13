@@ -41,7 +41,7 @@ import kz.dragau.larek.models.objects.Points
 import kz.dragau.larek.models.objects.SalesOutletResult
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
 import kz.dragau.larek.ui.adapters.SalesClusterRenderer
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import java.io.IOException

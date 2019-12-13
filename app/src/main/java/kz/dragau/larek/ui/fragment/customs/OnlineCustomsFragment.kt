@@ -22,7 +22,7 @@ import kz.dragau.larek.models.objects.OrdersByOutletResult
 import kz.dragau.larek.models.objects.Types
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter
 import kz.dragau.larek.ui.common.SwipeToDeleteCallback
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 

@@ -25,8 +25,8 @@ import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.models.objects.SalesOuter
 import kz.dragau.larek.presentation.presenter.map.SaleSelector
 import kz.dragau.larek.ui.adapters.images.ImageAdapter
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import kz.dragau.larek.ui.rule.NotEmptyRule
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import ru.whalemare.rxvalidator.RxCombineValidator
 import ru.whalemare.rxvalidator.RxValidator

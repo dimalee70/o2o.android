@@ -20,12 +20,10 @@ import kz.dragau.larek.App
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.response.OrdersByOutletResponce
 import kz.dragau.larek.databinding.FragmentHomeMainBinding
-import kz.dragau.larek.models.objects.Customs
-import kz.dragau.larek.models.objects.OrdersByOutletResult
-import kz.dragau.larek.models.objects.Types
+import kz.dragau.larek.models.objects.*
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter
 import kz.dragau.larek.ui.adapters.RecyclerBindingAdapter.OnItemClickListener
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import java.lang.ClassCastException
 import javax.inject.Inject
@@ -70,17 +68,19 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
 
     lateinit var recyclerCustomsAdapter: RecyclerBindingAdapter<OrdersByOutletResult>
 
-    lateinit var recyclerTypesAdapter: RecyclerBindingAdapter<Types>
+//    lateinit var recyclerTestEventAdapter: RecyclerBindingAdapter<TestEvent>
+
+    lateinit var recyclerTypesAdapter: RecyclerBindingAdapter<TestEvent>
 
     private var onCustomClickListenerRecycler: OnItemClickListener<OrdersByOutletResult>? = this
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 //    var customs = ObservableArrayList<Customs>()
-    var types = ObservableArrayList<Types>()
+    var types = ObservableArrayList<TestEvent>()
 
-    private var onTypeClickListenerRecycle: OnItemClickListener<Types>? = object: OnItemClickListener<Types>{
-        override fun onItemClick(position: Int, item: Types) {
-            Toast.makeText(context!!, item.text, Toast.LENGTH_SHORT).show()
+    private var onTypeClickListenerRecycle: OnItemClickListener<TestEvent>? = object: OnItemClickListener<TestEvent>{
+        override fun onItemClick(position: Int, item: TestEvent) {
+            Toast.makeText(context!!, item.title, Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -95,13 +95,22 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         mHomeMainPresenter.attachLifecycle(lifecycleRegistry)
+
+        mHomeMainPresenter.observeForTestEventResponseBoundaty()
+            .observe(this, Observer {
+                response ->
+                setTestEvent(response)
+            })
+
+
         mHomeMainPresenter.observeForOrderByOutletResponseBoundary()
             .observe(this, Observer {
                 response -> response.let {
                 setOrderByOutlet(response)
             }
             })
-        mHomeMainPresenter.getOrdersByOtlet("fe28218f-10b9-4d70-50a1-08d73cba8606")
+//        mHomeMainPresenter.getOrdersByOtlet("fe28218f-10b9-4d70-50a1-08d73cba8606")
+
         recyclerCustomsAdapter = RecyclerBindingAdapter(R.layout.item_custom, BR.data, context!!)
         recyclerTypesAdapter = RecyclerBindingAdapter(R.layout.item_type, BR.data, context!!)
         if(onCustomClickListenerRecycler != null){
@@ -117,6 +126,10 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
         recyclerCustomsAdapter.notifyDataSetChanged()
     }
 
+    private fun setTestEvent(testEvent: TestEvent){
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -125,13 +138,17 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
         binding.presenter = mHomeMainPresenter
 
 
-        val typesList = ArrayList<Types>()
-        typesList.add(Types("Акции", "#FF7058", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
-        typesList.add(Types("Поставщики", "#FFB980", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
-        typesList.add(Types("Сервис обслуживания", "#7985EB", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
-        typesList.add(Types("Заказы", "#2CC245", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
-        typesList.add(Types("Добавить торговую точку", "#FF7058", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
-        typesList.add(Types("Доставки", "#4B5BE6", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        val typesList = ArrayList<Types>()
+//        typesList.add(Types("Акции", "#FF7058", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        typesList.add(Types("Поставщики", "#FFB980", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        typesList.add(Types("Сервис обслуживания", "#7985EB", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        typesList.add(Types("Заказы", "#2CC245", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        typesList.add(Types("Добавить торговую точку", "#FF7058", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+//        typesList.add(Types("Доставки", "#4B5BE6", "https://img.icons8.com/carbon-copy/2x/instagram-new.png"))
+
+
+
+
 //        обслуживания
 //        торговую точку
 
@@ -157,11 +174,42 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
 //        customList.add(Customs("Hello4"))
 //        customList.add(Customs("Hello5"))
 //        customList.add(Customs("Hello6"))
-        types.addAll(typesList)
+
+
+        val testEventStateList = ArrayList<TestEventState>();
+        testEventStateList.add(TestEventState("https://myrealdomain.com/images/instagram-icon-url-1.png"))
+        testEventStateList.add(TestEventState("https://myrealdomain.com/images/instagram-icon-url-1.png"))
+        testEventStateList.add(TestEventState("https://myrealdomain.com/images/instagram-icon-url-1.png"))
+        testEventStateList.add(TestEventState("https://myrealdomain.com/images/instagram-icon-url-1.png"))
+        testEventStateList.add(TestEventState("https://myrealdomain.com/images/instagram-icon-url-1.png"))
+        testEventStateList.add(TestEventState("https://myrealdomain.com/images/instagram-icon-url-1.png"))
+
+        val testEventList = ArrayList<TestEvent>()
+        testEventList.add(TestEvent("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRML7nhq33SEO38hPxkqGLWQNMM2w8-ymSvFXRRBAHFsspoEtpD&s",
+            "12:00", "Кабанбай батыра уг. Наурызбай батыра",
+            "Музей Алматы", "Ночь в музее", "Культура", "2627",
+            "#94A1F0", "450", "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png",
+            "https://cdn6.f-cdn.com/contestentries/918774/22954115/586eea98be949_thumb900.jpg",
+            "https://media.vanityfair.com/photos/58c2f5aa0a144505fae9e9ee/master/pass/avatar-sequels-delayed.jpg",
+            testEventStateList
+            )
+        )
+
+        testEventList.add(TestEvent("https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "12:00", "Кабанбай батыра уг. Наурызбай батыра",
+            "Музей Алматы", "Ночь в музее", "Культура", "2627",
+            "#94A1F0", "450", "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png",
+            "https://cdn6.f-cdn.com/contestentries/918774/22954115/586eea98be949_thumb900.jpg",
+            "https://media.vanityfair.com/photos/58c2f5aa0a144505fae9e9ee/master/pass/avatar-sequels-delayed.jpg",
+            testEventStateList
+        ))
+
+        types.addAll(testEventList)
 //        customs.addAll(customList)
         recyclerTypesAdapter.setItems(types)
 
         binding.typesRv.adapter = recyclerTypesAdapter
+
         binding.customsRv.adapter = recyclerCustomsAdapter
         binding.typesRv.setHasFixedSize(true)
         binding.customsRv.setHasFixedSize(true)
@@ -177,9 +225,9 @@ class HomeMainFragment : BaseMvpFragment(), HomeMainView, OnItemClickListener<Or
         super.onAttach(context)
         try {
             onCustomClickListenerRecycler = this
-            onTypeClickListenerRecycle = object: OnItemClickListener<Types>{
-                override fun onItemClick(position: Int, item: Types) {
-                    Toast.makeText(context, item.text, Toast.LENGTH_SHORT).show()
+            onTypeClickListenerRecycle = object: OnItemClickListener<TestEvent>{
+                override fun onItemClick(position: Int, item: TestEvent) {
+                    Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show()
                 }
 
             }

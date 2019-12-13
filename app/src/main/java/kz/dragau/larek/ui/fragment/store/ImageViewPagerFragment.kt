@@ -21,7 +21,7 @@ import kz.dragau.larek.databinding.FragmentImageViewPagerBinding
 import kz.dragau.larek.extensions.showConfirmAlertDialog
 import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.ui.adapters.images.ImagePagerAdapter
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 

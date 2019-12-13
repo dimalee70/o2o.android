@@ -20,7 +20,7 @@ import kz.dragau.larek.models.objects.Images
 import kz.dragau.larek.presentation.presenter.store.ShowImageFragmentPressenter
 import kz.dragau.larek.presentation.view.store.ShowImageFragmentView
 import kz.dragau.larek.ui.adapters.images.ShowImageAdapter
-import photograd.kz.photograd.ui.fragment.BaseMvpFragment
+import kz.dragau.larek.ui.fragment.BaseMvpFragment
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
