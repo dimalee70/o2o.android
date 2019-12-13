@@ -35,8 +35,3 @@ class DelayedProgressDialog(val context: Context)
     }
 }
 
-
-object DialogHandler
-{
-    val dialogHandler = Handler()
-}

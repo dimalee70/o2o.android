@@ -13,26 +13,43 @@ import kz.dragau.larek.models.db.Db
 import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.presentation.presenter.MainAppPresenter
 import kz.dragau.larek.presentation.presenter.confirm.ConfirmCodePresenter
+import kz.dragau.larek.presentation.presenter.customs.CustomsPresenter
+import kz.dragau.larek.presentation.presenter.customs.OnlineCustomsPresenter
+import kz.dragau.larek.presentation.presenter.home.HomeMainPresenter
+import kz.dragau.larek.presentation.presenter.home.HomePresenter
 import kz.dragau.larek.presentation.presenter.login.PhoneNumberPresenter
 import kz.dragau.larek.presentation.presenter.login.SmsCodePresenter
 import kz.dragau.larek.presentation.presenter.registration.RegistrationPresenter
 import kz.dragau.larek.presentation.presenter.map.LocationMapPresenter
 import kz.dragau.larek.presentation.presenter.product.ProductRegisterPresenter
 import kz.dragau.larek.presentation.presenter.product.ScanPresenter
+import kz.dragau.larek.presentation.presenter.store.*
 import kz.dragau.larek.ui.activity.BaseActivity
 import kz.dragau.larek.ui.activity.MainAppActivity
+import kz.dragau.larek.ui.activity.customs.CustomsActivity
+import kz.dragau.larek.ui.activity.home.HomeActivity
 import kz.dragau.larek.ui.activity.product.ProductActivity
 import kz.dragau.larek.ui.activity.product.ScanActivity
+import kz.dragau.larek.ui.activity.store.ShowImageActivity
+import kz.dragau.larek.ui.activity.store.StoreActivity
 import kz.dragau.larek.ui.fragment.confirm.ConfirmCodeFragment
+import kz.dragau.larek.ui.fragment.customs.OnlineCustomsFragment
+import kz.dragau.larek.ui.fragment.home.HomeMainFragment
 import kz.dragau.larek.ui.fragment.login.PhoneNumberFragment
 import kz.dragau.larek.ui.fragment.login.SmsCodeFragment
 import kz.dragau.larek.ui.fragment.registration.RegistrationFragment
 import kz.dragau.larek.ui.fragment.map.LocationMapFragment
 import kz.dragau.larek.ui.fragment.product.ProductRegisterFragment
+import kz.dragau.larek.ui.fragment.store.ImageViewPagerFragment
+import kz.dragau.larek.ui.fragment.store.ShowImageFragment
+import kz.dragau.larek.ui.fragment.store.StoreRegisterFragment
 
 @Singleton
 @CustomApplicationScope
-@Component(modules = [ApplicationModule::class, NavigationModule::class, ServiceUtilModule::class, RoomModule::class, WSocketModule::class])
+@Component(modules = [ApplicationModule::class, NavigationModule::class,
+    ServiceUtilModule::class, RoomModule::class, WSocketModule::class,
+    SaleSelectionModule::class, ImageListModule::class, ProductAddModule::class,
+    CustomsModule:: class])
 interface AppComponent {
     @ApplicationContext
     fun context(): Context
@@ -57,12 +74,21 @@ interface AppComponent {
     fun inject(activity: MainAppActivity)
     fun inject(activity: ProductActivity)
     fun inject(activity: ScanActivity)
+    fun inject(activity: StoreActivity)
+    fun inject(activty: ShowImageActivity)
+    fun inject(activity: HomeActivity)
+    fun inject(activity: CustomsActivity)
     fun inject(fragment: PhoneNumberFragment)
     fun inject(fragment: SmsCodeFragment)
     fun inject(fragment: ConfirmCodeFragment)
     fun inject(fragment: RegistrationFragment)
     fun inject(fragment: LocationMapFragment)
     fun inject(fragment: ProductRegisterFragment)
+    fun inject(fragment: StoreRegisterFragment)
+    fun inject(fragment: ShowImageFragment)
+    fun inject(fragment: ImageViewPagerFragment)
+    fun inject(fragment: HomeMainFragment)
+    fun inject(fragment: OnlineCustomsFragment)
 
     fun inject(presenter: MainAppPresenter)
     fun inject(presenter: PhoneNumberPresenter)
@@ -72,6 +98,15 @@ interface AppComponent {
     fun inject(presenter: LocationMapPresenter)
     fun inject(presenter: ProductRegisterPresenter)
     fun inject(presenter: ScanPresenter)
+    fun inject(presenter: RegisterStorePresenter)
+    fun inject(presenter: StorePresenter)
+    fun inject(presenter: ShowImagePresenter)
+    fun inject(presenter: ShowImageFragmentPressenter)
+    fun inject(pressenter: ImageViewPagerPresenter)
+    fun inject(pressenter: HomePresenter)
+    fun inject(pressenter: HomeMainPresenter)
+    fun inject(pressenter: CustomsPresenter)
+    fun inject(pressenter: OnlineCustomsPresenter)
 
     //fun getApi(): ApiManager
     //fun getGlide(): GlideApp

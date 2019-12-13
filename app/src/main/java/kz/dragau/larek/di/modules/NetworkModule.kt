@@ -5,6 +5,7 @@ import dagger.Module
 import okhttp3.OkHttpClient
 import dagger.Provides
 import kz.dragau.larek.Constants
+import kz.dragau.larek.api.TokenInterceptor
 import kz.dragau.larek.di.ApplicationContext
 import kz.dragau.larek.di.CustomApplicationScope
 import kz.dragau.larek.models.shared.DataHolder
@@ -19,6 +20,17 @@ import java.util.concurrent.TimeUnit
 
 @Module(includes = [ApplicationModule::class])
 class NetworkModule {
+
+//    @Provides
+//    @Singleton
+//    fun provideOkhttp(tokenInterceptor: TokenInterceptor): OkHttpClient{
+//        val interceptor = HttpLoggingInterceptor()
+//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+//        val okHttpBuilder =
+//            OkHttpClient().newBuilder().addInterceptor(interceptor)
+//                .addInterceptor(tokenInterceptor)
+//        return okHttpBuilder.build()
+//    }
     @Provides
     @CustomApplicationScope
     fun getInterceptor(): HttpLoggingInterceptor {
@@ -53,13 +65,14 @@ class NetworkModule {
 
     @Provides
     @CustomApplicationScope
-    fun getOkHttpClient(interceptor: HttpLoggingInterceptor, jwtInterceptor: JwtInterceptor, cache: Cache): OkHttpClient {
+    fun getOkHttpClient(interceptor: HttpLoggingInterceptor, jwtInterceptor: JwtInterceptor, cache: Cache, tokenInterceptor: TokenInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(Constants.connectTimeout, TimeUnit.SECONDS)
             .writeTimeout(Constants.writeTimeout, TimeUnit.SECONDS)
             .readTimeout(Constants.readTimeout, TimeUnit.SECONDS)
             .cache(cache)
             .addInterceptor(interceptor)
+            .addInterceptor(tokenInterceptor)
             .addInterceptor(jwtInterceptor)
             .build()
     }
@@ -78,6 +91,7 @@ class JwtInterceptor : Interceptor{
                 val finalToken = "Bearer $token"
                 request = request.newBuilder()
                     .addHeader("Authorization",finalToken)
+                    .addHeader("Content-Type", "application/json")
                     .build()
             }
         }

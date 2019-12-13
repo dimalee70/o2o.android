@@ -20,38 +20,37 @@ class FcmService : FirebaseMessagingService() {
     private lateinit var notificationManager: NotificationManager
     private val ADMIN_CHANNEL_ID = "O2OAdminChannel"
 
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         super.onNewToken(token)
         Timber.i("FCM Token: $token")
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        super.onMessageReceived(remoteMessage)
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        super.onMessageReceived(remoteMessage!!)
         remoteMessage?.let { message ->
-            Timber.i(message.data["message"])
+        Timber.i(message.data["message"])
 
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            //Setting up Notification channels for android O and above
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                setupNotificationChannels()
-            }
-            val notificationId = Random().nextInt(60000)
+        //Setting up Notification channels for android O and above
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            setupNotificationChannels()
+        }
+        val notificationId = Random().nextInt(60000)
 
-            val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)  //a resource for your custom small icon
-                .setContentTitle(message.data["title"]) //the "title" value you sent in your notification
-                .setContentText(message.data["message"]) //ditto
-                .setAutoCancel(true)  //dismisses the notification on click
-                .setSound(defaultSoundUri)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)  //a resource for your custom small icon
+            .setContentTitle(message.data["title"]) //the "title" value you sent in your notification
+            .setContentText(message.data["message"]) //ditto
+            .setAutoCancel(true)  //dismisses the notification on click
+            .setSound(defaultSoundUri)
 
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build())
 
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

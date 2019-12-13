@@ -1,7 +1,7 @@
 package kz.dragau.larek.presentation.presenter.login
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.databinding.ObservableBoolean
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -13,7 +13,6 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kz.dragau.larek.App
 import kz.dragau.larek.api.ApiManager
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.presentation.view.login.PhoneNumberView
@@ -21,10 +20,16 @@ import ru.terrakok.cicerone.Router
 import timber.log.Timber
 import javax.inject.Inject
 import com.google.firebase.auth.FirebaseAuth
-import kz.dragau.larek.BR
-import kz.dragau.larek.Constants
+import com.google.gson.JsonObject
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import kz.dragau.larek.*
+import kz.dragau.larek.api.TokenInterceptor
 import rxfirebase2.auth.RxFirebaseAuth
-import kz.dragau.larek.R
+import kz.dragau.larek.api.response.TokenResponse
+import kz.dragau.larek.models.db.Converters.Companion.toOffsetDateTime
+import kz.dragau.larek.models.db.UserDao
+import kz.dragau.larek.models.objects.User
+import kz.dragau.larek.models.shared.DataHolder
 import org.joda.time.DateTime
 import java.util.*
 
@@ -35,16 +40,40 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
     lateinit var client: ApiManager
 
     @Inject
+    lateinit var userDao: UserDao
+
+    @Inject
     lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var tokenInterceptor: TokenInterceptor
 
     val userRequstModel = LoginRequestModel()
 
     private var disposable: Disposable? = null
+
+    private var myCode: String? = null
+
     var isSmsSent = ObservableBoolean()
 
     init {
         App.appComponent.inject(this)
         isSmsSent.set(smsSent)
+    }
+
+    private fun saveToDb(tokenResponse: TokenResponse)
+    {
+        var user: User = User(tokenResponse.resultObject?.systemUserId!!,
+            userRequstModel.mobilePhone,
+            tokenResponse.resultObject?.token,
+            toOffsetDateTime(tokenResponse.resultObject?.expireDate))
+
+
+        userDao.insert(
+            user
+        )
+
+        DataHolder.userId = user.id
     }
 
     var verifId: String? = null
@@ -66,6 +95,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                             if (task.isSuccessful) {
                                 getToken(task.result?.token)
                                 stopTimedUpdate()
+
                                     //router.navigateTo(Screens.SmsCodeScreen())
                             } else {
                                 if (task.exception?.message != null) {
@@ -78,6 +108,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                 {
                     viewState?.hideProgress()
                     viewState?.showError(it)
+                    it.printStackTrace()
                 }
             )
     }
@@ -98,6 +129,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             return
         }
 
+
         val credential = PhoneAuthProvider.getCredential(verifId!!, code)
         signInFirebase(credential)
     }
@@ -105,8 +137,11 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     var mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            signInFirebase(credential)
-            stopTimedUpdate()
+            val code: String? = credential.smsCode
+            if (userRequstModel.smsCode.isNotEmpty()) {
+                checkCode(code!!)
+                stopTimedUpdate()
+            }
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -127,8 +162,11 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                 viewState?.showError(null, R.string.quota_exceeded)
             }
         }
-        override fun onCodeSent(verificationId: String?,
-                                token: PhoneAuthProvider.ForceResendingToken?) {
+
+        override fun onCodeSent(
+            verificationId: String,
+            token: PhoneAuthProvider.ForceResendingToken
+        ) {
             // The SMS verification code has been sent to the provided phone number, we
             // now need to ask the user to enter the code and then construct a credential
             // by combining the code with a verification ID.
@@ -136,7 +174,8 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             // Save verification ID and resending token so we can use them later
             verifId = verificationId
             resendToken = token
-            userRequstModel.codeExpiryDate = DateTime.now().plusSeconds(Constants.smsVerificationDelay.toInt()).toDate()
+            userRequstModel.codeExpiryDate =
+                DateTime.now().plusSeconds(Constants.smsVerificationDelay.toInt()).toDate()
             isSmsSent.set(true)
             startTimedUpdate()
             viewState.hideProgress()
@@ -151,24 +190,59 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
             viewState.hideProgress()
             return
         }
-
-        viewState.hideProgress()
+        getTokenResultApi(firebaseToken)
         //router.navigateTo(Screens.LocationMapScreen())
     }
 
+    @SuppressLint("CheckResult")
+    fun getTokenResultApi(token: String){
+        val jsonObject: JsonObject = JsonObject()
+        jsonObject.addProperty(Constants.verificationCode,token )
+        client.getToken(jsonObject)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    result ->
+                        run{
+                            viewState?.hideProgress()
+                        }
+
+                        saveToDb(result)
+                        tokenInterceptor.token = "Bearer " + result.resultObject!!.token
+                        router.navigateTo(Screens.StoreScreen())
+
+                },
+                {
+                    error ->
+                    run {
+                        viewState?.hideProgress()
+                    }
+                    if (error is HttpException) {
+                        if (error.code() == 500) {
+                        }
+                    }
+
+                }
+            )
+    }
 
     fun getSmsCode()
     {
+
         viewState?.hideKeyboard()
         viewState?.showProgress()
 
         if (isSmsSent.get())
         {
+
             checkCode(userRequstModel.smsCode)
         }
         else {
             userRequstModel.mobilePhone?.let {
-                viewState?.verifyPhoneNumber(it)
+                val re = Regex("[^+0-9]")
+                val tel = re.replace(it, "")
+                viewState?.verifyPhoneNumber(tel)
                 //viewState?.hideProgress()
                 //router.navigateTo(Screens.SmsCodeScreen())
             }
@@ -237,7 +311,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
                     return
                 }
 
-                userRequstModel.notifyPropertyChanged(BR.codeExpiryDate)
+                userRequstModel.notifyChange()
             }
         }, delay, period)
     }
@@ -250,6 +324,7 @@ class PhoneNumberPresenter(private val router: Router, smsSent: Boolean) : MvpPr
 
     fun startCheck(text: String?)
     {
+        viewState?.clearFocus()
         getSmsCode()
     }
 

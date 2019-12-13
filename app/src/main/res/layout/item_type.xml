@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="data" type="kz.dragau.larek.models.objects.TestEvent" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginStart="14dp"
+            android:layout_height="187dp"
+            app:cardCornerRadius="10dp"
+            >
+<!--            app:cardBackgroundColor="@color/redTextColor"-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                    android:id="@+id/headerLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:backgrndColor="@{data.frameColor}"
+                >
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/test_ic_time"
+                        android:layout_marginStart="20dp"
+                        android:text="@{data.time}"
+                        android:textSize="12sp"
+                        android:drawablePadding="10dp"
+                    />
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@{data.address}"
+                        android:layout_marginStart="10dp"
+                        android:textSize="10sp"
+                        android:gravity="center"
+                        android:drawableEnd="@drawable/test_ic_location"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:layout_marginEnd="20dp"
+                        />
+            </LinearLayout>
+
+            <ImageView
+                    android:id="@+id/backgroundIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="139dp"
+                    android:src="@drawable/splash_screen"
+                    android:scaleType="centerCrop"
+                    app:setImage="@{data.backgrndImage}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/headerLl"
+                    />
+            <View
+                    android:id="@+id/backgroundV"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    app:layout_constraintEnd_toEndOf="@+id/backgroundIv"
+                    app:layout_constraintStart_toStartOf="@+id/backgroundIv"
+                    app:layout_constraintTop_toTopOf="@+id/backgroundIv"
+                    app:layout_constraintBottom_toBottomOf="@+id/backgroundIv"
+                    android:background="#80000000"
+                    />
+
+            <LinearLayout
+                    android:id="@+id/sourseLl"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="@+id/backgroundIv"
+                    app:layout_constraintStart_toStartOf="@+id/backgroundIv"
+                    app:layout_constraintTop_toTopOf="@+id/backgroundIv"
+                    app:layout_constraintBottom_toBottomOf="@+id/backgroundIv"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:layout_marginTop="19dp"
+                        android:textColor="@color/whiteColor"
+                        android:text="@{data.where}"
+                        android:layout_marginStart="21dp"
+                        />
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/whiteColor"
+                        android:text="@{data.title}"
+                        android:layout_marginStart="21dp"
+                        />
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="21dp"
+                    >
+
+                    <TextView
+                            android:id="@+id/communityTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/test_ic_community"
+                            android:text="@{data.amount}"
+                            android:textSize="12sp"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:textColor="@color/whiteColor"
+                            />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profileThirdCiv"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/test_ic_profile"
+                            android:layout_toRightOf="@+id/profileSecondCiv"
+                            android:layout_marginStart="-4dp"
+                            app:setImage="@{data.thirdProfile}"
+                            />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profileSecondCiv"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/test_ic_profile"
+                            android:layout_marginStart="-4dp"
+                            android:layout_toRightOf="@+id/profileFirstCiv"
+                            app:setImage="@{data.secondProfile}"
+                            />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profileFirstCiv"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/test_ic_profile"
+                            android:layout_marginStart="11dp"
+                            android:layout_toRightOf="@+id/communityTv"
+                            app:setImage="@{data.firstProfile}"
+                            />
+
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/tagTv"
+                        android:layout_width="86dp"
+                        android:layout_height="24dp"
+                        android:text="@{data.theme}"
+                        android:textColor="#393E46"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/test_bg_rounded"
+                        android:layout_marginTop="16dp"
+                        app:backgrndColor="@{data.frameColor}"
+                        />
+
+
+
+            </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                    android:id="@+id/footerLl"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/backgroundIv"-->
+<!--                    android:background="#393E46"-->
+<!--                    >-->
+
+            <LinearLayout
+                    android:id="@+id/footerLl"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="#393E46"
+                    app:entries="@{data.footer}"
+                    app:layout="@{@layout/item_test_footer}"
+                    />
+<!--                    app:layout_constraintTop_toBottomOf="@+id/backgroundIv"-->
+
+            <TextView
+                    android:id="@+id/likesTv"
+                    android:textColor="@color/whiteColor"
+                    android:text="@{data.likes}"
+                    android:drawableEnd="@drawable/test_ic_likes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:background="#393E46"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintTop_toTopOf="@+id/footerLl"
+                    app:layout_constraintBottom_toBottomOf="@+id/footerLl"
+                    app:layout_constraintEnd_toEndOf="parent"
+                />
+<!--                <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:drawableStart="@drawable/test_ic_time"-->
+<!--                        android:layout_marginStart="20dp"-->
+<!--                        android:text="12:00"-->
+<!--                        android:textSize="12sp"-->
+<!--                        android:drawablePadding="10dp"-->
+<!--                        />-->
+<!--                <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="Кабанбай батыра 132 уг. Наурызбай батыра"-->
+<!--                        android:layout_marginStart="10dp"-->
+<!--                        android:textSize="10sp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:drawableEnd="@drawable/test_ic_location"-->
+<!--                        android:ellipsize="end"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:layout_marginEnd="20dp"-->
+<!--                        />-->
+<!--            </LinearLayout>-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_margin="14dp"-->
+<!--            android:layout_height="wrap_content">-->
+
+
+
+
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--                android:id="@+id/typeCv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:minHeight="130dp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                >-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/typeCl"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+
+<!--                <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:id="@+id/typeBackgroundIv"-->
+<!--                        android:layout_height="52dp"-->
+<!--                        android:layout_width="52dp"-->
+<!--                        app:civ_border_width="0dp"-->
+<!--                        app:layout_constraintStart_toStartOf="@+id/typeIv"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/typeIv"-->
+<!--                        app:layout_constraintEnd_toEndOf="@+id/typeIv"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/typeIv"-->
+<!--                        android:src="@drawable/splash_screen"-->
+<!--                        app:fillColor="@{data.backColor}"-->
+<!--                        />-->
+<!--&lt;!&ndash;                        android:src="@{data.backColor}"&ndash;&gt;-->
+
+<!--                <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:id="@+id/typeIv"-->
+<!--                        android:layout_height="52dp"-->
+<!--                        android:layout_width="52dp"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:layout_marginTop="20dp"-->
+<!--                        app:civ_border_width="0dp"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:setImage="@{data.imageUrl}"-->
+<!--                        />-->
+
+<!--                <TextView-->
+<!--                        android:id="@+id/typeTv"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:minHeight="20dp"-->
+<!--                        android:text="@{data.text}"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:gravity="top"-->
+<!--                        android:layout_marginStart="16dp"-->
+<!--                        android:layout_marginEnd="16dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/typeIv"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        />-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+</layout>

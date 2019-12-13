@@ -86,10 +86,11 @@ class App : MultiDexApplication() {
             )*/
     }
 
+    @SuppressLint("CheckResult")
     private fun logEvents() {
         App.appComponent.getWSocket().eventStream()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext({ event ->
+            .doOnNext { event ->
                 when (event) {
                     is RxWebsocket.Open -> {
                         Timber.i("CONNECTED")
@@ -104,22 +105,22 @@ class App : MultiDexApplication() {
                         Timber.i("[MESSAGE RECEIVED]:" + (event as RxWebsocket.Message).data()!!.toString())
                         //Timber.i("[DE-SERIALIZED MESSAGE RECEIVED]:" + (event as RxWebsocket.Message).data(SampleDataModel::class.java).toString())
                         /*log(
-                            String.format(
-                                "[DE-SERIALIZED MESSAGE RECEIVED][id]:%d",
-                                (event as RxWebsocket.Message).data(SampleDataModel::class.java).id()
-                            )
-                        )
-                        log(
-                            String.format(
-                                "[DE-SERIALIZED MESSAGE RECEIVED][message]:%s",
-                                (event as RxWebsocket.Message).data(SampleDataModel::class.java).message()
-                            )
-                        )*/
+                                    String.format(
+                                        "[DE-SERIALIZED MESSAGE RECEIVED][id]:%d",
+                                        (event as RxWebsocket.Message).data(SampleDataModel::class.java).id()
+                                    )
+                                )
+                                log(
+                                    String.format(
+                                        "[DE-SERIALIZED MESSAGE RECEIVED][message]:%s",
+                                        (event as RxWebsocket.Message).data(SampleDataModel::class.java).message()
+                                    )
+                                )*/
                     } catch (throwable: Throwable) {
                         Timber.i("[MESSAGE RECEIVED]:" + (event as RxWebsocket.Message).data()!!.toString())
                     }
                 }
-            })
+            }
             .subscribeOn(Schedulers.io())
             .subscribe(emptyConsumer())
     }

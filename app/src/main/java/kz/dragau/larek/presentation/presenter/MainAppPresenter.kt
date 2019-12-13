@@ -14,6 +14,7 @@ import kz.dragau.larek.App
 import kz.dragau.larek.R
 import kz.dragau.larek.Screens
 import kz.dragau.larek.api.ApiManager
+import kz.dragau.larek.api.TokenInterceptor
 import kz.dragau.larek.api.requests.LoginRequestModel
 import kz.dragau.larek.models.db.UserDao
 import kz.dragau.larek.models.objects.User
@@ -30,6 +31,9 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
 
     @Inject
     lateinit var userDao: UserDao
+
+    @Inject
+    lateinit var tokenInterceptor: TokenInterceptor
 
     init {
         App.appComponent.inject(this)
@@ -54,14 +58,20 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
     {
         updateFcmToken()
 
-        if (DataHolder.userId != -1L) {
-            disposable = userDao.get(DataHolder.userId)
+        if (DataHolder.userId != null) {
+            disposable = userDao.get(DataHolder.userId!!)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { user: User ->
-                        //router.newRootScreen(Screens.LoginScreen())
-                        //TODO: перейти на Main Screen
+//                        router.newRootScreen(Screens.LoginScreen())
+                        tokenInterceptor.token = "Bearer " + user.token
+//                        router.newRootScreen(Screens.StoreScreen())
+
+                        router.newRootScreen(Screens.HomeScreen())
+
+//                        router.newRootScreen(Screens.ProductScreen())
+//                        router.newRootScreen(Screens.LocationMapScreen())
                     },
                     {
 
@@ -74,8 +84,13 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
         }
         else
         {
-            router.newRootScreen(Screens.LoginScreen())
-            //router.newRootScreen(Screens.ProductScreen())
+//            router.newRootScreen(Screens.LoginScreen())
+
+
+            router.newRootScreen(Screens.HomeScreen())
+
+//            router.newRootScreen(Screens.ProductScreen())
+//            router.newRootScreen(Screens.StoreScreen())
         }
     }
 
@@ -83,7 +98,7 @@ class MainAppPresenter(private val router: Router) : MvpPresenter<MainAppView>()
     {
 
         /*var id = 0L
-        val u = User(username = "test", id = id)
+        val u = User(username = "ic_arrow_back", id = id)
         u.phone = "7055717177"
 
 

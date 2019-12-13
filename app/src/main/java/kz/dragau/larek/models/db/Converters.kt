@@ -1,8 +1,13 @@
 package kz.dragau.larek.models.db
 
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class Converters {
@@ -16,6 +21,25 @@ class Converters {
             }.type
 
             return gson.fromJson<ArrayList<String>>(value, listType)
+        }
+
+        @SuppressLint("NewApi")
+        private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+        @SuppressLint("NewApi")
+        @TypeConverter
+        @JvmStatic
+        fun toOffsetDateTime(value: String?): OffsetDateTime? {
+            return value?.let {
+                return formatter.parse(value, OffsetDateTime::from)
+            }
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        @TypeConverter
+        @JvmStatic
+        fun fromOffsetDateTime(date: OffsetDateTime?): String? {
+            return date?.format(formatter)
         }
 
         @TypeConverter

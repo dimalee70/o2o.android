@@ -20,12 +20,12 @@ object DataHolder : BaseObservable()
         //notifyPropertyChanged(BR.user)
     }
 
-    var userId: Long
+    var userId: String?
     set(value) {
-        sharedPref.edit().putLong(Constants.userIdPrefsKey, value).apply()
+        sharedPref.edit().putString(Constants.userIdPrefsKey, value).apply()
     }
     get() {
-        return sharedPref.getLong(Constants.userIdPrefsKey, -1)
+        return sharedPref.getString(Constants.userIdPrefsKey, null)
     }
 
     var jwt: String?

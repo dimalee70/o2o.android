@@ -22,6 +22,17 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+<!--    <resources>-->
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+        <item name="android:background">#ff0000</item>
+        <item name="android:colorBackground">#ff0000</item>
+    </style>
+    <style name="AppTheme.ActionBar" parent="android:Widget.ActionBar">
+        <item name="android:background">#ff0000</item>
+    </style>
+<!--    </resources>-->
+
     <style name="DialogAnimation" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@animator/anim_in</item>
         <item name="android:windowExitAnimation">@animator/anim_out</item>
@@ -35,7 +46,8 @@
     <style name="Theme.App.Dark" parent="Base.Theme.App">
         <item name="android:textViewStyle">@style/Widget.TextView.Primary</item>
 
-        <item name="editTextStyle">@style/Widget.EditText.Primary</item>
+        <item name="editTextStyle">@style/Widget.EditText.Primary.Dark</item>
+        <item name="textInputEditTextStyle">@style/Widget.TextInputEditText.Primary</item>
         <item name="buttonStyle">@style/Widget.Button.Primary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -64,13 +76,18 @@
         <item name="settingsFieldTextColor">@color/settingsFieldTextColor</item>
         <item name="whiteColor">@color/whiteColor</item>
         <item name="hintTextColor">@color/hintTextColor</item>
+        <item name="colorControlNormal">@color/whiteColor</item>
+        <item name="colorControlActivated">@color/greenTextColor</item>
+        <item name="colorControlHighlight">@color/lightBlueTextColor</item>
     </style>
 
     <style name="Theme.App.Light" parent="Base.Theme.App">
+        <item name="textInputEditTextStyle">@style/Widget.TextInputEditText.Primary</item>
         <item name="android:textViewStyle">@style/Widget.TextView.Primary</item>
-        <item name="editTextStyle">@style/Widget.EditText.Primary</item>
+        <item name="editTextStyle">@style/Widget.EditText.Primary.Light</item>
         <item name="buttonStyle">@style/Widget.Button.Primary</item>
-        <item name="panelColor">@color/lightColorPanel</item>
+        <item name="inverseTextColor">@color/lightInverseTextColor</item>
+        <item name="panelColor">@color/colorWhite</item>
         <item name="colorPrimary">@color/lightColorPrimary</item>
         <item name="colorPrimaryDark">@color/lightColorPrimaryDark</item>
         <item name="colorAccent">@color/lightColorAccent</item>
@@ -94,11 +111,19 @@
         <item name="timerTextColor">@color/lightTimerTextColor</item>
         <item name="buttonBackdround">@drawable/button_bg</item>
         <item name="opponentTurnTextColor">@color/lightOpponentTurnTextColor</item>
-        <item name="inverseTextColor">@color/lightInverseTextColor</item>
         <item name="settingsFieldTextColor">@color/lightSettingsFieldTextColor</item>
         <item name="hintTextColor">@color/lightHintTextColor</item>
+        <item name="colorControlActivated">@color/lightButtonHighlight</item>
     </style>
 
+
+
+    <style name="Widget.TextInputEditText.Primary" parent="@android:style/TextAppearance">
+        <item name="colorControlNormal">@color/quantum_black_100</item>
+        <item name="colorControlActivated">@color/quantum_black_100</item>
+        <item name="colorControlHighlight">@color/greenBgColor</item>
+    </style>
+®
     <style name="Widget.Button.Primary" parent="Widget.AppCompat.Button">
         <item name="background">@drawable/button_green_bg</item>
         <item name="android:textColor">@color/playButtonTextColor</item>
@@ -113,7 +138,7 @@
     </style>
 
     <style name="Widget.TextView.Hint" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/hintTextColor</item>
+        <item name="android:textColor">?attr/inverseTextColor</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -179,11 +204,31 @@
         <item name="android:textColor">@color/inverseTextColor</item>
     </style>
 
-    <style name="Widget.EditText.Primary" parent="Widget.AppCompat.EditText">
-        <item name="android:textColorHint">@color/boldTextColor</item>
-        <item name="android:textColor">@color/boldTextColor</item>
+<!--    <style name="TextView.HeaderInverseColorLight" parent="TextView.Header">-->
+<!--        <item name="android:textColor">@color/lightInverseTextColor</item>-->
+<!--    </style>-->
+
+    
+    <style name="TextView.HeaderBlackColor" parent="TextView.Header">
+        <item name="android:textColor">@color/quantum_black_100</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Widget.EditText.Primary.Light" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/greenBgColor</item>
+        <item name="colorControlActivated">@color/greenBgColor</item>
+        <item name="colorControlHighlight">@color/greenBgColor</item>
+        <item name="android:textColor">@color/quantum_black_100</item>
         <item name="android:backgroundTint" tools:targetApi="lollipop">@color/greenBgColor</item>
-        <item name="android:textSize">9sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.EditText.Primary.Dark" parent="Widget.AppCompat.EditText">
+        <item name="android:textColorHint">@color/textColorHint</item>
+        <item name="android:textColor">@color/darkInverseTextColor</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/greenBgColor</item>
+        <item name="android:textSize">18sp</item>
         <item name="background">@android:color/transparent</item>
     </style>
 
@@ -226,6 +271,7 @@
 
     <style name="header_bar">
         <item name="android:background">?attr/whiteColor</item>
+        <item name="android:actionBarDivider">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -235,5 +281,25 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
     </style>
+    <style name="MyCustomTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+        <item name="android:actionBarTabBarStyle">@style/MyActionBarTabTheme</item>
+
+        <item name="actionBarStyle">@style/MyActionBarTheme</item>
+        <item name="actionBarTabBarStyle">@style/MyActionBarTabTheme</item>
+    </style>
+
+    <style name="MyActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
+
+        <item name="background">@color/yellowBgColor</item>
+    </style>
+    <style name="MyActionBarTabTheme" parent="@style/Widget.AppCompat.ActionBar.TabView">
+    </style>
+
+<!--    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">-->
+<!--        <item name="colorControlNormal">#c5c5c5</item>-->
+<!--        <item name="colorControlActivated">@color/btnDarkRed</item>-->
+<!--        <item name="colorControlHighlight">@color/greenBgColor</item>-->
+<!--    </style>-->
 
 </resources>

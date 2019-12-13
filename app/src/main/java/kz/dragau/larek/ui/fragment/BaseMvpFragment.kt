@@ -1,4 +1,4 @@
-package photograd.kz.photograd.ui.fragment
+package kz.dragau.larek.ui.fragment
 
 import android.content.Context
 import android.util.Log
@@ -11,11 +11,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import kz.dragau.larek.R
+import kz.dragau.larek.moxy.MvpAppCompatFragment
 import kz.dragau.larek.api.response.ErrorResponse
 import kz.dragau.larek.extensions.showErrorAlertDialog
-import kz.dragau.larek.moxy.MvpAppCompatFragment
 import kz.dragau.larek.presentation.BaseView
 import kz.dragau.larek.presentation.presenter.dialogs.DelayedProgressDialog
+import kz.dragau.larek.presentation.presenter.dialogs.LoadingDialog
 import java.io.IOException
 import java.net.SocketTimeoutException
 import org.json.JSONObject
@@ -27,6 +28,7 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
     val BASE_TAG: String = "BaseMvpFragment"
 
     private var progressDialog: DelayedProgressDialog? = null
+    private var loadingDialog: LoadingDialog? = null
     var errorDialog: AlertDialog? = null
 
     override fun showError(exception: Throwable) {
@@ -65,7 +67,6 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
             errorDialog = showErrorAlertDialog({
                 cancelable = true
                 closeIconClickListener {
-                    Timber.d(BASE_TAG, "Error dialog close button clicked")
                 }
             }, "Ошибка", msg)
             errorDialog?.show()
@@ -88,6 +89,24 @@ open class BaseMvpFragment: MvpAppCompatFragment(), BaseView
             progressDialog = DelayedProgressDialog(this.context!!)
 
         progressDialog?.show()
+    }
+
+    override fun hideLoading() {
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+        loadingDialog?.cancel()
+        loadingDialog = null
+    }
+
+    override fun showLoading() {
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+        if (loadingDialog == null)
+            loadingDialog = LoadingDialog(this.context!!)
+
+        loadingDialog?.show()
     }
 
     override fun showRequestSuccessfully(message: String) {

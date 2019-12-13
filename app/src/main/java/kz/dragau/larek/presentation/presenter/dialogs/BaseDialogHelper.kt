@@ -44,6 +44,7 @@ abstract class BaseDialogHelper {
                         windowlp?.height = getDimensionValue(R.dimen.largeDialogHeight)
                     }
                 }
+//                dialog!!.setCanceledOnTouchOutside(false)
                 dialog?.window?.attributes = windowlp
             }
         }

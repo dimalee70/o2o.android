@@ -31,6 +31,7 @@ class ErrorDialogPresenter(private val context: Context, val title: String?, val
 
         windowlp?.gravity = Gravity.BOTTOM
         dialog?.window?.attributes = windowlp
+        dialog?.setCanceledOnTouchOutside(false)
 
         return dialog!!
     }

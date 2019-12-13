@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+
+        <variable name="registerStoreViewModel" type="kz.dragau.larek.api.requests.RegisterStoreRequestModel"/>
+        <variable name="presenter" type="kz.dragau.larek.presentation.presenter.store.RegisterStorePresenter"/>
+    </data>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
+
+        <ImageView
+                android:id="@+id/logoIv"
+                android:layout_width="40dp"
+                android:layout_height="26dp"
+                app:srcCompat="@drawable/ic_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="15dp"
+        />
+
+        <TextView
+                android:id="@+id/titleTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:text="@string/storeHeader"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:textSize="24sp"
+                app:textAllCaps="true"
+                app:autoSizeTextType="uniform"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/logoIv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/storeIv"
+        />
+                <!--style="@style/TextView.HeaderBlackColor"-->
+
+        <ImageView
+                android:id="@+id/storeIv"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="22dp"
+                android:layout_marginTop="22dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_store"
+                android:adjustViewBounds="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/titleTv"
+
+        />
+
+        <View
+                android:id="@+id/dividerV"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/lineColor"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginTop="28dp"
+                app:layout_constraintTop_toBottomOf="@+id/storeIv"
+        />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/storeTitleEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@+id/dividerV"
+                >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:drawableStart="@drawable/ic_store_title"
+                    android:singleLine="true"
+                    android:hint="@string/storeTitleHint"
+                    android:text="@={registerStoreViewModel.name}"
+                    />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/storeLegalTitleEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="12dp"
+                android:singleLine="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:textColorHint="@color/hintTextColor"
+                app:layout_constraintTop_toBottomOf="@+id/storeTitleEt"
+                >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:drawableStart="@drawable/ic_store_title"
+                    android:singleLine="true"
+                    android:hint="@string/storeLegalTitleHint"
+                    android:text="@={registerStoreViewModel.name}"
+                    />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/storeAddressEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="12dp"
+                android:singleLine="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:textColorHint="@color/hintTextColor"
+                app:layout_constraintTop_toBottomOf="@+id/storeLegalTitleEt"
+                >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:drawableStart="@drawable/ic_store_address"
+                    android:singleLine="true"
+                    android:hint="@string/storeAddressHint"
+                    android:text="@={registerStoreViewModel.address}"
+                    />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+                android:id="@+id/mappingTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/mappingText"
+                android:drawableEnd="@drawable/ic_location_pin"
+                android:gravity="start|center"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="9dp"
+                android:clickable="true"
+                android:onClick="@{(v) -> presenter.openMap()}"
+                app:layout_constraintTop_toBottomOf="@+id/storeAddressEt"
+        />
+
+        <View
+                android:id="@+id/dividerSecondV"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/lineColor"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/mappingTv"
+        />
+
+        <LinearLayout
+                android:id="@+id/onlineBookingLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/dividerSecondV"
+                android:layout_marginTop="26dp"
+        >
+
+            <TextView
+                    android:id="@+id/onlineBookingTv"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:text="@string/onlineBookingText"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:layout_marginStart="15dp"
+                    android:onClick="@{(v) -> presenter.changeSwitch()}"
+
+            />
+
+            <com.suke.widget.SwitchButton
+                    android:id="@+id/onlineBooking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="15dp"
+                    app:sb_show_indicator="false"
+                    app:sb_checked="true"
+       />
+        </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/storePhotoLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/onlineBookingLl"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@color/whiteColor"
+                    >
+
+                <GridView
+                        android:id="@+id/imageGv"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:numColumns="1"
+                        android:verticalSpacing="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginStart="2dp"
+                        android:horizontalSpacing="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/avaIv"
+                        />
+
+                <ImageView
+                        android:id="@+id/avaIv"
+                        android:layout_width="@dimen/minPhotoIconWidth"
+                        android:layout_height="64dp"
+                        android:layout_gravity="end|center"
+                        android:background="#979797"
+                        android:scaleType="center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        app:srcCompat="@drawable/ic_store_photo"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <Button
+                android:id="@+id/finishButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doneText"
+                android:background="@drawable/button_green_bg"
+                android:layout_marginTop="23dp"
+                android:layout_marginStart="86dp"
+                android:layout_marginEnd="86dp"
+                android:layout_marginBottom="52dp"
+                android:enabled="false"
+                android:visibility="gone"
+                android:onClick="@{(v) -> presenter.registerStore()}"
+                app:layout_constraintTop_toBottomOf="@+id/storePhotoLl"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>
